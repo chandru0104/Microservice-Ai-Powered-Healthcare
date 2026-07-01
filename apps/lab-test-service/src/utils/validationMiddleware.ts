@@ -13,6 +13,6 @@ export const validationMiddleware =
                 return;
             }
 
-            req.body = result.data;
+            req.body = result.data; 
             next();
         };
