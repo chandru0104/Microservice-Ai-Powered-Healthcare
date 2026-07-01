@@ -1,0 +1,26 @@
+{
+  "name": "@ai-heathcare-platform/apps-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "implicitDependencies": [
+      "@ai-heathcare-platform/apps"
+    ],
+    "targets": {
+      "e2e": {
+        "executor": "@nx/jest:jest",
+        "outputs": [
+          "{projectRoot}/test-output/jest/coverage"
+        ],
+        "options": {
+          "jestConfig": "apps-e2e/jest.config.cts",
+          "passWithNoTests": true
+        },
+        "dependsOn": [
+          "@ai-heathcare-platform/apps:build",
+          "@ai-heathcare-platform/apps:serve"
+        ]
+      }
+    }
+  }
+}
