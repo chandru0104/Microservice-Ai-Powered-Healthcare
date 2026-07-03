@@ -10,7 +10,7 @@ export const addCategoryService = async (data: category) => {
         const { name, description } = data
 
         const addCategory = await TestCategory.create({ name, description })
-
+        
         return addCategory
     } catch (error: any) {
         throw new Error(error.message)
@@ -18,9 +18,10 @@ export const addCategoryService = async (data: category) => {
 
 }
 
-export const listCategoryService = async () => {
+export const listCategoryService = async (page:number,limit:number) => {
     try {
-        const categoryData = await TestCategory.find({ status: 1 })
+        const pages = (page-1)*limit
+        const categoryData = await TestCategory.find().skip(pages).limit(limit)
 
         return categoryData
     } catch (error: any) {
@@ -31,7 +32,9 @@ export const listCategoryService = async () => {
 export const updateCategoryService = async (id: string, data: category) => {
     try {
 
-        const updateList = await TestCategory.findByIdAndUpdate(id, { data }, { new: true, runValidators: true })
+        const payload = { ...data }
+
+        const updateList = await TestCategory.findByIdAndUpdate(id, payload, { runValidators: true, new: true })
 
         return updateList
     } catch (error: any) {
@@ -42,7 +45,7 @@ export const updateCategoryService = async (id: string, data: category) => {
 export const deleteCategoryService = async (id: string) => {
     try {
 
-        await TestCategory.findByIdAndUpdate(id, { status: 0 }, { run: true, runvalidators: true })
+        await TestCategory.findByIdAndDelete(id)
 
     } catch (error: any) {
         throw new Error(error.message)

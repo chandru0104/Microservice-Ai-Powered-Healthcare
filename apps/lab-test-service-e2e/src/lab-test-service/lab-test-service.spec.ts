@@ -1,10 +1,11 @@
-import axios from 'axios';
+import request  from "supertest";
+import dotenv from "dotenv"
 
-describe('GET /', () => {
-  it('should return a message', async () => {
-    const res = await axios.get(`/`);
-
-    expect(res.status).toBe(200);
-    expect(res.data).toEqual({ message: 'Hello API' });
-  });
-});
+dotenv.config()
+const PORT =process.env.LAB_SERVICE_PORT_URL
+describe("Lab test add",()=>{
+  it("add a require filed must", async()=>{
+    const res = await request(PORT as string).get("/api/v1/lab-tests")
+    expect(res.status).toBe(201)
+  })
+})

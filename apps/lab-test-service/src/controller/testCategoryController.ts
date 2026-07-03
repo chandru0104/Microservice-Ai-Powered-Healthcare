@@ -24,7 +24,9 @@ export const addCategoryController = async (req: Request, res: Response) => {
 
 export const listCategoryController = async (req: any, res: Response) => {
     try {
-        const responseData = await listCategoryService()
+        const page=req.query.page
+        const limit=req.query.limit
+        const responseData = await listCategoryService(page,limit)
 
         res.status(200).json({
             success: true,
@@ -40,9 +42,9 @@ export const listCategoryController = async (req: any, res: Response) => {
 }
 
 
-export const updateCategoryController = async (req: Request, res: Response) => {
+export const updateCategoryController = async (req: any, res: Response) => {
     try {
-        const id = req.params.id
+        const {id} = req.params
         const data = req.body
         const responseData = await updateCategoryService(id, data)
 
@@ -68,7 +70,7 @@ export const deleteCategoryController = async (req: Request, res: Response) => {
 
         res.status(201).json({
             sucess: true,
-            message: "Lab Category updated",
+            message: "Lab Category Deleted",
             data: responseData
         })
     } catch (error: any) {

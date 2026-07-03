@@ -11,10 +11,9 @@ const labTestSchema = new mongoose.Schema(
       ref: "TestCategory",
       required: true,
     },
-    authorDetails: {
+    authorDetailsId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Doctor",
-      required: true,
     },
     description: {
       type: String,
@@ -25,6 +24,7 @@ const labTestSchema = new mongoose.Schema(
       required: true,
     },
     gender: {
+      enum:["Male","Female"],
       type: String,
       required: true,
     },
@@ -44,9 +44,14 @@ const labTestSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: Number,
+      default: 1
+    }
   },
   {
     timestamps: true,
+    versionKey:false
   }
 );
 
