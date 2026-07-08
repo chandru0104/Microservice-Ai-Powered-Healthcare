@@ -10,7 +10,7 @@ export const dbConnect = async () => {
         if (!db) {
             throw new Error("DB not connected")
         }
-        console.log("Db connected")
+        console.log("Lab Test service DB connected")
     }
     catch (error: any) {
         console.log(error.message)

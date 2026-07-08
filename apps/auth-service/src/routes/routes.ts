@@ -30,7 +30,7 @@ export const router = express.Router();
  *       200:
  *         description: Login Successfully
  */
-router.post('/api/login', loginController);
+router.post('/api/v1/user/login', loginController);
 
 /**
  * @swagger

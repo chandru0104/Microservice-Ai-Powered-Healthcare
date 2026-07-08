@@ -38,9 +38,9 @@ const connectConsumer = async () => {
           if (!message.value) {
             throw new Error('Message is null');
           }
-
+ 
           const data = JSON.parse(message.value.toString());
-
+ 
           const { email, otp } = data;
 
           await transporter.sendMail({

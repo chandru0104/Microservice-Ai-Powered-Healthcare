@@ -8,6 +8,8 @@ import {
   otpSet,
   otpGet,
 } from '../services/userServices';
+
+
 import { Request, Response } from 'express';
 
 export const otpSetController = async (req: Request, res: Response) => {
@@ -20,9 +22,9 @@ export const otpSetController = async (req: Request, res: Response) => {
 };
 
 export const verifyOtpController = async (req: Request, res: Response) => {
-  const { email, userOtp } = req.body;
+  const { email, otp } = req.body;
 
-  if (!email || !userOtp) {
+  if (!email || !otp) {
     throw new validationError('Please enter your email and otp');
   }
   try {
@@ -42,44 +44,11 @@ export const verifyOtpController = async (req: Request, res: Response) => {
 //user add
 export const userAddController = async (req: Request, res: Response) => {
   try {
-    const {
-      email,
-      password,
-      role,
-      experience,
-      licence_no,
-      degree,
-      specialist,
-      registration,
-      phone,
-      location,
-    } = req.body;
-
-    if (!email || !password || !role) {
-      throw new validationError('Must fill the require feild');
-    }
-
-    if (role === 'doctor') {
-      if (
-        !email ||
-        !password ||
-        !role ||
-        !experience ||
-        !licence_no ||
-        !degree ||
-        !specialist ||
-        !registration ||
-        !phone ||
-        !location
-      ) {
-        throw new validationError('Must fill the require feild');
-      }
-    }
-
     const user = await userAddService({ ...req.body });
 
     res.status(201).json({
       success: true,
+      message: "User added successfully",
       data: user,
     });
   } catch (error: any) {
@@ -150,13 +119,13 @@ export const userProfileController = async (req: Request, res: Response) => {
 };
 
 ///user update
-export const userUpdateController = async (req: Request, res: Response) => {
+export const userUpdateController = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
     const data = req.body;
 
     const updatedData = await userUpdateService(id, data);
-    
+
 
     res.status(201).json({
       success: true,
@@ -167,3 +136,4 @@ export const userUpdateController = async (req: Request, res: Response) => {
     throw new validationError(error.message);
   }
 };
+

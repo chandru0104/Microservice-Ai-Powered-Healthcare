@@ -4,7 +4,7 @@ import './consumer/email.consumer';
 
 connectDB();
 
-const PORT = process.env.PORT || 5002;
+const PORT = process.env.USER_SERVICE_PORT;
 
 app.listen(PORT, () => {
   console.log(`api running on port ${PORT}`);

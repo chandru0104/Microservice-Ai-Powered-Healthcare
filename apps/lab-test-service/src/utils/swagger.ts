@@ -8,9 +8,9 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Lab Test",
-      description: "Tab Test Services",
-      version: "1.0.0"
+      title: 'AI-healthcare',
+      description: 'api lab test related docs',
+      version: '1.0.0',
     },
     servers: [
       {

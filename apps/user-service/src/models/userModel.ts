@@ -17,32 +17,10 @@ const userModel = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['user', 'doctor', 'delivery boy', 'admin'],
+      default: "user",
       required: [true, 'role is require'],
     },
-    profile: {
-      type: String,
-    },
-    experience: String,
-    licence_no: String,
-    degree: String,
-    about: String,
-    specialist: String,
-    registration: String,
-    phone: Number,
-    location: String,
-    fees: Number,
-    comment: String,
-    star: String,
-    approved: Number,
-    schedule: {
-      type: [String],
-      default: [],
-    },
-    language: {
-      type: [String],
-      default: [],
-    },
+
     is_active: {
       default: 1,
       type: Number,
@@ -51,15 +29,19 @@ const userModel = new mongoose.Schema(
       default: 1,
       type: Number,
     },
+    is_verfiy:{
+      type: Boolean,
+      default: false,
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref:"User"
+      ref: "User"
     },
     updatedBy: {
       type: mongoose.Schema.Types.ObjectId,
     },
   },
-  { timestamps: true },
+  { timestamps: true, versionKey: false },
 );
 
-export const User = mongoose.model('User', userModel);
+export const User = mongoose.model('Users', userModel);

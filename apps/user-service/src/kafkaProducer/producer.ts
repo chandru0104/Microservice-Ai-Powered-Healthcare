@@ -11,7 +11,7 @@ connectProducer();
 
 export const sendMail = async (email: any, otp: any) => {
   const data = { email, otp };
-
+   console.log(email)
   try {
     await producer.send({
       topic: 'send-mail',
@@ -22,7 +22,7 @@ export const sendMail = async (email: any, otp: any) => {
       ],
     });
 
-    console.log('Message Sent');
+    console.log(`Message Sent`);
   } catch (error: any) {
     throw new Error(error.message);
   }

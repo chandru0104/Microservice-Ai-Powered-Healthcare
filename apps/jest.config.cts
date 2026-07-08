@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: '@ai-heathcare-platform/apps',
+  displayName: '@ai-heathcare-platform/user-service',
   preset: '../jest.preset.js',
   testEnvironment: 'node',
   transform: {

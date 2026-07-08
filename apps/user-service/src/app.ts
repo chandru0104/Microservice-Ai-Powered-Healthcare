@@ -4,20 +4,36 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import compression from "compression"
+import dotenv from "dotenv"
+import cors from "cors"
+import { routerDoctor } from "./routes/doctorRoutes"
+dotenv.config()
 
 export const app = express();
+app.use(express.json({ limit: "20mb" }));
+app.use(express.urlencoded({ extended: true, limit: "20mb" }))
+app.use(helmet());
+app.use(morgan('combined'));
+app.use(compression())
+
+app.use(router, routerDoctor);
+app.use(cors({
+  origin: ["http://localhost:3000"],
+  credentials: true
+}))
 
 const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
       title: 'AI-healthcare',
-      description: 'api related docs',
+      description: 'api user related docs',
       version: '1.0.0',
     },
     servers: [
       {
-        url: 'http://localhost:5002',
+        url: process.env.USER_SERVICE_PORT,
       },
     ],
   },
@@ -26,10 +42,7 @@ const swaggerOptions = {
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions as any);
 
-app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/api-doc/user', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-app.use(express.json());
-app.use(helmet());
-app.use(morgan('dev'));
 
-app.use(router);
+

@@ -2,14 +2,20 @@ import express from 'express';
 import { router } from './routes/routes';
 import { swaggerSpec } from './utils/swagger';
 import swaggerUi from "swagger-ui-express"
+import helmet from "helmet"
+import morgan from "morgan"
+import compression from "compression"
 export const app = express();
 
 app.use(
-  "/api-docs/",
+  "/api-docs/auth",
   swaggerUi.serve,
   swaggerUi.setup(swaggerSpec)
 );
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(helmet())
+app.use(morgan("combined"))
+app.use(compression())
 app.use(router);
