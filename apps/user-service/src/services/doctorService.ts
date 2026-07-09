@@ -98,3 +98,13 @@ export const doctorDeleteService = async (id: any) => {
         throw new Error(error.message)
     }
 }
+
+export const doctorProfileService = async (id: string) => {
+    try {
+        const doctorProfile = await Doctor.findById(id)
+
+        return doctorProfile
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}

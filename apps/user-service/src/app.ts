@@ -40,9 +40,28 @@ const swaggerOptions = {
   apis: ['apps/user-service/src/routes/userRoutes.ts'],
 };
 
+const swaggerOptionsDoctor = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'AI-healthcare',
+      description: 'api user related docs',
+      version: '1.0.0',
+    },
+    servers: [
+      {
+        url: process.env.USER_SERVICE_PORT,
+      },
+    ],
+  },
+  apis: ['apps/user-service/src/routes/doctorRoutes.ts'],
+};
+
 const swaggerDocs = swaggerJsdoc(swaggerOptions as any);
+const swaggerDocsDoctor = swaggerJsdoc(swaggerOptionsDoctor as any);
 
 app.use('/api-doc/user', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/api-doc/doctor', swaggerUi.serve, swaggerUi.setup(swaggerDocsDoctor));
 
 
 

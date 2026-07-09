@@ -1,5 +1,5 @@
 
-import { doctorAddService, doctorListService, verifyOtpservice, doctorUpdateService, doctorDeleteService } from "../services/doctorService"
+import { doctorAddService, doctorListService, verifyOtpservice, doctorUpdateService, doctorDeleteService,doctorProfileService } from "../services/doctorService"
 
 
 import { Request, Response } from "express";
@@ -99,5 +99,24 @@ export const doctorDeleteController = async (req: Request, res: Response) => {
             success: false,
             mesaage: error.message,
         });
-        }
     }
+}
+
+export const doctorProfileController = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.id
+
+        const profileDoctor =await doctorProfileService(id)
+
+        res.status(200).json({
+            success: true,
+            message: "Doctor profile",
+            data: profileDoctor
+        })
+    } catch (error: any) {
+        res.status(400).json({
+            success: false,
+            message:error.message,
+        })
+    }
+}
