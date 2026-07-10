@@ -33,7 +33,7 @@ export const loginSevice = async (data: any) => {
   );
 
   const refreshToken = jwt.sign(
-    { id: user.id, role: user.role },
+    { id: user.id, name: user.name, role: user.role },
     process.env.REFRESH_SECRET_KEY as string,
     {
       expiresIn: '7d',
@@ -42,8 +42,9 @@ export const loginSevice = async (data: any) => {
 
   return {
     id: user.id,
+    name:user.name,
     role: user.role,
-    email: user.email,
+    userEmail: user.email,
     accessToken,
     refreshToken,
   };

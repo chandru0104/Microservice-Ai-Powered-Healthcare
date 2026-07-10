@@ -11,10 +11,21 @@ export const loginController = async (req: Request, res: Response) => {
 
     const loginData = await loginSevice(req.body);
 
+    res.cookie(
+      "refreshToken",
+      loginData.refreshToken,
+      {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict"
+      }
+    )
+    const {id,role,name,userEmail,accessToken}=loginData
+
     return res.status(200).json({
       success: true,
       message: 'Login successful',
-      loginData,
+      data:{id,role,name,userEmail,accessToken}
     });
   } catch (error: any) {
     const statusCode = error.statusCode || 500;
