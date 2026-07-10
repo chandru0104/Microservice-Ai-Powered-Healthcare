@@ -2,38 +2,34 @@ import { validationError } from '../utils/errorHaddler';
 import { redis } from '../utils/redis';
 import { User } from '../model/loginModel';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+
 import dotenv from 'dotenv';
 dotenv.config();
 
 const salt = Number(process.env.SALT);
 
 export const newPasswordService = async (data: any) => {
-  const { resetToken, newPassword, confirmPassword } = data;
+  const { email,token, newPassword, confirmPassword } = data;
 
-  if (!resetToken || !newPassword || !confirmPassword) {
-    throw new validationError('Please fill the fields');
-  }
+    if(newPassword !==confirmPassword ){
+      return "Please enter your new password and confirm password"
+    }
 
-  // Decode email from JWT inside the service
-  const decoded: any = jwt.verify(resetToken, process.env.SECRET_KEY as string);
-  const email = decoded.email;
+   const resetToken = await redis.getex("resetToken")
 
-  const getVerify: any = await redis.get(`email:${email}`);
-
-  if (!getVerify) {
-    throw new validationError(
-      'Please again try to OTP verification reason you long time',
-    );
-  }
+    if(token !== resetToken ){
+      return "Your not access to password change"
+    }
 
   const user = await User.findOne({ email });
+  
 
   const hashPassword = await bcrypt.hash(confirmPassword, salt);
 
   await User.findByIdAndUpdate(user?.id, { password: hashPassword });
 
   await redis.del(`email:${email}`);
+  await redis.del("resetToken")
 
   return {
     message: 'Password change successfully',

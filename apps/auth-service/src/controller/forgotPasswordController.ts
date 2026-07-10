@@ -1,7 +1,6 @@
 import { Response, Request } from 'express';
 import { validationError } from '../utils/errorHaddler';
 import { forgotPasswordService } from '../service/forgotPasswordService';
-import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -16,16 +15,12 @@ export const forgotPasswordContrroller = async (
       throw new validationError('Fill the email field');
     }
 
-    await forgotPasswordService(req.body);
-
-    const resetToken = jwt.sign({ email },process.env.SECRET_KEY as string, {
-      expiresIn: '10m',
-    });
+     const resetToekn = await forgotPasswordService(req.body);
 
     return res.status(200).json({
       success: true,
       message: 'OTP sent to your email',
-      resetToken,
+      resetToekn,
     });
   } catch (error: any) {
     const statusCode = error.statusCode || 500;

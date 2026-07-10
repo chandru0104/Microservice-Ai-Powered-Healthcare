@@ -4,17 +4,19 @@ import { validationError } from '../utils/errorHaddler';
 
 export const verifyOtpController = async (req: Request, res: Response) => {
   try {
-    const { resetToken, userOtp } = req.body;
+    const { email, userOtp } = req.body;
 
-    if (!resetToken || !userOtp) {
+    if (!email || !userOtp) {
       throw new validationError('Please enter all required fields');
     }
 
-    await verifyOtpService(resetToken, userOtp);
+    const token =await verifyOtpService(email, userOtp);
 
     return res.status(200).json({
       success: true,
-      message: 'OTP verified successfully',
+      message: 'OTP verified successfully. Please enter new password',
+      resetToken:token
+
     });
   } catch (error: any) {
     return res.status(400).json({
