@@ -1,4 +1,4 @@
-import { validationError } from '../utils/errorHaddler';
+
 import { redis } from '../utils/redis';
 import { User } from '../model/loginModel';
 import bcrypt from 'bcrypt';
