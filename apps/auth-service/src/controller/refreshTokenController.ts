@@ -2,7 +2,7 @@ import { refreshTokenService } from '../service/refreshTokenService';
 import { Request, Response } from 'express';
 
 export const refreshTokenController = async (req: Request, res: Response) => {
-  const { refreshToken } = req.body;
+  const  refreshToken  = req.cookies.refreshToken;
 
   if (!refreshToken) {
     throw new Error('Refresh Token expried');

@@ -53,7 +53,9 @@ export const doctorAddService = async (data: docter, file: any) => {
     }
     console.log(doctorProfile)
 
-    const addDoctor = await Doctor.create({ name, specialties, experience, place, price, email, register, password, profile: doctorProfile })
+    const hashPassword = await bcrypt.hash(password,salt)
+
+    const addDoctor = await Doctor.create({ name, specialties, experience, place, price, email, register, password:hashPassword, profile: doctorProfile })
 
     return addDoctor
 }
@@ -61,7 +63,7 @@ export const doctorAddService = async (data: docter, file: any) => {
 
 export const doctorListService = async () => {
     try {
-        const listData = await Doctor.find({ status: 1 })
+        const listData = await Doctor.find({ status: 1 }).select("-password")
 
         return listData
 

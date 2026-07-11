@@ -5,6 +5,7 @@ import swaggerUi from "swagger-ui-express"
 import helmet from "helmet"
 import morgan from "morgan"
 import compression from "compression"
+import cookieParser from "cookie-parser"
 export const app = express();
 
 app.use(
@@ -18,4 +19,5 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet())
 app.use(morgan("combined"))
 app.use(compression())
+app.use(cookieParser())
 app.use(router);

@@ -5,6 +5,9 @@ import { verifyOtpController } from '../controller/verifyOtpController';
 import { newPasswordController } from '../controller/newPasswordController';
 import { refreshTokenController } from '../controller/refreshTokenController';
 import { googleLoginController } from '../controller/googleLoginController';
+import {doctorLoginController} from "../controller/doctorLoginController"
+
+import {forgotPasswordController} from "../controller/doctorForgotController"
 
 export const router = express.Router();
 
@@ -30,7 +33,7 @@ export const router = express.Router();
  *       200:
  *         description: Login Successfully
  */
-router.post('/api/v1/user/login', loginController);
+router.post('/api/v1/auth/user/login', loginController);
 
 /**
  * @swagger
@@ -52,7 +55,7 @@ router.post('/api/v1/user/login', loginController);
  *       200:
  *         description: Send OTP Successfully
  */
-router.post('/api/forgot/password', forgotPasswordContrroller);
+router.post('/api/v1/auth/forgot/password', forgotPasswordContrroller);
 
 /**
  * @swagger
@@ -74,7 +77,7 @@ router.post('/api/forgot/password', forgotPasswordContrroller);
  *       200:
  *         description: Verify OTP Successfully
  */
-router.post('/api/verfiy/otp', verifyOtpController);
+router.post('/api/v1/auth/verfiy/otp', verifyOtpController);
 
 /**
  * @swagger
@@ -96,7 +99,7 @@ router.post('/api/verfiy/otp', verifyOtpController);
  *       200:
  *         description: Set New Password Successfully
  */
-router.post('/api/new/password', newPasswordController);
+router.post('/api/v1/auth/new/password', newPasswordController);
 
 /**
  * @swagger
@@ -118,7 +121,7 @@ router.post('/api/new/password', newPasswordController);
  *       200:
  *         description: Create New Access Token Successfully
  */
-router.post('/api/refresh-token', refreshTokenController);
+router.post('/api/v1/auth/refresh-token', refreshTokenController);
 
 /**
  * @swagger
@@ -143,4 +146,9 @@ router.post('/api/refresh-token', refreshTokenController);
  *          description:Google Login Successfully
  */
 
-router.post('/api/google-login', googleLoginController);
+router.post('/api/v1/auth/google/login', googleLoginController);
+
+
+router.post("/api/v1/auth/doctor/login",doctorLoginController)
+
+router.post("/api/v1/auth/forgot-doctor/password",forgotPasswordController)
