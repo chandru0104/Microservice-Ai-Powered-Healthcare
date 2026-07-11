@@ -8,6 +8,7 @@ import { googleLoginController } from '../controller/googleLoginController';
 import {doctorLoginController} from "../controller/doctorLoginController"
 
 import {forgotPasswordController} from "../controller/doctorForgotController"
+import {verfiyOtpDoctorController} from "../controller/verfiyOtpDoctorController"
 
 export const router = express.Router();
 
@@ -152,3 +153,5 @@ router.post('/api/v1/auth/google/login', googleLoginController);
 router.post("/api/v1/auth/doctor/login",doctorLoginController)
 
 router.post("/api/v1/auth/forgot-doctor/password",forgotPasswordController)
+
+router.post("/api/v1/auth/verify-doctor/otp",verfiyOtpDoctorController)
