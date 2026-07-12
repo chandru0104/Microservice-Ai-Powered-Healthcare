@@ -1,7 +1,7 @@
 import { forgotPasswordService } from "../service/doctorForgotService"
 import { Request, Response } from "express"
 
-export const forgotPasswordController = async (req: Request, res: Response) => {
+export const forgotPasswordDoctorController = async (req: Request, res: Response) => {
     try {
         const email =req.body
         await forgotPasswordService(email)

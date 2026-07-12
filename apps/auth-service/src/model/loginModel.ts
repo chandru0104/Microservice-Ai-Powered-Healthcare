@@ -20,9 +20,10 @@ const user = new mongoose.Schema({
   },
   is_google_login:{
     type:Boolean,
-    require:true
+    require:true,
+    default:true
   },
-  googleId:{
+  google_id:{
     type:String,
     require:true
   },
@@ -93,8 +94,16 @@ const doctorSchema = new mongoose.Schema({
     status:{
         type:Number,
         default:1
-    }
-
+    },
+    is_google_login:{
+      type:Boolean,
+      require:true,
+      defalut:true
+    },
+      google_id:{
+    type:String,
+    require:true
+  },
 
 }, { timestamps: true, versionKey: false })
 

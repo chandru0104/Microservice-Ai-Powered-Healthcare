@@ -12,10 +12,21 @@ export const googleLoginController = async (req: Request, res: Response) => {
         }
         const verify = await googleLoginService(req.body)
 
+        const {user,accessToken,refreshToken}=verify
+
+        res.cookie("refreshToken",refreshToken,{
+            httpOnly:true,
+            secure:false,
+            sameSite:"strict",
+            maxAge:7*24*60*60*1000,
+        })
+
        return res.status(200).json({
             success: true,
             message: "Google Login Successfully",
-            data: verify
+            data: {
+                user,accessToken
+            }
         })
     } catch (error: any) {
        return res.status(400).json({

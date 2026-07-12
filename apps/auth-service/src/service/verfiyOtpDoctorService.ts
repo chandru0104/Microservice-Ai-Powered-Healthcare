@@ -19,7 +19,7 @@ export const verfiyOtpDoctorService = async (email: string, userOtp: string) => 
 
           const resetToken = crypto.randomBytes(32).toString("hex")
           await redis.del(`email:${email}`)
-          await redis.setex(`email:${email}`, 1000, JSON.stringify({ token: resetToken }))
+          await redis.setex(`email:${email}`, 1000,resetToken)
 
 
           return resetToken

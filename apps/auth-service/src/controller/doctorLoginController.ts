@@ -10,7 +10,8 @@ export const doctorLoginController = async (req: any, res: any) => {
         res.cookie("doctorRefreshToken", login.refreshToken, {
             httpOnly: true,
             secure: false,
-            sameSite: "strict"
+            sameSite: "strict",
+            maxAge:7*24*60*60*1000
         })
 
         const { id, role, name, email, accessToken } = login

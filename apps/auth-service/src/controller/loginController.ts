@@ -17,15 +17,17 @@ export const loginController = async (req: Request, res: Response) => {
       {
         httpOnly: true,
         secure: false,
-        sameSite: "strict"
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000
+
       }
     )
-    const {id,role,name,userEmail,accessToken}=loginData
+    const { id, role, name, userEmail, accessToken } = loginData
 
     return res.status(200).json({
       success: true,
       message: 'Login successful',
-      data:{id,role,name,userEmail,accessToken}
+      data: { id, role, name, userEmail, accessToken }
     });
   } catch (error: any) {
     const statusCode = error.statusCode || 500;
