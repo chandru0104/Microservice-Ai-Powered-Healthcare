@@ -6,7 +6,7 @@ dotenv.config()
 
 connectDB()
 
-const PORT = process.env.PORT
+const PORT = process.env.PRODUCT_SERVICE_PORT
 
 app.listen(PORT,()=>{
     console.log(`Product service running at ${PORT}`)
