@@ -46,6 +46,7 @@ import {
   productListController,
   updateProductController,
   deleteProductController,
+  viewProductController
 } from '../controller/productController';
 
 import { authMiddleware } from '../middleware/authMiddleware';
@@ -54,88 +55,89 @@ import { uploader } from '../utils/multer';
 export const router = express.Router();
 
 //Category api list
-router.post('/api/category/add', authMiddleware, categoryAddController);
-router.get('/api/category/list', authMiddleware, serviceListController);
+router.post('/api/v1/product/category', authMiddleware, categoryAddController);
+router.get('/api/v1/product/category', authMiddleware, serviceListController);
 router.put(
-  '/api/category/update/:id',
+  '/api/v1/product/category/update/:id',
   authMiddleware,
   categoryUpdateController,
 );
 router.put(
-  '/api/category/delete/:id',
+  '/api/v1/product/category/delete/:id',
   authMiddleware,
   categoryDeleteController,
 );
 
 //Child Category api list
 router.post(
-  '/api/child-category/add',
+  '/api/v1/product/child-category',
   authMiddleware,
   addChildCategoryController,
 );
 router.get(
-  '/api/child-category/list',
+  '/api/v1/product/child-category',
   authMiddleware,
   listChildCategoryController,
 );
 router.put(
-  '/api/child-category/update/:id',
+  '/api/v1/product/child-category/update/:id',
   authMiddleware,
   updateChildCategoryController,
 );
 router.put(
-  '/api/child-category/delete/:id',
+  '/api/v1/product/child-category/delete/:id',
   authMiddleware,
   deleteChildCategoryController,
 );
 
 //Sub Category api list
-router.post('/api/sub-category/add', authMiddleware, addSubCategoryController);
-router.get('/api/sub-category/list', authMiddleware, listSubCategoryController);
+router.post('/api/v1/product/sub-category', authMiddleware, addSubCategoryController);
+router.get('/api/v1/product/sub-category', authMiddleware, listSubCategoryController);
 router.put(
-  '/api/sub-category/update/:id',
+  '/api/v1/product/sub-category/update/:id',
   authMiddleware,
   updateSubCategoryController,
 );
 router.put(
-  '/api/sub-category/delete/:id',
+  '/api/v1/product/sub-category/delete/:id',
   authMiddleware,
   deleteSubCategoryController,
 );
 
 //Brand api list
-router.post('/api/brand/add', authMiddleware, addBrandController);
-router.get('/api/brand/list', authMiddleware, listBrandController);
-router.put('/api/brand/update/:id', authMiddleware, updateBrandController);
-router.put('/api/brand/delete/:id', authMiddleware, deleteBrandController);
+router.post('/api/v1/product/brand', authMiddleware, addBrandController);
+router.get('/api/v1/product/brand', authMiddleware, listBrandController);
+router.put('/api/v1/product/brand/update/:id', authMiddleware, updateBrandController);
+router.put('/api/v1/product/brand/delete/:id', authMiddleware, deleteBrandController);
 
 //Age Group api list
-router.post('/api/age-group/add', authMiddleware, addAgeGroupController);
-router.get('/api/age-group/list', authMiddleware, listAgeGroupController);
+router.post('/api/v1/product/age-group', authMiddleware, addAgeGroupController);
+router.get('/api/v1/product/age-group', authMiddleware, listAgeGroupController);
 router.put(
-  '/api/age-group/update/:id',
+  '/api/v1/product/age-group/update/:id',
   authMiddleware,
   updateAgeGroupController,
 );
 router.put(
-  '/api/age-group/delete/:id',
+  '/api/v1/product/age-group/delete/:id',
   authMiddleware,
   deleteAgeGroupController,
 );
 
 //Origin api list
-router.post('/api/origin/add', authMiddleware, addOrginController);
-router.get('/api/origin/list', authMiddleware, listOriginController);
-router.put('/api/origin/update/:id', authMiddleware, updateOriginController);
-router.put('/api/origin/delete/:id', authMiddleware, deleteOriginController);
+router.post('/api/v1/product/origin', authMiddleware, addOrginController);
+router.get('/api/v1/product/origin', authMiddleware, listOriginController);
+router.put('/api/v1/product/origin/update/:id', authMiddleware, updateOriginController);
+router.put('/api/v1/product/origin/delete/:id', authMiddleware, deleteOriginController);
 
 //Product api list
 router.post(
-  '/api/product',
-  uploader.any(),
+  '/api/v1/product',
+  uploader.array("image"),
   authMiddleware,
   addProductController,
 );
-router.get('/api/product', authMiddleware, productListController);
-router.put('/api/product/:id',uploader.any(),authMiddleware, updateProductController);
-router.put("/api/product/delete/:id",authMiddleware,deleteProductController)
+router.get('/api/v1/product', authMiddleware, productListController);
+router.put('/api/v1/product/:id', uploader.array("image"), authMiddleware, updateProductController);
+router.put("/api/v1/product/delete/:id", authMiddleware, deleteProductController)
+router.get("/api/v1/product/view/product/:id",authMiddleware, viewProductController)

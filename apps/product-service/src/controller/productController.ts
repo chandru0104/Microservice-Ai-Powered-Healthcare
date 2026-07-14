@@ -3,8 +3,9 @@ import {
   productListService,
   productUpdateService,
   productDeleteService,
+  viewProductService
 } from '../service/productService';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 
 export const addProductController = async (req: any, res: Response) => {
   try {
@@ -28,7 +29,11 @@ export const addProductController = async (req: any, res: Response) => {
 
 export const productListController = async (req: any, res: Response) => {
   try {
-    const productList = await productListService();
+    const page = req.query.page
+    const limit = req.query.limit
+
+
+    const productList = await productListService(page,limit);
 
     res.status(200).json({
       success: true,
@@ -73,7 +78,7 @@ export const updateProductController = async (req: any, res: Response) => {
   }
 };
 
-export const deleteProductController = async (req: any, res: Response) => {
+export const deleteProductController = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
     console.log(id)
@@ -90,3 +95,28 @@ export const deleteProductController = async (req: any, res: Response) => {
     });
   }
 };
+
+export const viewProductController = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id
+    const viewProduct = await viewProductService(id)
+
+    if (!viewProduct) {
+      return res.status(400).json({
+        success: true,
+        message: "Product not found",
+      })
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Product viewed",
+      data: viewProduct
+    })
+  }catch (error: any) {
+         return res.status(200).json({
+      success: true,
+      message:error.message
+
+  })
+}
+}

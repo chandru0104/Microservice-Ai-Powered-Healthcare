@@ -133,35 +133,36 @@ export const addProductService = async (file: any, data: any, userId: any) => {
   }
 };
 
-export const productListService = async () => {
+export const productListService = async (page: number, limit: number) => {
   try {
-    const productData = await Product.find({ status: 1 });
+    const pages = (page - 1) * limit
+    const productData = await Product.find({ status: 1 }).skip(pages).limit(limit);
     return productData;
   } catch (error: any) {
     throw new Error(error.message);
   }
 };
 
-export const productUpdateService = async (id: any,file:any, data: any, userId: any) => {
+export const productUpdateService = async (id: any, file: any, data: any, userId: any) => {
   try {
-    const images:string[]=[]
+    const images: string[] = []
 
-    if(file && Array.isArray(file)){
-       for(const f of file){
-        if(f.path){
-      const image= await cloudinary.uploader.upload(f.path,{
-        folder :"product-images"
-      })
-           images.push(image.secure_url)
-    }
-      
+    if (file && Array.isArray(file)) {
+      for (const f of file) {
+        if (f.path) {
+          const image = await cloudinary.uploader.upload(f.path, {
+            folder: "product-images"
+          })
+          images.push(image.secure_url)
         }
 
-    }else if(file.path){
-        const image = await cloudinary.uploader.upload(file.path,{
-          folder:"product-images"
-        })
-        images.push(image.secure_url)
+      }
+
+    } else if (file.path) {
+      const image = await cloudinary.uploader.upload(file.path, {
+        folder: "product-images"
+      })
+      images.push(image.secure_url)
     }
 
     const payload = {
@@ -169,10 +170,10 @@ export const productUpdateService = async (id: any,file:any, data: any, userId: 
       updatedBy: userId,
     };
 
-    if(images.length>0){
-      payload.image=images
+    if (images.length > 0) {
+      payload.image = images
     }
-    
+
     const updatePorduct = await Product.findByIdAndUpdate(id, payload, {
       new: true,
       runValidators: true,
@@ -185,12 +186,24 @@ export const productUpdateService = async (id: any,file:any, data: any, userId: 
 };
 
 
-export const productDeleteService= async(id:any)=>{
-    try{
-      
-      await Product.findByIdAndUpdate(id,{status:0})
-      
-    }catch(error:any){
-       throw new Error(error.message)
-    }
+export const productDeleteService = async (id: any) => {
+  try {
+
+    await Product.findByIdAndUpdate(id, { status: 0 })
+
+  } catch (error: any) {
+    throw new Error(error.message)
+  }
+}
+
+export const viewProductService = async (id: any) => {
+  try {
+
+    const viewProduct = await Product.findById(id)
+
+    return viewProduct
+
+  } catch (error: any) {
+    throw new Error(error.message)
+  }
 }
