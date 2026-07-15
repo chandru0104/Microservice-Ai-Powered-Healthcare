@@ -49,6 +49,8 @@ import {
   viewProductController
 } from '../controller/productController';
 
+import { cartAddController, cartListController, cartDeleteController, cartEditController } from "../controller/cartController"
+
 import { authMiddleware } from '../middleware/authMiddleware';
 import { uploader } from '../utils/multer';
 
@@ -131,13 +133,283 @@ router.put('/api/v1/product/origin/update/:id', authMiddleware, updateOriginCont
 router.put('/api/v1/product/origin/delete/:id', authMiddleware, deleteOriginController);
 
 //Product api list
+
+/**
+ * @swagger
+ * /api/v1/product:
+ *   post:
+ *     summary: Add Product
+ *     tags:
+ *       - Product
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *               expiryOn:
+ *                 type: string
+ *               benefit:
+ *                 type: string
+ *               variant:
+ *                 type: string
+ *               returnPolicy:
+ *                 type: string
+ *               stock:
+ *                 type: number
+ *               categoryId:
+ *                 type: string
+ *               subcategoryId:
+ *                 type: string
+ *               childCategoryId:
+ *                 type: string
+ *               originId:
+ *                 type: string
+ *               brandId:
+ *                 type: string
+ *               ageGroupId:
+ *                 type: string
+ *               image:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *     responses:
+ *       201:
+ *         description: Product added successfully
+ */
+
 router.post(
   '/api/v1/product',
-  uploader.array("image"),
+  uploader.any(),
   authMiddleware,
   addProductController,
 );
+
+/**
+ * @swagger
+ * /api/v1/product:
+ *   get:
+ *     summary: Get Product List
+ *     tags:
+ *       - Product
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Product list fetched successfully
+ */
 router.get('/api/v1/product', authMiddleware, productListController);
-router.put('/api/v1/product/:id', uploader.array("image"), authMiddleware, updateProductController);
+
+
+/**
+ * @swagger
+ * /api/v1/product/{id}:
+ *   put:
+ *     summary: Update Product
+ *     tags:
+ *       - Product
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *               expiryOn:
+ *                 type: string
+ *               benefit:
+ *                 type: string
+ *               variant:
+ *                 type: string
+ *               returnPolicy:
+ *                 type: string
+ *               stock:
+ *                 type: number
+ *               categoryId:
+ *                 type: string
+ *               subcategoryId:
+ *                 type: string
+ *               childCategoryId:
+ *                 type: string
+ *               originId:
+ *                 type: string
+ *               brandId:
+ *                 type: string
+ *               ageGroupId:
+ *                 type: string
+ *               image:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *     responses:
+ *       200:
+ *         description: Product updated successfully
+ */
+
+router.put('/api/v1/product/:id', uploader.any(), authMiddleware, updateProductController);
+
+/**
+ * @swagger
+ * /api/v1/product/delete/{id}:
+ *   put:
+ *     summary: Delete Product
+ *     tags:
+ *       - Product
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Product deleted successfully
+ */
+
 router.put("/api/v1/product/delete/:id", authMiddleware, deleteProductController)
-router.get("/api/v1/product/view/product/:id",authMiddleware, viewProductController)
+
+/**
+ * @swagger
+ * /api/v1/product/view/product/{id}:
+ *   get:
+ *     summary: View Product
+ *     tags:
+ *       - Product
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Product details fetched successfully
+ */
+router.get("/api/v1/product/view/product/:id", authMiddleware, viewProductController)
+
+//Cart api
+
+/**
+ * @swagger
+ * /api/v1/cart:
+ *   post:
+ *     summary: Add Product to Cart
+ *     tags:
+ *       - Cart
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               productId:
+ *                 type: string
+ *               quantity:
+ *                 type: number
+ *               userId:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Product added successfully
+ */
+router.post("/api/v1/cart", authMiddleware, cartAddController)
+
+/**
+ * @swagger
+ * /api/v1/cart:
+ *   get:
+ *     summary: Get Cart List
+ *     tags:
+ *       - Cart
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Cart list fetched successfully
+ */
+router.get("/api/v1/cart", authMiddleware, cartListController)
+
+
+/**
+ * @swagger
+ * /api/v1/cart/{id}:
+ *   put:
+ *     summary: Update Cart Quantity
+ *     tags:
+ *       - Cart
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               quantity:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Cart updated successfully
+ */
+router.delete("/api/v1/cart/:id", authMiddleware, cartDeleteController)
+
+
+/**
+ * @swagger
+ * /api/v1/cart/{id}:
+ *   delete:
+ *     summary: Delete Cart Item
+ *     tags:
+ *       - Cart
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Cart deleted successfully
+ */
+router.put("/api/v1/cart/:id", authMiddleware, cartEditController)

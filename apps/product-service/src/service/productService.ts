@@ -24,6 +24,7 @@ export const addProductService = async (file: any, data: any, userId: any) => {
       brandId,
       ageGroupId,
       returnPolicy,
+      stock
     } = data;
 
     const subCategoryName = await SubCategory.findById(subcategoryId);
@@ -102,6 +103,7 @@ export const addProductService = async (file: any, data: any, userId: any) => {
       ageGroupId,
       returnPolicy,
       createdBy: userId,
+      stock
     });
 
     const productResponse = {
@@ -125,6 +127,7 @@ export const addProductService = async (file: any, data: any, userId: any) => {
       ageGroupId,
       returnPolicy,
       createdBy: userId,
+      stock,
     };
 
     return productResponse;

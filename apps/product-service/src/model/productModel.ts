@@ -58,6 +58,14 @@ const product = new mongoose.Schema(
       type: String,
       required: true,
     },
+    stock:{
+      type:Number,
+      required:true
+    },
+    is_Like:{
+      type:Boolean,
+      defalut:false
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product',

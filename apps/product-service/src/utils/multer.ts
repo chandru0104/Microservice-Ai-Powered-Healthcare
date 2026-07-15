@@ -1,14 +1,12 @@
 import multer from "multer"
+import os from "os"
 
-// const filePath = path.resolve(__dirname, "../uploads")
-
-// if(!fs.existsSync(filePath)){
-//     mkdirSync(filePath,{recursive:true})
-// }
-
-
-const storage = multer.memoryStorage()
-
+const storage = multer.diskStorage({
+    destination: os.tmpdir(),
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    }
+})
 
 export const uploader = multer({
     storage
