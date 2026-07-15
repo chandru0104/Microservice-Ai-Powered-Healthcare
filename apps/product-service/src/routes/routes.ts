@@ -50,7 +50,7 @@ import {
 } from '../controller/productController';
 
 import { cartAddController, cartListController, cartDeleteController, cartEditController } from "../controller/cartController"
-
+import {Authorization} from "../middleware/authorization"
 import { authMiddleware } from '../middleware/authMiddleware';
 import { uploader } from '../utils/multer';
 
@@ -192,6 +192,7 @@ router.post(
   '/api/v1/product',
   uploader.any(),
   authMiddleware,
+  Authorization("admin"),
   addProductController,
 );
 
@@ -271,7 +272,7 @@ router.get('/api/v1/product', authMiddleware, productListController);
  *         description: Product updated successfully
  */
 
-router.put('/api/v1/product/:id', uploader.any(), authMiddleware, updateProductController);
+router.put('/api/v1/product/:id', uploader.any(),authMiddleware, updateProductController);
 
 /**
  * @swagger
