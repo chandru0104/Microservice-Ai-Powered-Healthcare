@@ -1,27 +1,24 @@
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-import bcrypt from 'bcrypt';
-import { User } from '../model/loginModel';
-import { validationError } from '../utils/errorHaddler';
-dotenv.config();
+import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt"
+import { Admin } from '../model/loginModel';
 
-export const loginSevice = async (data: any) => {
+export const adminLoginService = async (data: any) => {
   const { email, password } = data;
 
   if (!email || !password) {
-    throw new validationError('Please enter your required fields');
+    throw new Error('Please enter your required fields');
   }
 
-  const user = await User.findOne({ email });
+  const user = await Admin.findOne({ email });
 
   if (!user) {
-    throw new validationError('User   not found');
+    throw new Error('User not found');
   }
 
   const userPassword = await bcrypt.compare(password, user.password as string);
 
   if (!userPassword) {
-    throw new validationError('Enter your password correctly');
+    throw new Error('Enter your password correctly');
   }
 
   const accessToken = jwt.sign(
@@ -48,4 +45,4 @@ export const loginSevice = async (data: any) => {
     accessToken,
     refreshToken,
   };
-};
+}; 

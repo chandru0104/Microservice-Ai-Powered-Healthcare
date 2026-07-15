@@ -7,7 +7,7 @@ import morgan from "morgan"
 import compression from "compression"
 import cookieParser from "cookie-parser"
 export const app = express();
-
+import {adminRouter} from "./routes/adminRouter"
 app.use(
   "/api-docs/auth",
   swaggerUi.serve,
@@ -20,4 +20,4 @@ app.use(helmet())
 app.use(morgan("combined"))
 app.use(compression())
 app.use(cookieParser())
-app.use(router);
+app.use(router,adminRouter);
