@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import { Admin } from '../model/loginModel';
 
+
 export const adminLoginService = async (data: any) => {
   const { email, password } = data;
 
@@ -21,6 +22,8 @@ export const adminLoginService = async (data: any) => {
     throw new Error('Enter your password correctly');
   }
 
+  const permission = user.permissions || [];
+  
   const accessToken = jwt.sign(
     { id: user.id, role: user.role },
     process.env.ACCESS_SECRET_KEY as string,
@@ -39,9 +42,10 @@ export const adminLoginService = async (data: any) => {
 
   return {
     id: user.id,
-    name:user.name,
+    name: user.name,
     role: user.role,
     userEmail: user.email,
+    permission,
     accessToken,
     refreshToken,
   };

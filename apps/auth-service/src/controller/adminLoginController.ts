@@ -21,12 +21,12 @@ export const adminLoginController = async (req: Request, res: Response) => {
 
       }
     )
-    const { id, role, name, userEmail, accessToken } = loginData
+    const { id, role, name, userEmail, permission,accessToken } = loginData
 
     return res.status(200).json({
       success: true,
       message: 'Login successful',
-      data: { id, role, name, userEmail, accessToken }
+      data: { id, role, name, userEmail, permission,accessToken }
     });
   } catch (error: any) {
     const statusCode = error.statusCode || 500;

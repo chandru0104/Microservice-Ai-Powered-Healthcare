@@ -128,10 +128,15 @@ const AdminSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default: 'admin'
+    default: "admin"
+  },
+  permissions: {
+    type: [String],
+    default: []
   }
 }, { 
   timestamps: true
 });
 
 export const Admin = mongoose.model('Admin', AdminSchema);
+
