@@ -1,21 +1,13 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
+import {app} from "./app"
+import dotenv from "dotenv"
+import {dbConnected} from "./utils/db"
 
-import express from 'express';
-import * as path from 'path';
+dotenv.config()
 
-const app = express();
+const PORT = process.env.ORDER_SERVICE_PORT
+dbConnected()
 
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.listen(PORT,()=>{
+    console.log(`Order Service running in ${PORT}`)
+})
 
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to order-service!' });
-});
-
-const port = process.env.PORT || 3333;
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
-});
-server.on('error', console.error);
