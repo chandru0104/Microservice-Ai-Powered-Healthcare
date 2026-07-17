@@ -10,7 +10,7 @@ const orderSchema = new mongoose.Schema({
     paymetStatus: {
         type: String,
         default: "pending",
-        enum:["pening","success"],
+        enum: ["pending", "success"],
         require: true
     },
     shippingAddress: {
@@ -20,22 +20,18 @@ const orderSchema = new mongoose.Schema({
     items: [
         {
             product: {
-                type: String,
+                type: mongoose.Schema.Types.ObjectId,
+                ref:"Product",
                 require: true
             },
             quantity: {
                 type: Number,
                 require: true
             },
-            price: {
-                type: Number,
-                require: true
-            }
         }
     ],
     price: {
         type: String,
-        default: "pending",
         require: true
     }
 

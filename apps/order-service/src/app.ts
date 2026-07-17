@@ -11,5 +11,5 @@ app.use(express.urlencoded({extended:true,limit:"50mb"}))
 
 app.use(helmet())
 app.use(morgan("combined"))
-app.use(compression)
+app.use(compression())
 app.use(orderRouter)
