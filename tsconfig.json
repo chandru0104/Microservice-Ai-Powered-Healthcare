@@ -44,6 +44,18 @@
     },
     {
       "path": "./apps/lab-test-service"
+    },
+    {
+      "path": "./apps/order-service-e2e"
+    },
+    {
+      "path": "./apps/order-service"
+    },
+    {
+      "path": "./apps/payment-service-e2e"
+    },
+    {
+      "path": "./apps/payment-service"
     }
   ]
 }
