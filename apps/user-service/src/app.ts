@@ -11,8 +11,8 @@ import { routerDoctor } from "./routes/doctorRoutes"
 dotenv.config()
 
 export const app = express();
-app.use(express.json({ limit: "20mb" }));
-app.use(express.urlencoded({ extended: true, limit: "20mb" }))
+app.use(express.json({limit:"1mb"}));
+app.use(express.urlencoded({ extended: true ,limit:"1mb"}));
 app.use(helmet());
 app.use(morgan('combined'));
 app.use(compression())

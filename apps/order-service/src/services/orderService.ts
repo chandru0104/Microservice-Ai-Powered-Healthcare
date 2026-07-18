@@ -1,8 +1,8 @@
 import { Order } from "../model/order"
 import { OrderInterface } from "../utils/interfaces"
 import { Product } from "../model/product"
-
-
+import {sendOderDetails} from "../producer/producer"
+import {validationError} from "../utils/errorHandler"
 
 export const addOrderService = async (data: OrderInterface) => {
     try {
@@ -15,7 +15,7 @@ export const addOrderService = async (data: OrderInterface) => {
             const product = await Product.findById(item.product)
 
             if (!product) {
-                throw new Error("Product not found");
+                throw new validationError("Product not found");
             }
 
             totalPrice += product.price * item.quantity
@@ -23,13 +23,15 @@ export const addOrderService = async (data: OrderInterface) => {
 
         const addOrder = await Order.create({ user, shippingAddress, items, price: totalPrice as any })
 
-
+        sendOderDetails(addOrder._id)
         return addOrder
 
     } catch (error: any) {
         throw new Error(error.message)
     }
 }
+
+
 
 
 export const listOderService = async (page: number, limit: number) => {
@@ -50,7 +52,7 @@ export const listUserOderService = async (user: any, page: number, limit: number
         const listUserOder = await Order.find(user).populate("items.product").skip(skip).limit(limit)
 
         if (!listUserOder) {
-            return "No order"
+            throw new validationError("No order");
         }
 
         return listUserOder

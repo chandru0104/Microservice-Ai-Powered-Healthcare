@@ -1,21 +1,14 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
+import { app } from "./app"
+import dotenv from "dotenv"
+import { connectDb } from "./utils/db"
 
-import express from 'express';
-import * as path from 'path';
 
-const app = express();
+dotenv.config()
 
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+const PORT = process.env.PAYMENT_PORT
 
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to payment-service!' });
-});
+connectDb()
 
-const port = process.env.PORT || 3333;
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
-});
-server.on('error', console.error);
+app.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`)
+})

@@ -14,8 +14,8 @@ app.use(
   swaggerUi.setup(swaggerSpec)
 );
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({limit:"1mb"}));
+app.use(express.urlencoded({ extended: true ,limit:"1mb"}));
 app.use(helmet())
 app.use(morgan("combined"))
 app.use(compression())
