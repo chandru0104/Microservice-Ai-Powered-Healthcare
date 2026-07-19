@@ -23,7 +23,7 @@ export const addOrderService = async (data: OrderInterface) => {
 
         const addOrder = await Order.create({ user, shippingAddress, items, price: totalPrice as any })
 
-        sendOderDetails(addOrder._id)
+        sendOderDetails(addOrder.id)
         return addOrder
 
     } catch (error: any) {

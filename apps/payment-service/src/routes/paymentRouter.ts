@@ -1,7 +1,7 @@
 import { Router } from "express";
-import 
+import { createPaymentController } from "../controller/controller"
 
-export const router =Router()
+export const router = Router()
 
-router.post("/api/v1/payment",)
+router.post("/api/v1/payment", createPaymentController)
 
