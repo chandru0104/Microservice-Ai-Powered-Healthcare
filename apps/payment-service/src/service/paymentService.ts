@@ -2,7 +2,7 @@ import { payment } from "../utils/razorpay"
 import { ValidationError } from "../utils/errorHandler"
 import { Order } from "../model/orderModel"
 import { Payment } from "../model/paymentModel"
-
+import crypto from "crypto"
 
 interface Option {
     amount: number,
@@ -42,6 +42,8 @@ export const createPaymentService = async (orderId: string) => {
             receipt: createPayment.receipt
         })
 
+
+
         return createPayment
 
     } catch (error: any) {
@@ -49,4 +51,26 @@ export const createPaymentService = async (orderId: string) => {
     }
 }
 
+export const verifyPaymentService = async (razorpay_order_id: any, razorpay_payment_id: any, razorpay_signature: any,receipt:any) => {
+    try {
 
+        const sha = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET_KEY as string)
+
+        sha.update(`${razorpay_order_id}|{razorpay_payment_id}`)
+
+        const digest = sha.digest("hex")
+
+        if (digest !== razorpay_signature) {
+            throw new Error("Invalid signature ID")
+        }
+
+        
+        await Order.findByIdAndUpdate(receipt, { paymetStatus: "success" }, { runValidators: true, new: true })
+        return {
+            razorpay_order_id, razorpay_payment_id
+        }
+
+    }catch(error:any){
+      throw new Error(error.message)
+    }
+}
