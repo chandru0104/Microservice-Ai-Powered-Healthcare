@@ -1,27 +1,27 @@
-import {kafka} from "../utils/kafka"
+// import {kafka} from "../utils/kafka"
 
 
-const producer = kafka.producer()
+// const producer = kafka.producer()
 
-const producerConnect = ()=>{
-    producer.connect()
-    console.log("order producer connected")
-}
+// const producerConnect = ()=>{
+//     producer.connect()
+//     console.log("order producer connected")
+// }
 
-producerConnect()
+// producerConnect()
 
 
-export const sendOderDetails = async(orderId:any)=>{
-    try{
-       producer.send({
-        topic:"order-topic",
-        messages:[
-            {
-                value:JSON.stringify(orderId)
-            }
-        ]
-       })
-    }catch(error:any){
-        throw new Error(error.message)
-    }
-}
+// export const sendOderDetails = async(orderId:any)=>{
+//     try{
+//        producer.send({
+//         topic:"order-topic",
+//         messages:[
+//             {
+//                 value:JSON.stringify(orderId)
+//             }
+//         ]
+//        })
+//     }catch(error:any){
+//         throw new Error(error.message)
+//     }
+// }

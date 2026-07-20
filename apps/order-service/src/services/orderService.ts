@@ -1,7 +1,6 @@
 import { Order } from "../model/order"
 import { OrderInterface } from "../utils/interfaces"
 import { Product } from "../model/product"
-import {sendOderDetails} from "../producer/producer"
 import {validationError} from "../utils/errorHandler"
 
 export const addOrderService = async (data: OrderInterface) => {
@@ -23,7 +22,7 @@ export const addOrderService = async (data: OrderInterface) => {
 
         const addOrder = await Order.create({ user, shippingAddress, items, price: totalPrice as any })
 
-        sendOderDetails(addOrder.id)
+
         return addOrder
 
     } catch (error: any) {

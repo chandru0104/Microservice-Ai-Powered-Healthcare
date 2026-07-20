@@ -56,7 +56,7 @@ export const verifyPaymentService = async (razorpay_order_id: any, razorpay_paym
 
         const sha = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET_KEY as string)
 
-        sha.update(`${razorpay_order_id}|{razorpay_payment_id}`)
+        sha.update(`${razorpay_order_id}|${razorpay_payment_id}`)
 
         const digest = sha.digest("hex")
 

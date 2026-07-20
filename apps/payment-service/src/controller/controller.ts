@@ -46,7 +46,7 @@ export const verfiyPaymentController =async (req:Request,res:Response)=>{
         })
     }catch(error:any){
         
-        return res.status(200).json({
+        return res.status(400).json({
             success:false,
             message:"verfiy payment fail",
         })
