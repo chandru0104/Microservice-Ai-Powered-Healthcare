@@ -56,6 +56,18 @@
     },
     {
       "path": "./apps/payment-service"
+    },
+    {
+      "path": "./ai-service-e2e"
+    },
+    {
+      "path": "./ai-service"
+    },
+    {
+      "path": "./apps/ai-service-e2e"
+    },
+    {
+      "path": "./apps/ai-service"
     }
   ]
 }

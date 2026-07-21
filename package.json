@@ -121,6 +121,8 @@
     "apps",
     "apps-e2e",
     "lab-test-service",
-    "lab-test-service-e2e"
+    "lab-test-service-e2e",
+    "ai-service",
+    "ai-service-e2e"
   ]
 }

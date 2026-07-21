@@ -58,7 +58,9 @@
         "apps-e2e/**/*",
         "apps/lab-test-service-e2e/**/*",
         "apps/order-service-e2e/**/*",
-        "apps/payment-service-e2e/**/*"
+        "apps/payment-service-e2e/**/*",
+        "ai-service-e2e/**/*",
+        "apps/ai-service-e2e/**/*"
       ]
     },
     {
