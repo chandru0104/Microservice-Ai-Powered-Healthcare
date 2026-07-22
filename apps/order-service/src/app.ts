@@ -17,5 +17,5 @@ app.use(helmet())
 app.use(morgan("combined"))
 app.use(compression())
 
-app.use("api-docs/order",swaggerUi.serve,swaggerUi.setup(swaggerSpec))
+app.use("/api-docs/order",swaggerUi.serve,swaggerUi.setup(swaggerSpec))
 app.use(orderRouter)
