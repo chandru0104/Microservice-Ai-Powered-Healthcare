@@ -10,7 +10,7 @@ export const addOrderController = async (req: Request, res: Response) => {
 
         return res.status(201).json({
             success: true,
-            message: "order placed successfully ",
+            message: "order placed successfully",
             data: addOrder
         })
 
