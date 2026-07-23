@@ -4,4 +4,4 @@ import {upload} from "../utils/multer"
 export const router = Router()
 
 router.post("/api/v1/ai/symptoms",aiSymptomsController)
-router.post("/api/v1/ai/report",upload.single("report") ,aiReportController)
+router.post("/api/v1/ai/report",upload.single("file") ,aiReportController)
