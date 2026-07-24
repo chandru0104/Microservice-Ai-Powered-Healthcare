@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { aiSymptomsService, aiReportService } from "../service/aiService";
+import { aiSymptomsService, aiReportService, aiMedicineReportService } from "../service/aiService";
 
 export const aiSymptomsController = async (req: Request, res: Response) => {
     try {
@@ -40,3 +40,20 @@ export const aiReportController = async (req: any, res: Response) => {
         });
     }
 };
+
+export const aiMedicineReportController = async (req: any, res: Response) => {
+    try {
+        const report = await aiMedicineReportService(req.file)
+
+        return res.status(200).json({
+            success: true,
+            message: "Report processed successfully",
+            daat: report
+        })
+    } catch (error: any) {
+        return res.status(400).json({
+            success: false,
+            message:error.message
+        })
+    }
+}
