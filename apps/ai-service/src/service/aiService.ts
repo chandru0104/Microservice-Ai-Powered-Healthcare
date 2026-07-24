@@ -1,5 +1,6 @@
+import PdfParse from "pdf-parse-new";
 import { openai } from "../utils/openai";
-// import PDFParse from "pdf-parse-new";
+
 interface SymptomsInput {
   option1: string;
   option2?: string;
@@ -64,71 +65,82 @@ export const aiSymptomsService = async (data: SymptomsInput) => {
             `;
 
 
-     const response = await openai.chat.completions.create({
-      model:"openai/gpt-oss-20b",
-      messages:[{role:"user",content:prompt}],
-      response_format:{type:"json_object"}
-     })
+    const response = await openai.chat.completions.create({
+      model: "openai/gpt-oss-20b",
+      messages: [{ role: "user", content: prompt }],
+      response_format: { type: "json_object" }
+    })
 
-     const clear = response.choices[0].message?.content || "{}"
+    const clear = response.choices[0].message?.content || "{}"
 
-     return JSON.parse(clear)
+    return JSON.parse(clear)
 
   } catch (error: any) {
     throw new Error(error.message || "Failed to analyze symptoms.");
   }
 };
 
-// export const aiReportService = async (file: any) => {
-//   try {
-//     // Validate file
-//     if (!file || !file.buffer) {
-//       throw new Error("Please upload a valid PDF file.");
-//     }
+export const aiReportService = async (file: any) => {
+  try {
 
-//     // Extract text from PDF
+    if (!file || !file.buffer) {
+      throw new Error("Please upload a valid PDF file.");
+    }
 
 
-//     if (!text || text.trim().length === 0) {
-//       throw new Error("Unable to extract text from the PDF.");
-//     }
+    const data = PdfParse(file.buffer)
 
-//     // AI Prompt
-//     const prompt = `
-// You are a medical report analysis assistant.
+    const text = (await data).text
 
-// Analyze the following medical report.
+    if (!text || text.trim().length === 0) {
+      throw new Error("Unable to extract text from the PDF.");
+    }
 
-// Medical Report:
-// ${text}
+    // AI Prompt
+    const prompt = `
+                    You are a medical report analysis assistant.
 
-// Rules:
-// - Return ONLY valid JSON.
-// - Do not include markdown.
-// - Do not include explanation outside JSON.
-// - If this is not a medical report, return:
-// {
-//   "is_valid_medical_report": false,
-//   "message": "Uploaded document is not a valid medical report."
-// }
+                    Analyze the following medical report.
 
-// Otherwise return:
+                    Medical Report:
+                    ${text}
 
-// {
-//   "is_valid_medical_report": true,
-//   "message": "Valid medical report processed successfully.",
-//   "report_summary": {
-//     "document_type": "",
-//     "key_findings": [],
-//     "summary": "",
-//     "actionable_next_steps": []
-//   },
-//   "disclaimer": "This AI summary is for informational purposes only and should not replace professional medical advice."
-// }
-// `;
+                    Rules:
+                    - Return ONLY valid JSON.
+                    - Do not include markdown.
+                    - Do not include explanation outside JSON.
+                    - If this is not a medical report, return:
+                    {
+                      "is_valid_medical_report": false,
+                      "message": "Uploaded document is not a valid medical report."
+                    }
 
+                    Otherwise return:
 
-//   } catch (error: any) {
-//     throw new Error(error.message || "Failed to analyze medical report.");
-//   }
-// };
+                    {
+                      "is_valid_medical_report": true,
+                      "message": "Valid medical report processed successfully.",
+                      "report_summary": {
+                        "document_type": "",
+                        "key_findings": [],
+                        "summary": "",
+                        "actionable_next_steps": []
+                      },
+                      "disclaimer": "This AI summary is for informational purposes only and should not replace professional medical advice."
+                    }
+                    `;
+
+    const response = await openai.chat.completions.create({
+      model: "openai/gpt-oss-20b",
+      messages: [{ role: "user", content: prompt }],
+      response_format: { type: "json_object" }
+    })
+
+    const dataResponse = response.choices[0].message.content || "{}"
+
+    return JSON.parse(dataResponse)
+
+  } catch (error: any) {
+    throw new Error(error.message || "Failed to analyze medical report.");
+  }
+};
