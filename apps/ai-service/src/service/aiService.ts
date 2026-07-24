@@ -1,6 +1,5 @@
-import { gemini } from "../utils/gemini";
-
-// 1. Correct TypeScript types (lowercase 'string') and optional fields
+import { openai } from "../utils/openai";
+// import PDFParse from "pdf-parse-new";
 interface SymptomsInput {
   option1: string;
   option2?: string;
@@ -12,7 +11,6 @@ interface SymptomsInput {
 export const aiSymptomsService = async (data: SymptomsInput) => {
   try {
     const { option1, option2, option3, option4, option5 } = data;
-
 
     const prompt = `
             You are an AI healthcare triage assistant.
@@ -65,79 +63,72 @@ export const aiSymptomsService = async (data: SymptomsInput) => {
             - Output MUST be valid JSON only.
             `;
 
-    const response = await gemini.interactions.create({
-      model: "gemini-3.5-flash",
-      input: prompt
-    })
 
-    const clean = response?.output_text?.trim()
+     const response = await openai.chat.completions.create({
+      model:"openai/gpt-oss-20b",
+      messages:[{role:"user",content:prompt}],
+      response_format:{type:"json_object"}
+     })
 
-    if (!clean) {
-      throw new Error("No ai response")
-    }
+     const clear = response.choices[0].message?.content || "{}"
 
-    const aiResponse = JSON.parse(clean)
-
-    return aiResponse
+     return JSON.parse(clear)
 
   } catch (error: any) {
-
     throw new Error(error.message || "Failed to analyze symptoms.");
   }
 };
 
-export const aiReportService = async (file: Express.Multer.File) => {
-  try {
-    if (!file || !file.buffer) {
-      throw new Error("Please upload a valid file");
-    }
+// export const aiReportService = async (file: any) => {
+//   try {
+//     // Validate file
+//     if (!file || !file.buffer) {
+//       throw new Error("Please upload a valid PDF file.");
+//     }
 
-    const base64 = file.buffer.toString("base64");
-    const mimeType = file.mimetype || "application/pdf";
+//     // Extract text from PDF
 
-    const prompt = `
-        Analyze this medical report and return valid JSON only.
 
-        Format:
-        {
-          "is_valid_medical_report": true,
-          "message": "Valid medical report processed successfully.",
-          "report_summary": {
-            "document_type": "Blood Test Report / Prescription / etc",
-            "key_findings": ["finding 1", "finding 2"],
-            "summary": "Patient friendly summary",
-            "actionable_next_steps": ["step 1", "step 2"]
-          },
-          "disclaimer": "This AI summary is for informational purposes only."
-        }
+//     if (!text || text.trim().length === 0) {
+//       throw new Error("Unable to extract text from the PDF.");
+//     }
 
-        If it is NOT a valid medical report:
-        {
-          "is_valid_medical_report": false,
-          "message": "Please upload a clear medical document.",
-          "report_summary": null,
-          "disclaimer": "This AI summary is for informational purposes only."
-        }
-        `;
+//     // AI Prompt
+//     const prompt = `
+// You are a medical report analysis assistant.
 
-    const response = await gemini.models.generateContent({
-      model: "gemini-3.5-flash",
-      contents: [
-        { text: prompt },
-        {
-          inlineData: {
-            mimeType: mimeType,
-            data: base64
-          }
-        }
-      ]
-    });
+// Analyze the following medical report.
 
-    const rawText = response.text || "";
-    const cleanText = rawText.replace(/```json|```/g, "").trim();
+// Medical Report:
+// ${text}
 
-    return JSON.parse(cleanText);
-  } catch (error: any) {
-    throw new Error(error.message || "Failed to process medical report");
-  }
-};
+// Rules:
+// - Return ONLY valid JSON.
+// - Do not include markdown.
+// - Do not include explanation outside JSON.
+// - If this is not a medical report, return:
+// {
+//   "is_valid_medical_report": false,
+//   "message": "Uploaded document is not a valid medical report."
+// }
+
+// Otherwise return:
+
+// {
+//   "is_valid_medical_report": true,
+//   "message": "Valid medical report processed successfully.",
+//   "report_summary": {
+//     "document_type": "",
+//     "key_findings": [],
+//     "summary": "",
+//     "actionable_next_steps": []
+//   },
+//   "disclaimer": "This AI summary is for informational purposes only and should not replace professional medical advice."
+// }
+// `;
+
+
+//   } catch (error: any) {
+//     throw new Error(error.message || "Failed to analyze medical report.");
+//   }
+// };
