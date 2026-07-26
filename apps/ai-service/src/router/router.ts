@@ -1,6 +1,7 @@
 import { Router } from "express";
-import {aiSymptomsController,aiReportController,aiMedicineReportController} from "../controller/aiController"
-import {upload} from "../utils/multer"
+import { aiSymptomsController, aiReportController, aiMedicineReportController } from "../controller/aiController"
+import { authMiddleware } from "../middleware/auth"
+import { upload } from "../utils/multer"
 export const router = Router()
 
 
@@ -33,7 +34,7 @@ export const router = Router()
  *       200:
  *         description: Symptoms analyzed successfully
  */
-router.post("/api/v1/ai/symptoms",aiSymptomsController)
+router.post("/api/v1/ai/symptoms", authMiddleware, aiSymptomsController)
 
 /**
  * @swagger
@@ -55,7 +56,7 @@ router.post("/api/v1/ai/symptoms",aiSymptomsController)
  *       200:
  *         description: Report processed successfully
  */
-router.post("/api/v1/ai/report",upload.single("file") ,aiReportController)
+router.post("/api/v1/ai/report", upload.single("file"), authMiddleware, aiReportController)
 
 
 /**
@@ -78,4 +79,4 @@ router.post("/api/v1/ai/report",upload.single("file") ,aiReportController)
  *       200:
  *         description: Symptoms analyzed successfully
  */
-router.post("/api/v1/ai/medicine",upload.single("file") ,aiMedicineReportController)
+router.post("/api/v1/ai/medicine", upload.single("file"), authMiddleware, aiMedicineReportController)

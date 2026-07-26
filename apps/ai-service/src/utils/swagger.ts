@@ -1,22 +1,22 @@
-import swaggerjsDoc from "swagger-jsdoc"
+
+import swaggerJsdoc from "swagger-jsdoc";
 
 
-const option = {
-    definitions: {
+const options = {
+    definition: {
         openapi: "3.0.0",
         info: {
-            title: "Ai service",
-            summary: "Ai all api doc",
-            version: "1.0.0"
+            title: "AI Service API",
+            description: "AI Service API Documentation",
+            version: "1.0.0",
         },
-        service: [
+        servers: [
             {
-                url: "http://localhost:5007"
-            }
+                url: "http://localhost:5007",
+            },
         ],
     },
-    apis: ["/apps/ai-service/src/router/router.ts"]
+    apis: ["/apps/ai-service/src/router/router.ts"],
+};
 
-}
-
-export const swaggerSpec = swaggerjsDoc(option)
+export const swaggerSpec = swaggerJsdoc(options);

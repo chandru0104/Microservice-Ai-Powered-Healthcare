@@ -62,6 +62,12 @@
     },
     {
       "path": "./apps/ai-service"
+    },
+    {
+      "path": "./apps/appointment-e2e"
+    },
+    {
+      "path": "./apps/appointment"
     }
   ]
 }
