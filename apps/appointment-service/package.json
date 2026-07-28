@@ -1,5 +1,5 @@
 {
-  "name": "@ai-heathcare-platform/appointment",
+  "name": "@ai-heathcare-platform/appointment-service",
   "version": "0.0.1",
   "private": true,
   "nx": {
@@ -11,8 +11,8 @@
         "cache": true,
         "executor": "@nx/js:prune-lockfile",
         "outputs": [
-          "{workspaceRoot}/apps/appointment/dist/package.json",
-          "{workspaceRoot}/apps/appointment/dist/package-lock.json"
+          "{workspaceRoot}/apps/appointment-service/dist/package.json",
+          "{workspaceRoot}/apps/appointment-service/dist/package-lock.json"
         ],
         "options": {
           "buildTarget": "build"
@@ -24,7 +24,7 @@
         ],
         "cache": true,
         "outputs": [
-          "{workspaceRoot}/apps/appointment/dist/workspace_modules"
+          "{workspaceRoot}/apps/appointment-service/dist/workspace_modules"
         ],
         "executor": "@nx/js:copy-workspace-modules",
         "options": {
@@ -46,15 +46,15 @@
           "build"
         ],
         "options": {
-          "buildTarget": "@ai-heathcare-platform/appointment:build",
+          "buildTarget": "@ai-heathcare-platform/appointment-service:build",
           "runBuildTargetDependencies": false
         },
         "configurations": {
           "development": {
-            "buildTarget": "@ai-heathcare-platform/appointment:build:development"
+            "buildTarget": "@ai-heathcare-platform/appointment-service:build:development"
           },
           "production": {
-            "buildTarget": "@ai-heathcare-platform/appointment:build:production"
+            "buildTarget": "@ai-heathcare-platform/appointment-service:build:production"
           }
         }
       },

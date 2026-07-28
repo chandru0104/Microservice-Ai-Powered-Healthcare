@@ -61,7 +61,8 @@
         "apps/payment-service-e2e/**/*",
         "ai-service-e2e/**/*",
         "apps/ai-service-e2e/**/*",
-        "apps/appointment-e2e/**/*"
+        "apps/appointment-e2e/**/*",
+        "apps/appointment-service-e2e/**/*"
       ]
     },
     {

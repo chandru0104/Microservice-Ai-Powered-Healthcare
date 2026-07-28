@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: '@ai-heathcare-platform/appointment',
+  displayName: '@ai-heathcare-platform/appointment-service',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {

@@ -1,10 +1,10 @@
 {
-  "name": "@ai-heathcare-platform/appointment-e2e",
+  "name": "@ai-heathcare-platform/appointment-service-e2e",
   "version": "0.0.1",
   "private": true,
   "nx": {
     "implicitDependencies": [
-      "@ai-heathcare-platform/appointment"
+      "@ai-heathcare-platform/appointment-service"
     ],
     "targets": {
       "e2e": {
@@ -13,12 +13,12 @@
           "{projectRoot}/test-output/jest/coverage"
         ],
         "options": {
-          "jestConfig": "apps/appointment-e2e/jest.config.cts",
+          "jestConfig": "apps/appointment-service-e2e/jest.config.cts",
           "passWithNoTests": true
         },
         "dependsOn": [
-          "@ai-heathcare-platform/appointment:build",
-          "@ai-heathcare-platform/appointment:serve"
+          "@ai-heathcare-platform/appointment-service:build",
+          "@ai-heathcare-platform/appointment-service:serve"
         ]
       }
     }

@@ -64,10 +64,10 @@
       "path": "./apps/ai-service"
     },
     {
-      "path": "./apps/appointment-e2e"
+      "path": "./apps/appointment-service-e2e"
     },
     {
-      "path": "./apps/appointment"
+      "path": "./apps/appointment-service"
     }
   ]
 }
