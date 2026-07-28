@@ -1,7 +1,6 @@
 import { addAppointmentService, listAppointmentService, userListAppointmentService } from "../service/appointmentService"
 import { Request, Response } from "express"
 
-
 export const addAppointmentController = async (req: Request, res: Response) => {
     try {
 
