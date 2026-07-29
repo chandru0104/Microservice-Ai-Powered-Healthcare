@@ -9,7 +9,7 @@ const paymentSchema = new mongoose.Schema({
     doctor: {
         type: mongoose.Schema.Types.ObjectId,
         require: true,
-        ref: "Users",
+        ref: "Doctor",
     },
     receipt: {
         type: String,
@@ -18,7 +18,7 @@ const paymentSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         require: true,
-        ref: "Doctor"
+        ref: "Users"
     },
     currency:{
         type:String,

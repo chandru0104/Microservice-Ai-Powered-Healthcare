@@ -1,6 +1,7 @@
 import { app } from "./app"
 import dotenv from "dotenv"
 import { connectDb } from "./utils/db"
+import "./consumer/consumer"
 
 dotenv.config()
 
