@@ -3,7 +3,8 @@ import { authMiddleware } from "../middleware/auth"
 import { addAppointmentController, listAppointmentController, userListAppointmentController } from "../controller/appointmentController"
 import { appointmentPaymentController, appointmentPaymentVerifyController, appointmentPaymentListController, userListAppointmentPaymentController } from "../controller/appointmentPaymentController"
 import { createFcmTokenController } from "../controller/createFcmTokenController"
-
+import {appointmentValidationMiddleware} from "../middleware/validationMiddlerware"
+import {appointmentValidation} from "../utils/validation"
 export const router = Router()
 
 /**
@@ -48,7 +49,7 @@ export const router = Router()
  *       400:
  *         description: Bad Request
  */
-router.post("/api/v1/appointment", authMiddleware, addAppointmentController);
+router.post("/api/v1/appointment", authMiddleware,appointmentValidationMiddleware(appointmentValidation), addAppointmentController);
 
 
 /**
