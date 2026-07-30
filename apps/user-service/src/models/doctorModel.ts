@@ -62,7 +62,12 @@ const doctorSchema = new mongoose.Schema({
     status:{
         type:Number,
         default:1
+    },
+       fcmtoken:{
+        require:true,
+        type:String
     }
+
 
 
 }, { timestamps: true, versionKey: false })

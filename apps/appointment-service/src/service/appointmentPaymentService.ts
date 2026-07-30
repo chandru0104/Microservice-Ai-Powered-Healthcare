@@ -5,6 +5,7 @@ import { Appointment } from "../model/appoinmentShema"
 import { appointmentEmail } from "../producer/producer"
 import { User } from "../model/appoinmentShema"
 import { Doctor } from "../model/appoinmentShema"
+import { messageSend } from "../utils/sendMessage"
 
 // interface paymentData {
 //     amount: number,
@@ -81,7 +82,16 @@ export const appointmentPaymentVerifyService = async (data: verfiyPayment) => {
 
         console.log(findUser.email, findUser.name, emailData.fees, emailData.time, emailData.date, findDoctor.name, receipt)
 
-        appointmentEmail(findUser.name!,findDoctor.name!,emailData.date!,emailData.time!, emailData.fees!, findUser.email!, receipt!)
+        appointmentEmail(findUser.name!, findDoctor.name!, emailData.date!, emailData.time!, emailData.fees!, findUser.email!, receipt!)
+
+        const title = "New Appointment Received"
+        const body = `Patient name ${findUser.name}, Date - ${emailData.date}, Time - ${emailData.time}`
+        const fcmToken = findDoctor.fcmtoken
+
+        if (!fcmToken) {
+            throw new Error("Please generate fcm token")
+        }
+        await messageSend(fcmToken, title, body)
 
         return { razorpay_order_id, razorpay_payment_id }
 

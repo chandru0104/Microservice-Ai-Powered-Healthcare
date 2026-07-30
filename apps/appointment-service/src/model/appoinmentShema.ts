@@ -88,32 +88,36 @@ const doctorSchema = new mongoose.Schema({
     is_approved: {
         type: Boolean,
         require: true,
-        default:false
+        default: false
     },
     profile: {
         type: String,
         require: true
     },
     is_active: {
-        type:Boolean,
+        type: Boolean,
         default: true
 
     },
-    is_verify:{
-        type:Boolean,
-        default:false
+    is_verify: {
+        type: Boolean,
+        default: false
     },
     active: {
-        type:Boolean,
+        type: Boolean,
         default: true
     },
-    password:{
-        type:String,
-        require:true
+    password: {
+        type: String,
+        require: true
     },
-    status:{
-        type:Number,
-        default:1
+    status: {
+        type: Number,
+        default: 1
+    },
+    fcmtoken: {
+        type: String,
+        require: true
     }
 
 
@@ -124,46 +128,46 @@ export const Doctor = mongoose.model("Doctor", doctorSchema)
 
 
 const userModel = new mongoose.Schema(
-  {
-    name: String,
-    email: {
-      unique: true,
-      validation: [validator.isEmail, 'Email require'],
-      type: String,
-      require: true,
-    },
-    password: {
-      type: String,
-      select: false,
-      required: [true, 'password is require'],
-    },
-    role: {
-      type: String,
-      default: "user",
-      required: [true, 'role is require'],
-    },
+    {
+        name: String,
+        email: {
+            unique: true,
+            validation: [validator.isEmail, 'Email require'],
+            type: String,
+            require: true,
+        },
+        password: {
+            type: String,
+            select: false,
+            required: [true, 'password is require'],
+        },
+        role: {
+            type: String,
+            default: "user",
+            required: [true, 'role is require'],
+        },
 
-    is_active: {
-      default: 1,
-      type: Number,
+        is_active: {
+            default: 1,
+            type: Number,
+        },
+        status: {
+            default: 1,
+            type: Number,
+        },
+        is_verfiy: {
+            type: Boolean,
+            default: false,
+        },
+        createdBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        updatedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+        },
     },
-    status: {
-      default: 1,
-      type: Number,
-    },
-    is_verfiy:{
-      type: Boolean,
-      default: false,
-    },
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User"
-    },
-    updatedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-    },
-  },
-  { timestamps: true, versionKey: false },
+    { timestamps: true, versionKey: false },
 );
 
 export const User = mongoose.model('Users', userModel);

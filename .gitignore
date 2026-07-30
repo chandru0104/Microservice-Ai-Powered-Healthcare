@@ -8,6 +8,10 @@ out-tsc
 # dependencies
 node_modules
 
+# json
+
+apps/appointment-service/src/utils/*firebase*.json
+
 # IDEs and editors
 /.idea
 .project
