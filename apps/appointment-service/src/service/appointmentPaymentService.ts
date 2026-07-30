@@ -68,13 +68,13 @@ export const appointmentPaymentVerifyService = async (data: verfiyPayment) => {
         if (!emailData) {
             throw new Error("Appointment not found")
         }
-        const findUser = await User.findById({ id: emailData.user })
+        const findUser = await User.findById(emailData.user)
 
         if (!findUser) {
             throw new Error("User not found")
         }
 
-        const findDoctor = await Doctor.findById({ id: emailData.doctor })
+        const findDoctor = await Doctor.findById(emailData.doctor)
 
         if (!findDoctor) {
             throw new Error("Doxtor not found")
