@@ -23,4 +23,4 @@ describe("Appointment API", () => {
 
     expect(result.statusCode).toBe(201);
   });
-});
+} );     
