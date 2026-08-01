@@ -5,6 +5,7 @@ import { appointmentPaymentController, appointmentPaymentVerifyController, appoi
 import { createFcmTokenController } from "../controller/createFcmTokenController"
 import {appointmentValidationMiddleware} from "../middleware/validationMiddlerware"
 import {appointmentValidation} from "../utils/validation"
+import {videoCallController} from "../controller/videoCallController"
 export const router = Router()
 
 /**
@@ -223,3 +224,7 @@ router.put(
     authMiddleware,
     createFcmTokenController
 );
+
+
+
+router.post("/api/v1/video-call",authMiddleware,videoCallController)

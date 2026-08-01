@@ -80,7 +80,6 @@ export const appointmentPaymentVerifyService = async (data: verfiyPayment) => {
             throw new Error("Doxtor not found")
         }
 
-        console.log(findUser.email, findUser.name, emailData.fees, emailData.time, emailData.date, findDoctor.name, receipt)
 
         appointmentEmail(findUser.name!, findDoctor.name!, emailData.date!, emailData.time!, emailData.fees!, findUser.email!, receipt!)
 
