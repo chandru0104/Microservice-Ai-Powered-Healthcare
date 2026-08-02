@@ -34,7 +34,7 @@ export const router = Router()
  *       200:
  *         description: Symptoms analyzed successfully
  */
-router.post("/api/v1/ai/symptoms", authMiddleware, aiSymptomsController)
+router.post("/symptoms", authMiddleware, aiSymptomsController)
 
 /**
  * @swagger
@@ -56,7 +56,7 @@ router.post("/api/v1/ai/symptoms", authMiddleware, aiSymptomsController)
  *       200:
  *         description: Report processed successfully
  */
-router.post("/api/v1/ai/report", upload.single("file"), authMiddleware, aiReportController)
+router.post("/report", upload.single("file"), authMiddleware, aiReportController)
 
 
 /**
@@ -79,4 +79,4 @@ router.post("/api/v1/ai/report", upload.single("file"), authMiddleware, aiReport
  *       200:
  *         description: Symptoms analyzed successfully
  */
-router.post("/api/v1/ai/medicine", upload.single("file"), authMiddleware, aiMedicineReportController)
+router.post("/medicine", upload.single("file"), authMiddleware, aiMedicineReportController)

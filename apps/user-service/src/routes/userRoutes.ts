@@ -28,7 +28,7 @@ const router = Router();
  *       200:
  *         description: OTP sent successfully
  */
-router.post('/api/v1/otp/send', otpSetController);
+router.post('/otp/send', otpSetController);
 
 /**
  * @swagger
@@ -42,7 +42,7 @@ router.post('/api/v1/otp/send', otpSetController);
  *       200:
  *         description: OTP verified
  */
-router.post('/api/v1/verify/otp', verifyOtpController);
+router.post('/verify/otp', verifyOtpController);
 
 /**
  * @swagger
@@ -56,7 +56,7 @@ router.post('/api/v1/verify/otp', verifyOtpController);
  *       200:
  *         description: User registered
  */
-router.post('/api/v1/user/register', userAddController);
+router.post('/register', userAddController);
 
 /**
  * @swagger
@@ -90,7 +90,7 @@ router.get('/api/v1/user', userListController);
  *       200:
  *         description: User profile
  */
-router.get('/api/v1/user/profile/:id', userProfileController);
+router.get('/profile/:id', userProfileController);
 
 /**
  * @swagger
@@ -111,7 +111,7 @@ router.get('/api/v1/user/profile/:id', userProfileController);
  *         description: User updated
  */
 router.put(
-  '/api/v1/user/update/:id',
+  '/update/:id',
 
   uploader.single('profile'),
   userUpdateController,
@@ -135,7 +135,7 @@ router.put(
  *       200:
  *         description: User deleted
  */
-router.put('/api/v1/user/delete/:id', userDeleteController);
+router.put('/delete/:id', userDeleteController);
 
 
 export default router;

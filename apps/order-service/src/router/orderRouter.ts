@@ -69,7 +69,7 @@ orderRouter.get(
  *         description: User orders fetched successfully
  */
 orderRouter.get(
-    '/api/v1/order/user',
+    '/user',
     authMiddleware,
     listUserOderController
 );

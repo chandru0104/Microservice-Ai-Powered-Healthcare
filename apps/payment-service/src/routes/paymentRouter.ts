@@ -57,4 +57,4 @@ router.post('/api/v1/payment', authMiddleware, createPaymentController)
  *       200:
  *         description: Payment verified successfully
  */
-router.post('/api/v1/payment/verify', authMiddleware, verfiyPaymentController)
+router.post('/verify', authMiddleware, verfiyPaymentController)

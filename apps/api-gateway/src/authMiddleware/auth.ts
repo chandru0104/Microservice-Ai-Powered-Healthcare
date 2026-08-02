@@ -8,12 +8,12 @@ export const authMiddleware = (req: any, res: any, next: any) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new authError('Invalid formet token');
+      throw new authError('Invalid format token');
     }
 
     const token = authHeader.split(' ')[1];
 
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_KEY as string);
+    const decoded = jwt.verify(token, process.env.ACCESS_SECRET_KEY as string);
 
     req.user = decoded;
 

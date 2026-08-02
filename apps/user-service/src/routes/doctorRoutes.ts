@@ -95,7 +95,7 @@ routerDoctor.post(
  *       400:
  *         description: Invalid otp
  */
-routerDoctor.post("/api/v1/doctor/verfiy", verifyOtpController)
+routerDoctor.post("/verfiy", verifyOtpController)
 
 /**
  * @swagger
@@ -193,5 +193,5 @@ routerDoctor.put("/api/v1/doctor/delete/:id", doctorDeleteController)
  *         description: Doctor profile successfully
  */
 
-routerDoctor.get("/api/v1/doctor/profile/:id",doctorProfileController)
+routerDoctor.get("/profile/:id",doctorProfileController)
 

@@ -81,7 +81,7 @@ router.get("/api/v1/appointment", authMiddleware, listAppointmentController);
  *       200:
  *         description: Success
  */
-router.get("/api/v1/appointment/user/:id", authMiddleware, userListAppointmentController);
+router.get("/user/:id", authMiddleware, userListAppointmentController);
 
 /**
  * @swagger
@@ -105,7 +105,7 @@ router.get("/api/v1/appointment/user/:id", authMiddleware, userListAppointmentCo
  *         description: Internal Server Error
  */
 router.post(
-    "/api/v1/appointment/payment/:id",
+    "/payment/:id",
     authMiddleware,
     appointmentPaymentController
 );
@@ -141,7 +141,7 @@ router.post(
  *         description: Internal Server Error
  */
 router.post(
-    "/api/v1/appointment/payment/verify",
+    "/payment/verify",
     authMiddleware,
     appointmentPaymentVerifyController
 );
@@ -159,7 +159,7 @@ router.post(
  *         description: Internal Server Error
  */
 router.get(
-    "/api/v1/appointment/payment/history",
+    "/payment/history",
     authMiddleware,
     appointmentPaymentListController
 );
@@ -187,7 +187,7 @@ router.get(
  *         description: Internal Server Error
  */
 router.get(
-    "/api/v1/appointment/payment/history/:id",
+    "/payment/history/:id",
     authMiddleware,
     userListAppointmentPaymentController
 );
@@ -220,11 +220,11 @@ router.get(
  *         description: Internal Server Error
  */
 router.put(
-    "/api/v1/appointment/save-fcm-token",
+    "/save-fcm-token",
     authMiddleware,
     createFcmTokenController
 );
 
 
 
-router.post("/api/v1/video-call",authMiddleware,videoCallController)
+router.post("/video-call",authMiddleware,videoCallController)

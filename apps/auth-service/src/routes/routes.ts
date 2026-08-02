@@ -36,7 +36,7 @@ export const router = express.Router();
  *       200:
  *         description: Login Successfully
  */
-router.post('/api/v1/auth/user/login', loginController);
+router.post('/user/login', loginController);
 
 /**
  * @swagger
@@ -58,7 +58,7 @@ router.post('/api/v1/auth/user/login', loginController);
  *       200:
  *         description: Send OTP Successfully
  */
-router.post('/api/v1/auth/forgot/password', forgotPasswordContrroller);
+router.post('/forgot/password', forgotPasswordContrroller);
 
 /**
  * @swagger
@@ -80,7 +80,7 @@ router.post('/api/v1/auth/forgot/password', forgotPasswordContrroller);
  *       200:
  *         description: Verify OTP Successfully
  */
-router.post('/api/v1/auth/verfiy/otp', verifyOtpController);
+router.post('/verfiy/otp', verifyOtpController);
 
 /**
  * @swagger
@@ -102,7 +102,7 @@ router.post('/api/v1/auth/verfiy/otp', verifyOtpController);
  *       200:
  *         description: Set New Password Successfully
  */
-router.post('/api/v1/auth/new/password', newPasswordController);
+router.post('/new/password', newPasswordController);
 
 /**
  * @swagger
@@ -124,7 +124,7 @@ router.post('/api/v1/auth/new/password', newPasswordController);
  *       200:
  *         description: Create New Access Token Successfully
  */
-router.post('/api/v1/auth/refresh-token', refreshTokenController);
+router.post('/refresh-token', refreshTokenController);
 
 /**
  * @swagger
@@ -155,7 +155,7 @@ router.post('/api/v1/auth/refresh-token', refreshTokenController);
  *       400:
  *         description: Bad Request
  */
-router.post("/api/v1/auth/google/login", googleLoginController);
+router.post("/google/login", googleLoginController);
 
 
 
@@ -187,7 +187,7 @@ router.post("/api/v1/auth/google/login", googleLoginController);
  *         description: Login Successfully
  */
 
-router.post("/api/v1/auth/doctor/login", doctorLoginController)
+router.post("/doctor/login", doctorLoginController)
 
 /**
  * @swagger
@@ -210,7 +210,7 @@ router.post("/api/v1/auth/doctor/login", doctorLoginController)
  *         description: Send OTP Successfully
  */
 
-router.post("/api/v1/auth/forgot-doctor/password", forgotPasswordDoctorController)
+router.post("/forgot-doctor/password", forgotPasswordDoctorController)
 
 /**
  * @swagger
@@ -233,7 +233,7 @@ router.post("/api/v1/auth/forgot-doctor/password", forgotPasswordDoctorControlle
  *         description: Verify OTP Successfully
  */
 
-router.post("/api/v1/auth/verify-doctor/otp", verfiyOtpDoctorController)
+router.post("/verify-doctor/otp", verfiyOtpDoctorController)
 
 /**
  * @swagger
@@ -256,7 +256,7 @@ router.post("/api/v1/auth/verify-doctor/otp", verfiyOtpDoctorController)
  *         description: Set New Password Successfully
  */
 
-router.post("/api/v1/auth/reset-doctor/password", resetPassowrdDoctorController)
+router.post("/reset-doctor/password", resetPassowrdDoctorController)
 
 /**
  * @swagger
@@ -279,7 +279,7 @@ router.post("/api/v1/auth/reset-doctor/password", resetPassowrdDoctorController)
  *         description: Create New Access Token Successfully
  */
 
-router.post("/api/v1/auth/doctor-refresh/token", refreshTokenDoctorController)
+router.post("/doctor-refresh/token", refreshTokenDoctorController)
 
 
 /**
@@ -311,4 +311,4 @@ router.post("/api/v1/auth/doctor-refresh/token", refreshTokenDoctorController)
  *       400:
  *         description: Bad Request
  */
-router.post("/api/v1/auth/google/doctor/login", doctorGoogleLoginController);
+router.post("/google/doctor/login", doctorGoogleLoginController);

@@ -30,7 +30,7 @@ export const router = express.Router()
  *         description: Bad Request
  */
 router.post(
-  "/api/v1/lab-category",
+  "/category",
   authMiddlewares,
   authorize("Admin"),
   validationMiddleware(categoryValidation),
@@ -48,7 +48,7 @@ router.post(
  *       200:
  *         description: Listed data
  */
-router.get("/api/v1/lab-category",listCategoryController)
+router.get("/category",listCategoryController)
 
 /**
  * @swagger
@@ -80,7 +80,7 @@ router.get("/api/v1/lab-category",listCategoryController)
  *       404:
  *         description: Category not found
  */
-router.put("/api/v1/lab-category/:id",  authorize("Admin"),authMiddlewares, validationMiddleware(categoryValidation), updateCategoryController)
+router.put("/category/:id",  authorize("Admin"),authMiddlewares, validationMiddleware(categoryValidation), updateCategoryController)
 
 
 /**
@@ -105,7 +105,7 @@ router.put("/api/v1/lab-category/:id",  authorize("Admin"),authMiddlewares, vali
  *       500:
  *         description: Internal server error
  */
-router.delete("/api/v1/lab-category/delete/:id",  authorize("Admin"),authMiddlewares, deleteCategoryController);
+router.delete("/category/delete/:id",  authorize("Admin"),authMiddlewares, deleteCategoryController);
 
 
 /**
@@ -129,7 +129,7 @@ router.delete("/api/v1/lab-category/delete/:id",  authorize("Admin"),authMiddlew
  *       500:
  *         description: Internal server error
  */
-router.post("/api/v1/lab-tests",  authorize("Admin"),authMiddlewares, validationMiddleware(labTestValidation), testAddController)
+router.post("/tests",  authorize("Admin"),authMiddlewares, validationMiddleware(labTestValidation), testAddController)
 
 /**
  * @swagger
@@ -144,7 +144,7 @@ router.post("/api/v1/lab-tests",  authorize("Admin"),authMiddlewares, validation
  *       500:
  *         description: Internal server error
  */
-router.get("/api/v1/lab-tests", testListController);
+router.get("lab/tests", testListController);
 
 /**
  * @swagger
@@ -167,7 +167,7 @@ router.get("/api/v1/lab-tests", testListController);
  *       500:
  *         description: Internal server error
  */
-router.get("/api/v1/lab-tests/:id", testListOneController);
+router.get("/tests/:id", testListOneController);
 
 
 /**
@@ -200,7 +200,7 @@ router.get("/api/v1/lab-tests/:id", testListOneController);
  *         description: Internal server error
  */
 router.put(
-    "/api/v1/lab-tests/:id",authMiddlewares,  authorize("Admin"),
+    "/tests/:id",authMiddlewares,  authorize("Admin"),
     validationMiddleware(labTestValidation),
     testUpdatController
 );
@@ -226,4 +226,4 @@ router.put(
  *       500:
  *         description: Internal server error
  */
-router.put("/api/v1/lab-tests/delete/:id",  authorize("Admin"),authMiddlewares, testDeleteController);
+router.put("/tests/delete/:id",  authorize("Admin"),authMiddlewares, testDeleteController);

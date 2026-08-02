@@ -57,80 +57,80 @@ import { uploader } from '../utils/multer';
 export const router = express.Router();
 
 //Category api list
-router.post('/api/v1/product/category', authMiddleware, categoryAddController);
-router.get('/api/v1/product/category', authMiddleware, serviceListController);
+router.post('/category', authMiddleware, categoryAddController);
+router.get('/category', authMiddleware, serviceListController);
 router.put(
-  '/api/v1/product/category/update/:id',
+  '/category/update/:id',
   authMiddleware,
   categoryUpdateController,
 );
 router.put(
-  '/api/v1/product/category/delete/:id',
+  '/category/delete/:id',
   authMiddleware,
   categoryDeleteController,
 );
 
 //Child Category api list
 router.post(
-  '/api/v1/product/child-category',
+  '/child-category',
   authMiddleware,
   addChildCategoryController,
 );
 router.get(
-  '/api/v1/product/child-category',
+  '/child-category',
   authMiddleware,
   listChildCategoryController,
 );
 router.put(
-  '/api/v1/product/child-category/update/:id',
+  '/child-category/update/:id',
   authMiddleware,
   updateChildCategoryController,
 );
 router.put(
-  '/api/v1/product/child-category/delete/:id',
+  '/child-category/delete/:id',
   authMiddleware,
   deleteChildCategoryController,
 );
 
 //Sub Category api list
-router.post('/api/v1/product/sub-category', authMiddleware, addSubCategoryController);
-router.get('/api/v1/product/sub-category', authMiddleware, listSubCategoryController);
+router.post('/sub-category', authMiddleware, addSubCategoryController);
+router.get('/sub-category', authMiddleware, listSubCategoryController);
 router.put(
-  '/api/v1/product/sub-category/update/:id',
+  '/sub-category/update/:id',
   authMiddleware,
   updateSubCategoryController,
 );
 router.put(
-  '/api/v1/product/sub-category/delete/:id',
+  '/sub-category/delete/:id',
   authMiddleware,
   deleteSubCategoryController,
 );
 
 //Brand api list
-router.post('/api/v1/product/brand', authMiddleware, addBrandController);
-router.get('/api/v1/product/brand', authMiddleware, listBrandController);
-router.put('/api/v1/product/brand/update/:id', authMiddleware, updateBrandController);
-router.put('/api/v1/product/brand/delete/:id', authMiddleware, deleteBrandController);
+router.post('/brand', authMiddleware, addBrandController);
+router.get('/brand', authMiddleware, listBrandController);
+router.put('/brand/update/:id', authMiddleware, updateBrandController);
+router.put('/brand/delete/:id', authMiddleware, deleteBrandController);
 
 //Age Group api list
-router.post('/api/v1/product/age-group', authMiddleware, addAgeGroupController);
-router.get('/api/v1/product/age-group', authMiddleware, listAgeGroupController);
+router.post('/age-group', authMiddleware, addAgeGroupController);
+router.get('/age-group', authMiddleware, listAgeGroupController);
 router.put(
-  '/api/v1/product/age-group/update/:id',
+  '/age-group/update/:id',
   authMiddleware,
   updateAgeGroupController,
 );
 router.put(
-  '/api/v1/product/age-group/delete/:id',
+  '/age-group/delete/:id',
   authMiddleware,
   deleteAgeGroupController,
 );
 
 //Origin api list
-router.post('/api/v1/product/origin', authMiddleware, addOrginController);
-router.get('/api/v1/product/origin', authMiddleware, listOriginController);
-router.put('/api/v1/product/origin/update/:id', authMiddleware, updateOriginController);
-router.put('/api/v1/product/origin/delete/:id', authMiddleware, deleteOriginController);
+router.post('/origin', authMiddleware, addOrginController);
+router.get('/origin', authMiddleware, listOriginController);
+router.put('/origin/update/:id', authMiddleware, updateOriginController);
+router.put('/origin/delete/:id', authMiddleware, deleteOriginController);
 
 //Product api list
 
@@ -272,7 +272,7 @@ router.get('/api/v1/product', authMiddleware, productListController);
  *         description: Product updated successfully
  */
 
-router.put('/api/v1/product/:id', uploader.any(),authMiddleware, updateProductController);
+router.put('/api/v1/product/update/:id', uploader.any(),authMiddleware, updateProductController);
 
 /**
  * @swagger
@@ -315,7 +315,7 @@ router.put("/api/v1/product/delete/:id", authMiddleware, deleteProductController
  *       200:
  *         description: Product details fetched successfully
  */
-router.get("/api/v1/product/view/product/:id", authMiddleware, viewProductController)
+router.get("/api/v1/product/view/:id", authMiddleware, viewProductController)
 
 //Cart api
 
@@ -345,7 +345,7 @@ router.get("/api/v1/product/view/product/:id", authMiddleware, viewProductContro
  *       201:
  *         description: Product added successfully
  */
-router.post("/api/v1/cart", authMiddleware, cartAddController)
+router.post("/cart", authMiddleware, cartAddController)
 
 /**
  * @swagger
@@ -360,7 +360,7 @@ router.post("/api/v1/cart", authMiddleware, cartAddController)
  *       200:
  *         description: Cart list fetched successfully
  */
-router.get("/api/v1/cart", authMiddleware, cartListController)
+router.get("/cart", authMiddleware, cartListController)
 
 
 /**
@@ -391,7 +391,7 @@ router.get("/api/v1/cart", authMiddleware, cartListController)
  *       200:
  *         description: Cart updated successfully
  */
-router.delete("/api/v1/cart/:id", authMiddleware, cartDeleteController)
+router.delete("/cart/:id", authMiddleware, cartDeleteController)
 
 
 /**
@@ -413,4 +413,4 @@ router.delete("/api/v1/cart/:id", authMiddleware, cartDeleteController)
  *       200:
  *         description: Cart deleted successfully
  */
-router.put("/api/v1/cart/:id", authMiddleware, cartEditController)
+router.put("/cart/:id", authMiddleware, cartEditController)
