@@ -7,7 +7,7 @@ describe("Appointment API", () => {
   it("should create an appointment", async () => {
     const token = "your_jwt_token";
 
-    const result = await request(process.env.APPOINTMENT_SERVICE as string)
+    const result = await request(process.env.APPOINTMENT_PORT as string)
       .post("/api/v1/appointment")
       .set("Authorization", `Bearer ${token}`)
       .send({

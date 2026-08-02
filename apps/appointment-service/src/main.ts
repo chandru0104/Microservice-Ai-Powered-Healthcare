@@ -6,7 +6,7 @@ import "./consumer/consumer"
 dotenv.config()
 
 
-const PORT = process.env.APPOINTMENT_SERVICE
+const PORT = process.env.APPOINTMENT_PORT
 connectDb()
 
 app.listen(PORT, () => {
