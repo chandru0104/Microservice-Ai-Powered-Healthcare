@@ -48,7 +48,7 @@ export const aiMedicineReportController = async (req: any, res: Response) => {
         return res.status(200).json({
             success: true,
             message: "Report processed successfully",
-            daat: report
+            data: report
         })
     } catch (error: any) {
         return res.status(400).json({

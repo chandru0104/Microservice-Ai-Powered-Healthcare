@@ -56,7 +56,7 @@ router.post("/symptoms", authMiddleware, aiSymptomsController)
  *       200:
  *         description: Report processed successfully
  */
-router.post("/report", upload.single("file"), authMiddleware, aiReportController)
+router.post("/report",authMiddleware, upload.single("file"), aiReportController)
 
 
 /**
@@ -79,4 +79,4 @@ router.post("/report", upload.single("file"), authMiddleware, aiReportController
  *       200:
  *         description: Symptoms analyzed successfully
  */
-router.post("/medicine", upload.single("file"), authMiddleware, aiMedicineReportController)
+router.post("/medicine",authMiddleware, upload.single("file"), aiMedicineReportController)

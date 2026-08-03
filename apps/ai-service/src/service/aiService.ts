@@ -148,7 +148,6 @@ export const aiReportService = async (file: any) => {
 
 export const aiMedicineReportService = async (file: any) => {
   try {
-    console.log("Received file object:", file); 
     if (!file || !file.buffer) {
       throw new Error("Please upload a valid image file");
     }

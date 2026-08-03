@@ -16,7 +16,7 @@ const options = {
             },
         ],
     },
-    apis: ["/apps/ai-service/src/router/router.ts"],
+    apis: ["./src/router/router.ts"]
 };
 
 export const swaggerSpec = swaggerJsdoc(options);

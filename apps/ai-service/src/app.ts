@@ -13,8 +13,7 @@ app.use(helmet())
 app.use(compression())
 
 app.use(cors({
-    origin: "http://localhost:3000",
-    credentials:true
+    origin: "http://localhost:3000"
 }))
 
 app.use("/api-doc/ai",swaggerUi.serve,swaggerUi.setup(swaggerSpec))
