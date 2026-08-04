@@ -5,7 +5,7 @@ export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
     try {
         const headers = req.headers.authorization
 
-        if (!headers || !headers.startsWith("Bearer")) {
+        if (!headers || !headers.startsWith("Bearer ")) {
             throw new Error("Invalid token")
         }
 

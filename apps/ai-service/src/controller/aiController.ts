@@ -10,7 +10,7 @@ export const aiSymptomsController = async (req: Request, res: Response) => {
             data: symptoms
         });
     } catch (error: any) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             message: error.message
         });
@@ -34,7 +34,7 @@ export const aiReportController = async (req: any, res: Response) => {
             data: report
         });
     } catch (error: any) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             message: error.message
         });
@@ -43,6 +43,12 @@ export const aiReportController = async (req: any, res: Response) => {
 
 export const aiMedicineReportController = async (req: any, res: Response) => {
     try {
+        if(!req.file){
+            return res.status(400).json({
+                success: false,
+                message: "Please upload your report"
+            })
+        }
         const report = await aiMedicineReportService(req.file)
 
         return res.status(200).json({
@@ -51,7 +57,7 @@ export const aiMedicineReportController = async (req: any, res: Response) => {
             data: report
         })
     } catch (error: any) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             message:error.message
         })

@@ -67,7 +67,7 @@ export const aiSymptomsService = async (data: SymptomsInput) => {
 
 
     const response = await openai.chat.completions.create({
-      model: "openai/gpt-oss-20b",
+      model: "openai/gpt-oss-120b",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     })
@@ -81,7 +81,7 @@ export const aiSymptomsService = async (data: SymptomsInput) => {
   }
 };
 
-export const aiReportService = async (file: any) => {
+export const aiReportService = async (file: Express.Multer.File) => {
   try {
 
     if (!file || !file.buffer) {
@@ -132,7 +132,7 @@ export const aiReportService = async (file: any) => {
                       `;
 
     const response = await openai.chat.completions.create({
-      model: "openai/gpt-oss-20b",
+      model: "openai/gpt-oss-120b",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     })
@@ -146,7 +146,7 @@ export const aiReportService = async (file: any) => {
   }
 };
 
-export const aiMedicineReportService = async (file: any) => {
+export const aiMedicineReportService = async (file: Express.Multer.File) => {
   try {
     if (!file || !file.buffer) {
       throw new Error("Please upload a valid image file");
@@ -202,7 +202,7 @@ export const aiMedicineReportService = async (file: any) => {
     6. Never return Markdown syntax like \`\`\`json.`;
 
     const response = await openai.chat.completions.create({
-      model: "openai/gpt-oss-20b",
+      model: "openai/gpt-oss-120b",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     });
