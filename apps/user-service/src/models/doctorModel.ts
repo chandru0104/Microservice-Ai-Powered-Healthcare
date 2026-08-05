@@ -32,44 +32,42 @@ const doctorSchema = new mongoose.Schema({
     },
     is_approved: {
         type: Boolean,
-        required: true,
-        default:false
+        default: false
     },
     profile: {
         type: String,
         required: true
     },
     is_active: {
-        type:Boolean,
+        type: Boolean,
         default: true
 
     },
-    is_verify:{
-        type:Boolean,
-        default:false
+    is_verify: {
+        type: Boolean,
+        default: false
     },
     active: {
-        type:Boolean,
+        type: Boolean,
         default: true
     },
-    password:{
-        type:String,
-        required:true
+    password: {
+        type: String,
+        required: true
     },
-    status:{
-        type:Number,
-        default:1
+    status: {
+        type: Number,
+        default: 1
     },
-       fcmtoken:{
-        required:true,
-        type:String
+    fcmtoken: {
+        type: String
     }
-   
+
 
 
 }, { timestamps: true, versionKey: false })
 
-doctorSchema.index({name:1})
-doctorSchema.index({specialties:1})
+doctorSchema.index({ name: 1 })
+doctorSchema.index({ specialties: 1 })
 
 export const Doctor = mongoose.model("Doctor", doctorSchema)

@@ -60,7 +60,7 @@ export const userAddService = async (data: any) => {
   } = data;
 
   if (!name || !email || !password) {
-    throw new validationError('Please fill all required fields');
+    throw new validationError('Please fill all required field');
   }
 
   const salt = 10;

@@ -9,18 +9,26 @@ import { validationError } from "../utils/errorHandler"
 export const verifyOtpservice = async (email: string, otp: any) => {
 
     try {
-        const getOtp: any = await redis.get(
-            `email:${email}`,
-        )
+        const raw: any = await redis.get(`email:${email}`)
 
-        const otpCompare = await bcrypt.compare(otp, getOtp.hashOtp)
+        // null check — OTP expired or never stored
+        if (!raw) {
+            throw new validationError("OTP expired or not found. Please register again.")
+        }
+
+
+        // raw IS the hashOtp string directly (stored as plain bcrypt hash)
+        const hashOtp: string = raw
+
+        console.log("hashOtp from Redis:", hashOtp)
+
+        const otpCompare = await bcrypt.compare(otp, hashOtp)
 
         if (!otpCompare) {
-            throw new validationError("Invalid otp")
+            throw new validationError("Invalid OTP. Please try again.")
         }
 
         await Doctor.findOneAndUpdate({ email }, { is_verify: true })
-
         await redis.del(`email:${email}`)
 
     } catch (error: any) {
@@ -39,11 +47,11 @@ export const doctorAddService = async (data: docter, file: Express.Multer.File) 
     const hashOtp = await bcrypt.hash(otp, salt)
 
     await redis.setex(
-        `email ${email}`,
-        1000,
-        JSON.stringify({ email, hashOtp })
+        `email:${email}`,
+        300,
+         hashOtp
     )
-    sendMail(email, otp)
+    await sendMail(email, otp)
 
     let doctorProfile = ""
 
@@ -62,10 +70,10 @@ export const doctorAddService = async (data: docter, file: Express.Multer.File) 
 }
 
 
-export const doctorListService = async (page:any,limit:any) => {
+export const doctorListService = async (page: any, limit: any) => {
     try {
 
-         const skip =(page-1)*limit 
+        const skip = (page - 1) * limit
         const listData = await Doctor.find({ status: 1 }).select("-password").skip(skip).limit(limit)
 
         return listData
@@ -87,7 +95,9 @@ export const doctorUpdateService = async (id: String, data: docter, file: Expres
             updatedFile = filedata.secure_url
         }
         const updateData = await Doctor.findByIdAndUpdate(id, { ...data, profile: updatedFile }, { runValidators: true, new: true })
-
+           if(!updateData){
+             throw new validationError("Doctor not found")
+           }
         return updateData
     } catch (error: any) {
         throw new Error(error.message)

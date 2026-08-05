@@ -1,5 +1,5 @@
 import express from "express"
-import { doctorAddController, verifyOtpController, listDoctorController, doctorUpdateController, doctorDeleteController,doctorProfileController } from "../controller/doctorController"
+import { doctorAddController, verifyOtpController, listDoctorController, doctorUpdateController, doctorDeleteController, doctorProfileController } from "../controller/doctorController"
 import { uploader } from '../utils/multer';
 // import {doctorValidationMiddleware} from "../middleware/validationMiddleware"
 // import {doctorValidation} from "../utils/validation"
@@ -62,7 +62,7 @@ export const routerDoctor = express.Router()
  *         description: Doctor already exists
  */
 routerDoctor.post(
-  "/api/v1/doctor",
+  "/doctor-register",
   uploader.single("profile"),
   doctorAddController
 );
@@ -95,7 +95,7 @@ routerDoctor.post(
  *       400:
  *         description: Invalid otp
  */
-routerDoctor.post("/verfiy", verifyOtpController)
+routerDoctor.post("/doctor-verfiy", verifyOtpController)
 
 /**
  * @swagger
@@ -109,7 +109,7 @@ routerDoctor.post("/verfiy", verifyOtpController)
  *         description: Listed doctor list successfully
  */
 
-routerDoctor.get("/api/v1/doctor", listDoctorController)
+routerDoctor.get("/list", listDoctorController)
 
 /**
  * @swagger
@@ -163,7 +163,7 @@ routerDoctor.get("/api/v1/doctor", listDoctorController)
  *         description: Invalid request
  */
 
-routerDoctor.put("/api/v1/doctor/:id", uploader.single("profile"), doctorUpdateController)
+routerDoctor.put("/doctor-update/:id", uploader.single("profile"), doctorUpdateController)
 
 /**
  * @swagger
@@ -179,7 +179,7 @@ routerDoctor.put("/api/v1/doctor/:id", uploader.single("profile"), doctorUpdateC
  *         description: Invalid doctor id
  */
 
-routerDoctor.put("/api/v1/doctor/delete/:id", doctorDeleteController)
+routerDoctor.put("/doctor-delete/:id", doctorDeleteController)
 
 /**
  * @swagger
@@ -193,5 +193,5 @@ routerDoctor.put("/api/v1/doctor/delete/:id", doctorDeleteController)
  *         description: Doctor profile successfully
  */
 
-routerDoctor.get("/profile/:id",doctorProfileController)
+routerDoctor.get("/profile/:id", doctorProfileController)
 
