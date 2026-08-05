@@ -1,46 +1,43 @@
 
 import mongoose from "mongoose";
 
-
-
-
 const doctorSchema = new mongoose.Schema({
     name: {
         type: String,
-        require: true
+        required: true
     },
     specialties: {
         type: String,
-        require: true
+        required: true
     },
     experience: {
         type: String,
-        require: true
+        required: true
     },
     place: {
         type: String,
-        require: true,
+        required: true,
     },
     price: {
         type: Number,
-        require: true
+        required: true
     },
     email: {
         type: String,
-        unique: true
+        uniqued: true
     },
     register: {
         type: String,
-        require: true
+        required: true
     },
     is_approved: {
         type: Boolean,
-        require: true,
+        required: true,
         default:false
     },
     profile: {
         type: String,
-        require: true
+        required: true
     },
     is_active: {
         type:Boolean,
@@ -57,20 +54,22 @@ const doctorSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        require:true
+        required:true
     },
     status:{
         type:Number,
         default:1
     },
        fcmtoken:{
-        require:true,
+        required:true,
         type:String
     }
-
+   
 
 
 }, { timestamps: true, versionKey: false })
 
+doctorSchema.index({name:1})
+doctorSchema.index({specialties:1})
 
 export const Doctor = mongoose.model("Doctor", doctorSchema)

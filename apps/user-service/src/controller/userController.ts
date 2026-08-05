@@ -62,7 +62,10 @@ export const userAddController = async (req: Request, res: Response) => {
 //user list
 export const userListController = async (req: Request, res: Response) => {
   try {
-    const user = await userAllListService();
+
+    const {page,limit}= req.query
+    
+    const user = await userAllListService(page,limit);
 
     res.status(200).json({
       success: true,

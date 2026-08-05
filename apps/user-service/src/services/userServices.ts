@@ -8,9 +8,7 @@ import { sendMail } from '../kafkaProducer/producer';
 
 env.config();
 
-export const otpSet = async (data: any) => {
-  const { email } = data;
-
+export const otpSet = async (email: string) => {
   if (!email) {
     throw new validationError('Fill require fields');
   }
@@ -107,9 +105,10 @@ export const userAddService = async (data: any) => {
 
 
 //user all list services
-export const userAllListService = async (): Promise<any> => {
+export const userAllListService = async (page: any, limit: any): Promise<any> => {
   try {
-    const user = await User.find({ status: 1 });
+    const skip = (page - 1) * limit
+    const user = await User.find({ status: 1 }).skip(skip).limit(limit).select("-password")
     return user;
   } catch (error: any) {
     throw new validationError(error.message);

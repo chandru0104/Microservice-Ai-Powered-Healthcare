@@ -7,7 +7,7 @@ import { Request, Response } from "express";
 export const doctorAddController = async (req: Request, res: Response) => {
     try {
         const data = req.body
-        const file = req.file
+        const file = req.file as Express.Multer.File
         const user = await doctorAddService(data, file);
 
         res.status(201).json({
@@ -46,7 +46,10 @@ export const verifyOtpController = async (req: Request, res: Response) => {
 
 export const listDoctorController = async (req: Request, res: Response) => {
     try {
-        const listData = await doctorListService()
+
+        const {page,limit} = req.query
+         
+        const listData = await doctorListService(page,limit)
 
         res.status(200).json({
             success: true,
@@ -66,12 +69,12 @@ export const doctorUpdateController = async (req: Request, res: Response) => {
     try {
         const id = req.params.id
         const data = req.body
-        const file = req.file
+        const file = req.file as Express.Multer.File
 
         const updateData = await doctorUpdateService(id, data, file)
 
         res.status(201).json({
-            success: false,
+            success: true,
             message: "Doctor updated successfully",
             data: updateData
         })

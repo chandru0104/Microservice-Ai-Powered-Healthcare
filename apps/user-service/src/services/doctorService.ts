@@ -4,23 +4,25 @@ import { redis } from "../utils/redis"
 import { Doctor } from "../models/doctorModel"
 import bcrypt from "bcrypt"
 import cloudinary from "../utils/cloudinary"
-
+import { validationError } from "../utils/errorHandler"
 
 export const verifyOtpservice = async (email: string, otp: any) => {
 
     try {
         const getOtp: any = await redis.get(
-            `email ${email}`,
+            `email:${email}`,
         )
 
         const otpCompare = await bcrypt.compare(otp, getOtp.hashOtp)
 
         if (!otpCompare) {
-            throw new Error("Invalid otp")
+            throw new validationError("Invalid otp")
         }
 
         await Doctor.findOneAndUpdate({ email }, { is_verify: true })
+
         await redis.del(`email:${email}`)
+
     } catch (error: any) {
         throw new Error(error.message)
     }
@@ -28,7 +30,7 @@ export const verifyOtpservice = async (email: string, otp: any) => {
 
 
 
-export const doctorAddService = async (data: docter, file: any) => {
+export const doctorAddService = async (data: docter, file: Express.Multer.File) => {
     const { name, specialties, experience, place, price, email, register, password } = data
 
     const otp = Math.floor(10000 + Math.random() * 90000).toString()
@@ -51,19 +53,20 @@ export const doctorAddService = async (data: docter, file: any) => {
         })
         doctorProfile = profile.secure_url
     }
-    console.log(doctorProfile)
 
-    const hashPassword = await bcrypt.hash(password,salt)
+    const hashPassword = await bcrypt.hash(password, salt)
 
-    const addDoctor = await Doctor.create({ name, specialties, experience, place, price, email, register, password:hashPassword, profile: doctorProfile })
+    const addDoctor = await Doctor.create({ name, specialties, experience, place, price, email, register, password: hashPassword, profile: doctorProfile })
 
     return addDoctor
 }
 
 
-export const doctorListService = async () => {
+export const doctorListService = async (page:any,limit:any) => {
     try {
-        const listData = await Doctor.find({ status: 1 }).select("-password")
+
+         const skip =(page-1)*limit 
+        const listData = await Doctor.find({ status: 1 }).select("-password").skip(skip).limit(limit)
 
         return listData
 
@@ -73,7 +76,7 @@ export const doctorListService = async () => {
 }
 
 
-export const doctorUpdateService = async (id: String, data: docter, file: any) => {
+export const doctorUpdateService = async (id: String, data: docter, file: Express.Multer.File) => {
 
     try {
         let updatedFile = ""
@@ -92,7 +95,7 @@ export const doctorUpdateService = async (id: String, data: docter, file: any) =
 }
 
 
-export const doctorDeleteService = async (id: any) => {
+export const doctorDeleteService = async (id: string) => {
     try {
         const doctorDelete = await Doctor.findByIdAndUpdate(id, { status: 0 })
         return doctorDelete
