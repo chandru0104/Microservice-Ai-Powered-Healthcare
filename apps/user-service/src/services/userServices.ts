@@ -23,7 +23,7 @@ export const otpSet = async (email: string) => {
       otp: hashOtp,
     }),
   );
-  sendMail(email, otp);
+   sendMail(email, otp);
 };
 
 export const otpGet = async (data: any) => {

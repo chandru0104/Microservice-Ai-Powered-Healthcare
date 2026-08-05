@@ -70,7 +70,7 @@ router.post('/register', userAddController);
  *       200:
  *         description: List of users
  */
-router.get('/api/v1/user', userListController);
+router.get('/users', userListController);
 
 /**
  * @swagger

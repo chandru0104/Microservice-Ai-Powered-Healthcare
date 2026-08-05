@@ -13,7 +13,11 @@ import {
 import { Request, Response } from 'express';
 
 export const otpSetController = async (req: Request, res: Response) => {
-  const result = await otpSet({ ...req.body });
+  const { email } = req.body
+  if (!email) {
+    throw new validationError('Please enter your email');
+  }
+  const result = await otpSet(email); 
   res.json({
     success: true,
     message: 'send otp',
@@ -63,9 +67,9 @@ export const userAddController = async (req: Request, res: Response) => {
 export const userListController = async (req: Request, res: Response) => {
   try {
 
-    const {page,limit}= req.query
-    
-    const user = await userAllListService(page,limit);
+    const { page, limit } = req.query
+
+    const user = await userAllListService(page, limit);
 
     res.status(200).json({
       success: true,

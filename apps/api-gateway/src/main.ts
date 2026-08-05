@@ -100,7 +100,7 @@ const appointmentProxy = createProxyMiddleware({
 
 app.use('/api/v1/auth', authProxy);
 
-app.use('/api/v1/user', authMiddleware, userProxy);
+app.use('/api/v1/user', userProxy);
 
 app.use("/api/v1/doctor", doctorProxy)
 
