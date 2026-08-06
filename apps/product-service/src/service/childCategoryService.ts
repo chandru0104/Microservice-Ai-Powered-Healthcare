@@ -7,7 +7,9 @@ export const addChildCategoryService = async (name: any, userId: any) => {
 
     return addChild;
   } catch (error: any) {
-    throw new validationError(error.mesaage);
+    throw new validationError(error.message
+
+    );
   }
 };
 
@@ -17,7 +19,7 @@ export const listChildCategoryService = async () => {
 
     return listChild;
   } catch (error: any) {
-    throw new validationError(error.mesaage);
+    throw new validationError(error.message);
   }
 };
 
@@ -36,7 +38,7 @@ export const updateChildCategoryService = async (id: any, data: any, userId: any
     );
     return updateChild;
   } catch (error: any) {
-    throw new validationError(error.mesaage);
+    throw new validationError(error.message);
   }
 };
 
@@ -48,6 +50,6 @@ export const deleteChildCategoryService = async (id: any) => {
       { new: true, runValidators: true },
     );
   } catch (error: any) {
-    throw new validationError(error.mesaage);
+    throw new validationError(error.message);
   }
 };

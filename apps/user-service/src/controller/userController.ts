@@ -17,7 +17,7 @@ export const otpSetController = async (req: Request, res: Response) => {
   if (!email) {
     throw new validationError('Please enter your email');
   }
-  const result = await otpSet(email); 
+  const result = await otpSet(email);
   res.json({
     success: true,
     message: 'send otp',
@@ -58,7 +58,7 @@ export const userAddController = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      mesaage: error.message,
+      message: error.message,
     });
   }
 };

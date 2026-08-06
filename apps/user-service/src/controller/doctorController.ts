@@ -1,5 +1,5 @@
 
-import { doctorAddService, doctorListService, verifyOtpservice, doctorUpdateService, doctorDeleteService,doctorProfileService } from "../services/doctorService"
+import { doctorAddService, doctorListService, verifyOtpservice, doctorUpdateService, doctorDeleteService, doctorProfileService } from "../services/doctorService"
 
 
 import { Request, Response } from "express";
@@ -18,7 +18,7 @@ export const doctorAddController = async (req: Request, res: Response) => {
     } catch (error: any) {
         res.status(400).json({
             success: false,
-            mesaage: error.message,
+            message: error.message,
         });
     }
 };
@@ -39,7 +39,7 @@ export const verifyOtpController = async (req: Request, res: Response) => {
     } catch (error: any) {
         res.status(400).json({
             success: false,
-            mesaage: error.message,
+            message: error.message,
         });
     }
 }
@@ -47,9 +47,9 @@ export const verifyOtpController = async (req: Request, res: Response) => {
 export const listDoctorController = async (req: Request, res: Response) => {
     try {
 
-        const {page,limit} = req.query
-         
-        const listData = await doctorListService(page,limit)
+        const { page, limit } = req.query
+
+        const listData = await doctorListService(page, limit)
 
         res.status(200).json({
             success: true,
@@ -59,7 +59,7 @@ export const listDoctorController = async (req: Request, res: Response) => {
     } catch (error: any) {
         res.status(400).json({
             success: false,
-            mesaage: error.message,
+            message: error.message,
         });
     }
 }
@@ -82,7 +82,7 @@ export const doctorUpdateController = async (req: Request, res: Response) => {
     } catch (error: any) {
         res.status(400).json({
             success: false,
-            mesaage: error.message,
+            message: error.message,
         });
     }
 }
@@ -100,7 +100,7 @@ export const doctorDeleteController = async (req: Request, res: Response) => {
     } catch (error: any) {
         res.status(400).json({
             success: false,
-            mesaage: error.message,
+            message: error.message,
         });
     }
 }
@@ -109,7 +109,7 @@ export const doctorProfileController = async (req: Request, res: Response) => {
     try {
         const id = req.params.id
 
-        const profileDoctor =await doctorProfileService(id)
+        const profileDoctor = await doctorProfileService(id)
 
         res.status(200).json({
             success: true,
@@ -119,7 +119,7 @@ export const doctorProfileController = async (req: Request, res: Response) => {
     } catch (error: any) {
         res.status(400).json({
             success: false,
-            message:error.message,
+            message: error.message,
         })
     }
 }

@@ -121,12 +121,12 @@ app.use(router, routerDoctor);  // Routes registered FIRST
 app.use(cors({...}))            // CORS applied AFTER — preflight OPTIONS requests will fail
 ```
 
-#### 🟡 Typo — `mesaage` Instead of `message`
+#### 🟡 Typo — `message` Instead of `message`
 Appears in **5 places** across `userController.ts` and `doctorController.ts`:
 ```typescript
-res.status(400).json({ success: false, mesaage: error.message }) // typo in key name
+res.status(400).json({ success: false, message: error.message }) // typo in key name
 ```
-API clients will receive `mesaage` instead of `message`.
+API clients will receive `message` instead of `message`.
 
 ---
 
