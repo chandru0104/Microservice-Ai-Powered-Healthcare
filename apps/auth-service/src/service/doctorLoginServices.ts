@@ -1,9 +1,9 @@
 import { Doctor } from "../model/loginModel"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import dotenv from "dotenv"
 
-dotenv.config()
+import {validationError} from "../utils/errorHaddler"
+
 
 interface doctorAuth {
     email: string,
@@ -18,21 +18,21 @@ export const doctorLoginService = async (data: doctorAuth) => {
         const doctor = await Doctor.findOne({ email: { $regex: new RegExp(`^${email}$`, "i") } })
 
         if (!doctor) {
-            throw new Error("Email not found")
+            throw new validationError("Email not found")
         }
 
         if (!doctor.is_approved) {
-            throw new Error("Your account is pending admin approval")
+            throw new validationError("Your account is pending admin approval")
         }
 
         if (!doctor.is_active) {
-            throw new Error("Your account has been deactivated")
+            throw new validationError("Your account has been deactivated")
         }
 
         const comparePassword = await bcrypt.compare(password, doctor.password as string)
 
         if (!comparePassword) {
-            throw new Error("Invalid password")
+            throw new validationError("Invalid password")
         }
 
         const accessToken = jwt.sign({ id: doctor.id, role: doctor.role, name: doctor.name, email: doctor.email }, process.env.ACCESS_SECRET_KEY as string, { expiresIn: "1hr" })

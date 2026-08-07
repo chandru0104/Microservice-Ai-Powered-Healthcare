@@ -1,25 +1,31 @@
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import { Admin } from '../model/loginModel';
+import {validationError} from "../utils/errorHaddler"
+
+interface adminLoginData{
+  email:string,
+  password:string
+}
 
 
-export const adminLoginService = async (data: any) => {
+export const adminLoginService = async (data: adminLoginData) => {
   const { email, password } = data;
 
   if (!email || !password) {
-    throw new Error('Please enter your required fields');
+    throw new validationError('Please enter your required fields');
   }
 
   const user = await Admin.findOne({ email });
 
   if (!user) {
-    throw new Error('User not found');
+    throw new validationError('User not found');
   }
 
   const userPassword = await bcrypt.compare(password, user.password as string);
 
   if (!userPassword) {
-    throw new Error('Enter your password correctly');
+    throw new validationError('Enter your password correctly');
   }
 
   const permission = user.permissions || [];

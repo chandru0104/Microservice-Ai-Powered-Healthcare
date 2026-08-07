@@ -1,9 +1,9 @@
 import { transporter } from '../utils/nodeMailer';
 import { kafka } from '../utils/kafka';
-import dotenv from 'dotenv';
+
 import { otpTemplate } from '../utils/otpTemplate';
 
-dotenv.config();
+
 
 export const consumer = kafka.consumer({
   groupId: 'reset-pass',

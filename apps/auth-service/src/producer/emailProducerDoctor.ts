@@ -9,16 +9,16 @@ const connected = async () => {
 }
 connected()
 
-export const sendMail = async (email: any, otp: any) => {
+export const sendMail = async (email: string, otp: string) => {
     try {
         const data = { email, otp }
         await producers.send({
-            topic: "reset-password",
+            topic: "reset-password-doctor",
             messages: [
                 {
                     value: JSON.stringify(data)
                 }
-            ]
+            ]   
         })
     } catch (error: any) {
         throw new Error(error.message)

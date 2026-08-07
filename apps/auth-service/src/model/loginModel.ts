@@ -9,23 +9,23 @@ const user = new mongoose.Schema({
   },
   email: {
     type: String,
-    require: true,
+    required: true,
   },
   password: {
     type: String,
-    require: true,
+    required: true,
   },
   role: {
     type: String,
   },
   is_google_login:{
     type:Boolean,
-    require:true,
-    default:true
+    required:true,
+    default:false
   },
   google_id:{
     type:String,
-    require:true
+    required:true
   },
 });
 
@@ -35,27 +35,27 @@ export const User = mongoose.model('user', user);
 const doctorSchema = new mongoose.Schema({
     name: {
         type: String,
-        require: true
+        required: true
     },
     specialties: {
         type: String,
-        require: true
+        required: true
     },
     role:{
       type:String,
-      require:true
+      required:true
     },
     experience: {
         type: String,
-        require: true
+        required: true
     },
     place: {
         type: String,
-        require: true,
+        required: true,
     },
     price: {
         type: Number,
-        require: true
+        required: true
     },
     email: {
         type: String,
@@ -63,16 +63,16 @@ const doctorSchema = new mongoose.Schema({
     },
     register: {
         type: String,
-        require: true
+        required: true
     },
     is_approved: {
         type: Boolean,
-        require: true,
+        required: true,
         default:false
     },
     profile: {
         type: String,
-        require: true
+        required: true
     },
     is_active: {
         type:Boolean,
@@ -89,7 +89,7 @@ const doctorSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        require:true
+        required:true
     },
     status:{
         type:Number,
@@ -97,12 +97,12 @@ const doctorSchema = new mongoose.Schema({
     },
     is_google_login:{
       type:Boolean,
-      require:true,
-      defalut:true
+      required:true,
+      default:false
     },
       google_id:{
     type:String,
-    require:true
+    required:true
   },
 
 }, { timestamps: true, versionKey: false })

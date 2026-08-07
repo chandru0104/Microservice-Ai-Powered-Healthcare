@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken"
-import doenv from "dotenv"
-doenv.config()
+
+import {validationError} from "../utils/errorHaddler"
 
 const refreshKey = process.env.REFRESH_SECRET_KEY as string
 
@@ -16,7 +16,7 @@ export const refreshTokenDoctorService = async (token: any) => {
         const refreshToken = jwt.verify(token, refreshKey) as accessTokenDetails
 
         if (!refreshToken) {
-            throw new Error("Invalid refresh token")
+            throw new validationError("Invalid refresh token")
         }
 
         const accessToken = jwt.sign({ id: refreshToken.id, name: refreshToken.name, role: refreshToken.role }, refreshKey, { expiresIn: "1hr" })

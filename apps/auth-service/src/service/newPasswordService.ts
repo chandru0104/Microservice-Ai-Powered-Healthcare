@@ -3,12 +3,19 @@ import { redis } from '../utils/redis';
 import { User } from '../model/loginModel';
 import bcrypt from 'bcrypt';
 
-import dotenv from 'dotenv';
-dotenv.config();
+
 
 const salt = Number(process.env.SALT);
 
-export const newPasswordService = async (data: any) => {
+interface newPasswordData{
+  email:string,
+  token:string,
+  newPassword:string,
+  confirmPassword:string
+}
+
+
+export const newPasswordService = async (data: newPasswordData) => {
   const { email,token, newPassword, confirmPassword } = data;
 
     if(newPassword !==confirmPassword ){

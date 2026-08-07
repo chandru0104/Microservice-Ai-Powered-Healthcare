@@ -1,11 +1,16 @@
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import { User } from '../model/loginModel';
 import { validationError } from '../utils/errorHaddler';
-dotenv.config();
 
-export const loginSevice = async (data: any) => {
+
+interface loginData{
+  email:string,
+  password:string
+}
+
+
+export const loginSevice = async (data: loginData) => {
   const { email, password } = data;
 
   if (!email || !password) {

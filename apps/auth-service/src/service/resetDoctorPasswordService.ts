@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { Doctor } from "../model/loginModel";
 import { redis } from "../utils/redis";
+import {validationError} from "../utils/errorHaddler"
 
 export const resetPasswordDoctorService = async (
   email: string,
@@ -11,32 +12,32 @@ export const resetPasswordDoctorService = async (
   try {
     // Check required fields
     if (!email || !resetToken || !newPassword || !confirmPassword) {
-      throw new Error("Please fill all fields");
+      throw new validationError("Please fill all fields");
     }
 
     // Check password match
     if (newPassword !== confirmPassword) {
-      throw new Error("Passwords do not match");
+      throw new validationError("Passwords do not match");
     }
 
     // Get token from Redis
     const data = await redis.get(`email:${email}`);
 
     if (!data) {
-      throw new Error("Reset token expired or not found");
+      throw new validationError("Reset token expired or not found");
     }
 
 
     // Compare token
     if (resetToken !== data) {
-      throw new Error("Invalid reset token");
+      throw new validationError("Invalid reset token");
     }
 
     // Find doctor
     const doctor = await Doctor.findOne({ email });
 
     if (!doctor) {
-      throw new Error("Doctor not found");
+      throw new validationError("Doctor not found");
     }
 
     // Hash new password

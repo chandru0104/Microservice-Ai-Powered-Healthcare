@@ -1,11 +1,9 @@
 import { redis } from '../utils/redis';
 import { validationError } from '../utils/errorHaddler';
 import bcrypt from 'bcrypt';
-import dotenv from 'dotenv';
 import crypto from "crypto";
-dotenv.config();
 
-export const verifyOtpService = async (email: any, userOtp: any) => {
+export const verifyOtpService = async (email: string, userOtp: string) => {
 
   const rawOtp = await redis.get<string>(`email:${email}`);
 

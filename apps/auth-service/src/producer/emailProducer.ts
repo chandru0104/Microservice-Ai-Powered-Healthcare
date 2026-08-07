@@ -9,7 +9,7 @@ const connectProducer = async () => {
 
 connectProducer();
 
-export const sendMail = async (email: any, otp: any) => {
+export const sendMail = async (email: string, otp: string) => {
   const data = { email, otp };
   try {
     await producer.send({

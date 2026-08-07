@@ -6,6 +6,7 @@ import helmet from "helmet"
 import morgan from "morgan"
 import compression from "compression"
 import cookieParser from "cookie-parser"
+import cors from "cors"
 export const app = express();
 import {adminRouter} from "./routes/adminRouter"
 app.use(
@@ -20,4 +21,7 @@ app.use(helmet())
 app.use(morgan("combined"))
 app.use(compression())
 app.use(cookieParser())
+app.use(cors({
+  origin:process.env.ORIGIN as string,
+}))
 app.use(router,adminRouter);

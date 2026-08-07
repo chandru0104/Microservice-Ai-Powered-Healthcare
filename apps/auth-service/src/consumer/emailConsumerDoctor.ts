@@ -1,8 +1,6 @@
 import { kafka } from "../utils/kafka"
 import { transporter } from "../utils/nodeMailer"
-import dotenv from "dotenv"
 import { otpTemplate } from "../utils/otpTemplate"
-dotenv.config()
 
 
 
@@ -16,7 +14,7 @@ export const connectConsumer = async () => {
         console.log("consumer doctor connect")
 
         await consumer.subscribe({
-            topic: "reset-password",
+            topic: "reset-password-doctor",
             fromBeginning: false,
         })
 

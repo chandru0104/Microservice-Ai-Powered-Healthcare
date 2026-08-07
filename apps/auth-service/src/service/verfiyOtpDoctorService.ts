@@ -1,6 +1,7 @@
 import { redis } from "../utils/redis"
 import bcrypt from "bcrypt"
 import crypto from "crypto"
+import {validationError} from "../utils/errorHaddler"
 
 export const verfiyOtpDoctorService = async (email: string, userOtp: string) => {
      try {
@@ -9,12 +10,12 @@ export const verfiyOtpDoctorService = async (email: string, userOtp: string) => 
           ) as string
 
           if (!hashOtp) {
-               throw new Error("OTP expired or not found");
+               throw new validationError("OTP expired or not found");
           }
           const verfiyOtp = await bcrypt.compare(userOtp, hashOtp)
 
           if (!verfiyOtp) {
-               throw new Error("Invalid OTP");
+               throw new validationError("Invalid OTP");
           }
 
           const resetToken = crypto.randomBytes(32).toString("hex")

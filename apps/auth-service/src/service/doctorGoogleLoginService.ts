@@ -1,8 +1,8 @@
 import { Doctor } from "../model/loginModel"
-import dotenv from "dotenv"
 import jwt from "jsonwebtoken"
 import { client } from "../utils/googleLogin"
-dotenv.config()
+import {validationError} from "../utils/errorHaddler"
+
 
 interface googleUser {
     code: string,
@@ -19,13 +19,13 @@ export const doctorGoogleLoginDoctor = async (data: googleUser) => {
         const { code, role } = data
 
         if (!code) {
-            throw new Error("Authorization code is required") 
+            throw new validationError("Authorization code is required") 
         }
 
         const { tokens } = await client.getToken(code)
 
         if (!tokens.id_token) {
-            throw new Error("Invalid or missing Google ID token")
+            throw new validationError("Invalid or missing Google ID token")
         }
 
         const ticket = await client.verifyIdToken({
@@ -36,7 +36,7 @@ export const doctorGoogleLoginDoctor = async (data: googleUser) => {
         const payload = ticket.getPayload() // Removed unnecessary await (getPayload is synchronous)
 
         if (!payload) {
-            throw new Error("Invalid Google Token payload")
+            throw new validationError("Invalid Google Token payload")
         }
         
         const { name, picture, sub, email } = payload // Note: Google uses 'picture', not 'profile' for the image URL

@@ -1,9 +1,8 @@
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import { User } from "../model/loginModel";
 import { client } from "../utils/googleLogin";
+import {validationError} from "../utils/errorHaddler"
 
-dotenv.config();
 
 interface GoogleLoginData {
   code: string;
@@ -15,14 +14,14 @@ export const googleLoginService = async (data: GoogleLoginData) => {
 
   // Validate input
   if (!code) {
-    throw new Error("Authorization code is required");
+    throw new validationError("Authorization code is required");
   }
 
   // Exchange authorization code for tokens
   const { tokens } = await client.getToken(code);
 
   if (!tokens.id_token) {
-    throw new Error("Failed to get Google ID Token");
+    throw new validationError("Failed to get Google ID Token");
   }
 
   // Verify Google ID Token
@@ -34,7 +33,7 @@ export const googleLoginService = async (data: GoogleLoginData) => {
   const payload = ticket.getPayload();
 
   if (!payload) {
-    throw new Error("Invalid Google Token");
+    throw new validationError("Invalid Google Token");
   }
 
   const {
@@ -44,7 +43,7 @@ export const googleLoginService = async (data: GoogleLoginData) => {
   } = payload;
 
   if (!email) {
-    throw new Error("Email not found from Google");
+    throw new validationError("Email not found from Google");
   }
 
 

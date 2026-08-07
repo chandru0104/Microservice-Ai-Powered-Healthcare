@@ -2,6 +2,7 @@ import { app } from './app';
 import dotenv from 'dotenv';
 import { connectDB } from './utils/db';
 import './consumer/emailConsumer';
+import './consumer/emailConsumerDoctor';
 
 dotenv.config();
 

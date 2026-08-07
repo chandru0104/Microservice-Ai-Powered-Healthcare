@@ -5,8 +5,7 @@ import { User } from '../model/loginModel';
 import bcrypt from 'bcrypt';
 
 
-export const forgotPasswordService = async (data: any) => {
-  const { email } = data;
+export const forgotPasswordService = async (email: string) => {
 
   if (!email) {
     throw new validationError('Please enter your email');
@@ -23,6 +22,6 @@ export const forgotPasswordService = async (data: any) => {
   const hashOtp = await bcrypt.hash(otp.toString(), salt);
 
   await redis.setex(`email:${email}`, 300, hashOtp);
-  await sendMail(email, otp);
+  await sendMail(email, otp.toString());
 
 };

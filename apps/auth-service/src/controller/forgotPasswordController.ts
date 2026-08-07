@@ -1,8 +1,6 @@
 import { Response, Request } from 'express';
 import { validationError } from '../utils/errorHaddler';
 import { forgotPasswordService } from '../service/forgotPasswordService';
-import dotenv from 'dotenv';
-dotenv.config();
 
 export const forgotPasswordContrroller = async (
   req: Request,
@@ -15,7 +13,7 @@ export const forgotPasswordContrroller = async (
       throw new validationError('Fill the email field');
     }
 
-     const resetToekn = await forgotPasswordService(req.body);
+     const resetToekn = await forgotPasswordService(email);
 
     return res.status(200).json({
       success: true,

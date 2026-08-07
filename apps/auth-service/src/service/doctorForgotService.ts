@@ -2,10 +2,9 @@ import { redis } from "../utils/redis"
 import bcrypt from "bcrypt"
 import { sendMail } from "../producer/emailProducerDoctor"
 
-export const forgotPasswordService = async (data: any) => {
+export const forgotPasswordService = async (email: string) => {
     try {
 
-        const { email } = data
         const otp = Math.floor(100000 + Math.random() * 90000).toString()
 
         const salt = 10

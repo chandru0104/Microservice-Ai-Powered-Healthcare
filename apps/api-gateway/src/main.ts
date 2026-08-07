@@ -40,6 +40,14 @@ const userProxy = createProxyMiddleware({
   }
 });
 
+const adminProxy = createProxyMiddleware({
+  changeOrigin: true,
+  target: process.env.AUTH_SERVICE_URL as string,
+  pathRewrite: {
+    "^/api/v1/admin": ""
+  }
+});
+
 const doctorProxy = createProxyMiddleware({
   changeOrigin: true,
   target: process.env.USER_SERVICE_URL as string,
@@ -101,6 +109,8 @@ const appointmentProxy = createProxyMiddleware({
 app.use('/api/v1/auth', authProxy);
 
 app.use('/api/v1/user', userProxy);
+
+app.use('/api/v1/admin', adminProxy);
 
 app.use("/api/v1/doctors", doctorProxy)
 
