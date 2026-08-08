@@ -43,11 +43,13 @@ export const resetPasswordDoctorService = async (
     // Hash new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    // Update password
-    doctor.password = hashedPassword;
-    await doctor.save();
+    // Update only password field (avoids full validation)
+    await Doctor.findOneAndUpdate(
+      { email },
+      { password: hashedPassword }
+    );
 
-    // Delete token from Redis
+    // Delete token from Redis 
     await redis.del(`email:${email}`);
 
     return "Password reset successfully";

@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 
 export const forgotPasswordDoctorController = async (req: Request, res: Response) => {
     try {
-        const email =req.body
+        const { email } = req.body
         await forgotPasswordService(email)
 
         res.status(200).json({

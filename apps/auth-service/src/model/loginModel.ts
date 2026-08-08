@@ -102,7 +102,6 @@ const doctorSchema = new mongoose.Schema({
     },
       google_id:{
     type:String,
-    required:true
   },
 
 }, { timestamps: true, versionKey: false })

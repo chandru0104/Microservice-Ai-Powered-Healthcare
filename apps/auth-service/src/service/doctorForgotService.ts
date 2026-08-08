@@ -5,7 +5,7 @@ import { sendMail } from "../producer/emailProducerDoctor"
 export const forgotPasswordService = async (email: string) => {
     try {
 
-        const otp = Math.floor(100000 + Math.random() * 90000).toString()
+        const otp = Math.floor(100000 + Math.random() * 900000).toString()
 
         const salt = 10
         const hashOtp =await bcrypt.hash(otp, salt)
@@ -16,7 +16,7 @@ export const forgotPasswordService = async (email: string) => {
             hashOtp
         )
 
-        sendMail(email, otp)
+       await sendMail(email, otp)
 
     } catch (error: any) {
         throw new Error(error.message)

@@ -25,7 +25,7 @@ export const connectConsumer = async () => {
                     throw new Error('Missing your data');
                 }
 
-                const data = JSON.parse(message.toString())
+                const data = JSON.parse(message.value!.toString())
 
                 const { email, otp } = data
 
