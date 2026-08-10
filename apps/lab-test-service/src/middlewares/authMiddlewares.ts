@@ -3,14 +3,14 @@ import { NextFunction } from "express"
 import dotenv from "dotenv"
 
 
-dotenv.config
+dotenv.config()
 
-const JWT_SECRET = process.env.JWT_SECRET as string
+const JWT_SECRET = process.env.ACCESS_SECRET_KEY as string
 
 export const authMiddlewares = (req: any, res: any, next: NextFunction) => {
     try {
         const header = req.headers.authorization
-        if (!header || header.startsWith("Bearer")) {
+        if (!header || !header.startsWith("Bearer ")) {
             throw new Error("Missing your auth token")
         }
 

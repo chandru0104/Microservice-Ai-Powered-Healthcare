@@ -1,12 +1,15 @@
 import { addTest } from "../utils/interfaces"
 import { LabTest } from "../model/labTest"
-
+import { ValidationError } from "../utils/Errorhandler"
 
 export const addTestService = async (data: addTest) => {
 
     try {
         const { name, categoryId, authorDetailsId, description, sampleType, gender, ageGroup, reportDelivery, price, address } = data
 
+        if (!name || !categoryId) {
+            throw new ValidationError("Please fill require value")
+        }
         const addTest = await LabTest.create({ name, categoryId, authorDetailsId, description, sampleType, gender, ageGroup, reportDelivery, price, address })
         await addTest.populate(["categoryId", "authorDetailsId"])
         return addTest
@@ -61,6 +64,9 @@ export const upadateTestService = async (id: String, data: addTest) => {
 
 export const deleteTestService = async (id: String) => {
     try {
+        if (!id) {
+            throw new ValidationError("Please provide id")
+        }
         await LabTest.findByIdAndUpdate(id, { status: 0 }, { runValidators: true, new: true })
     } catch (error: any) {
         throw new Error(error.message)

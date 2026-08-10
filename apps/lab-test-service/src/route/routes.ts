@@ -32,7 +32,7 @@ export const router = express.Router()
 router.post(
   "/category",
   authMiddlewares,
-  authorize("Admin"),
+  authorize("admin"),
   validationMiddleware(categoryValidation),
   addCategoryController
 );
@@ -80,7 +80,7 @@ router.get("/category",listCategoryController)
  *       404:
  *         description: Category not found
  */
-router.put("/category/:id",  authorize("Admin"),authMiddlewares, validationMiddleware(categoryValidation), updateCategoryController)
+router.put("/update/category/:id", authMiddlewares, authorize("admin"), validationMiddleware(categoryValidation), updateCategoryController)
 
 
 /**
@@ -105,7 +105,7 @@ router.put("/category/:id",  authorize("Admin"),authMiddlewares, validationMiddl
  *       500:
  *         description: Internal server error
  */
-router.delete("/category/delete/:id",  authorize("Admin"),authMiddlewares, deleteCategoryController);
+router.delete("/category/delete/:id", authMiddlewares, authorize("admin"), deleteCategoryController);
 
 
 /**
@@ -129,7 +129,7 @@ router.delete("/category/delete/:id",  authorize("Admin"),authMiddlewares, delet
  *       500:
  *         description: Internal server error
  */
-router.post("/tests",  authorize("Admin"),authMiddlewares, validationMiddleware(labTestValidation), testAddController)
+router.post("/tests", authMiddlewares, authorize("admin"), validationMiddleware(labTestValidation), testAddController)
 
 /**
  * @swagger
@@ -144,7 +144,7 @@ router.post("/tests",  authorize("Admin"),authMiddlewares, validationMiddleware(
  *       500:
  *         description: Internal server error
  */
-router.get("lab/tests", testListController);
+router.get("/tests", testListController);
 
 /**
  * @swagger
@@ -200,7 +200,7 @@ router.get("/tests/:id", testListOneController);
  *         description: Internal server error
  */
 router.put(
-    "/tests/:id",authMiddlewares,  authorize("Admin"),
+    "/tests/:id",authMiddlewares,  authorize("admin"),
     validationMiddleware(labTestValidation),
     testUpdatController
 );
@@ -226,4 +226,4 @@ router.put(
  *       500:
  *         description: Internal server error
  */
-router.put("/tests/delete/:id",  authorize("Admin"),authMiddlewares, testDeleteController);
+router.put("/tests/delete/:id", authMiddlewares, authorize("admin"), testDeleteController);

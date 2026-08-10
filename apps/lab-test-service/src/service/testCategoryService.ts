@@ -2,15 +2,19 @@
 import { TestCategory } from "../model/testCategory"
 
 import { category } from "../utils/interfaces"
-
+import { ValidationError } from "../utils/Errorhandler"
 
 export const addCategoryService = async (data: category) => {
 
     try {
         const { name, description } = data
 
+        if (!name) {
+            throw new ValidationError("Name is required")
+        }
+
         const addCategory = await TestCategory.create({ name, description })
-        
+
         return addCategory
     } catch (error: any) {
         throw new Error(error.message)
@@ -18,9 +22,9 @@ export const addCategoryService = async (data: category) => {
 
 }
 
-export const listCategoryService = async (page:number,limit:number) => {
+export const listCategoryService = async (page: number, limit: number) => {
     try {
-        const pages = (page-1)*limit
+        const pages = (page - 1) * limit
         const categoryData = await TestCategory.find().skip(pages).limit(limit)
 
         return categoryData
@@ -44,6 +48,9 @@ export const updateCategoryService = async (id: string, data: category) => {
 
 export const deleteCategoryService = async (id: string) => {
     try {
+        if (!id) {
+            throw new ValidationError("Id is required")
+        }
 
         await TestCategory.findByIdAndDelete(id)
 

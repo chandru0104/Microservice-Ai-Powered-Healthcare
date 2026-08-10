@@ -118,13 +118,13 @@ app.use("/api/v1/lab", labProxy)
 
 app.use("/api/v1/product", productProxy)
 
-app.use("/api/v1/order", authMiddleware, orderProxy)
+app.use("/api/v1/order", orderProxy)
 
 app.use("/api/v1/payment", authMiddleware, paymentProxy)
 
-app.use("/api/v1/ai", authMiddleware, aiProxy)
+app.use("/api/v1/ai", aiProxy)
 
-app.use("/api/v1/appointment", authMiddleware, appointmentProxy)
+app.use("/api/v1/appointment", appointmentProxy)
 
 app.get('/', (req: Request, res: Response) => {
   res.json({
