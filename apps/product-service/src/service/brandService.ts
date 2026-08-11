@@ -1,6 +1,6 @@
 import { BrandModel } from '../model/brandModel';
 
-export const addBrandService = async (name: any, userId: any) => {
+export const addBrandService = async (name: string, userId: string) => {
   try {
     const brand = await BrandModel.create({ name, createdBy: userId });
     return brand;
@@ -18,7 +18,7 @@ export const listBrandService = async () => {
   }
 };
 
-export const updateBrandService = async (id: any, data: any, getId: any) => {
+export const updateBrandService = async (id: string, data: any, getId: string) => {
   try {
     const payload = {
       ...data,

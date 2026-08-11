@@ -70,7 +70,7 @@ export const deleteSubCategoryController = async (req: any, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'Updated origin successfully',
+      message: 'Updated sub category successfully',
     });
   } catch (error: any) {
     res.status(201).json({

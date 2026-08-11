@@ -8,7 +8,7 @@ import { ChildCategory } from '../model/childCategoryModel';
 import { validationError } from '../utils/errorHandler';
 import cloudinary from '../utils/cloudinary';
 
-export const addProductService = async (file: any, data: any, userId: any) => {
+export const addProductService = async (file: any, data: any, userId: string) => {
   try {
     let {
       name,
@@ -146,7 +146,7 @@ export const productListService = async (page: number, limit: number) => {
   }
 };
 
-export const productUpdateService = async (id: any, file: any, data: any, userId: any) => {
+export const productUpdateService = async (id: string, file: any, data: any, userId: string) => {
   try {
     const images: string[] = []
 
@@ -189,7 +189,7 @@ export const productUpdateService = async (id: any, file: any, data: any, userId
 };
 
 
-export const productDeleteService = async (id: any) => {
+export const productDeleteService = async (id: string) => {
   try {
 
     await Product.findByIdAndUpdate(id, { status: 0 })
@@ -199,10 +199,10 @@ export const productDeleteService = async (id: any) => {
   }
 }
 
-export const viewProductService = async (id: any) => {
+export const viewProductService = async (id: string) => {
   try {
 
-    const viewProduct = await Product.findById(id)
+    const viewProduct = await Product.findById(id).populate(["subcategoryId", "childCategoryId", "originId", "brandId", "ageGroupId"])
 
     return viewProduct
 

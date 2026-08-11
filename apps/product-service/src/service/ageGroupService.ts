@@ -1,7 +1,7 @@
 import { AgeGroup } from '../model/ageGroupModel';
 import { validationError } from '../utils/errorHandler';
 
-export const addAgeGroupService = async (name: any, userId: any) => {
+export const addAgeGroupService = async (name: any, userId: string) => {
   try {
     const addAgeGroup = await AgeGroup.create({ name, createdBy: userId });
 
@@ -25,7 +25,7 @@ export const listAgeGroupService = async () => {
   }
 };
 
-export const updateGroupService = async (id: any, data: any, userId: any) => {
+export const updateGroupService = async (id: string, data: any, userId: string) => {
   try {
     const payload = {
         ...data,
@@ -42,7 +42,7 @@ export const updateGroupService = async (id: any, data: any, userId: any) => {
   }
 };
 
-export const deleteAgeGroupService = async (id: any) => {
+export const deleteAgeGroupService = async (id: string) => {
   try {
     const deleteAgeGroup = await AgeGroup.findByIdAndUpdate(id, { status: 0 });
     return deleteAgeGroup;

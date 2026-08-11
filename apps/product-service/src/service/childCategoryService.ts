@@ -1,7 +1,7 @@
 import { ChildCategory } from '../model/childCategoryModel';
 import { validationError } from '../utils/errorHandler';
 
-export const addChildCategoryService = async (name: any, userId: any) => {
+export const addChildCategoryService = async (name: string, userId: string) => {
   try {
     const addChild = await ChildCategory.create({ name, createdBy: userId });
 
@@ -23,7 +23,7 @@ export const listChildCategoryService = async () => {
   }
 };
 
-export const updateChildCategoryService = async (id: any, data: any, userId: any) => {
+export const updateChildCategoryService = async (id: string, data: any, userId: string) => {
   try {
     const payload = {
      ...data,
@@ -42,7 +42,7 @@ export const updateChildCategoryService = async (id: any, data: any, userId: any
   }
 };
 
-export const deleteChildCategoryService = async (id: any) => {
+export const deleteChildCategoryService = async (id: string) => {
   try {
     await ChildCategory.findByIdAndUpdate(
       id,

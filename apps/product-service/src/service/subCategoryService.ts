@@ -1,7 +1,7 @@
 import { SubCategory } from '../model/subCategoryModel';
 import { validationError } from '../utils/errorHandler';
 
-export const addSubCategoryService = async (name: any, userId: any) => {
+export const addSubCategoryService = async (name: string, userId: string) => {
   try {
     const addSubCategory = await SubCategory.create({ name, createdBy: userId });
     return addSubCategory;
@@ -19,7 +19,7 @@ export const listSubCategoryService = async () => {
   }
 };
 
-export const updateSubCategoryService = async (id: any, data: any, userId: any) => {
+export const updateSubCategoryService = async (id: string, data: any, userId: string) => {
   try {
     const payload = {
       ...data,
@@ -37,7 +37,7 @@ export const updateSubCategoryService = async (id: any, data: any, userId: any) 
   }
 };
 
-export const deleteSubCategoryService = async (id: any) => {
+export const deleteSubCategoryService = async (id: string) => {
   try {
     await SubCategory.findByIdAndUpdate(
       id,

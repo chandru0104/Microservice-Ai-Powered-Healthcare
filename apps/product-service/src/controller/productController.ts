@@ -72,7 +72,7 @@ export const updateProductController = async (req: any, res: Response) => {
     });
   } catch (error: any) {
     res.status(400).json({
-      success: true,
+      success: false,
       message: error.message,
     });
   }
@@ -89,7 +89,7 @@ export const deleteProductController = async (req: Request, res: Response) => {
       message: 'Product delete successfully',
     });
   } catch (error: any) {
-    res.status(203).json({
+    res.status(400).json({
       success: false,
       message: 'Product delete faild',
     });

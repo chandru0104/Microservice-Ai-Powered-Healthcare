@@ -1,7 +1,7 @@
 import { CategoryModel } from '../model/categoryModel';
 import {validationError} from "../utils/errorHandler"
 
-export const categoryAddService = async (name: any, userId: any) => {
+export const categoryAddService = async (name: string, userId: string) => {
   try {
     const createCategory = await CategoryModel.create({
       name,
@@ -24,7 +24,7 @@ export const categoryListService = async () => {
   }
 };
 
-export const categoryUpdateService = async (id: any, data: any,getId:any) => {
+export const categoryUpdateService = async (id: string, data: any,getId:string) => {
   try {
     const category = await CategoryModel.findById(id);
 
@@ -47,7 +47,7 @@ export const categoryUpdateService = async (id: any, data: any,getId:any) => {
 };
 
 
-export const categoryDeleteService =async (id:any)=>{
+export const categoryDeleteService =async (id:string)=>{
   try{
       const category = await CategoryModel.findById(id)
 

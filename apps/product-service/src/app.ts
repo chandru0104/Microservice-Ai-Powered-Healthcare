@@ -17,7 +17,8 @@ app.use(helmet())
 app.use(compression())
 app.use(morgan("combined"))
 app.use(cors({
-    origin: "localhost:3000",
+    origin: [process.env.ORIGIN as string],
+    credentials:true
 }))
 
 app.use("/api-doc/product/cart",swaggerUi.serve,swaggerUi.setup(swagger))

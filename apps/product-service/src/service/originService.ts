@@ -1,7 +1,7 @@
 import { OriginModel } from '../model/originModel';
 import { validationError } from '../utils/errorHandler';
 
-export const addOrginService = async (name: any, userId: any) => {
+export const addOrginService = async (name: string, userId: string) => {
   try {
     const addOrigin = await OriginModel.create({ name, createdBy: userId });
     return addOrigin;
@@ -19,7 +19,7 @@ export const listOriginService = async () => {
   }
 };
 
-export const updateOriginService = async (id: any, data: any, userId: any) => {
+export const updateOriginService = async (id: string, data: any, userId: string) => {
   try {
     const payload = {
       ...data,
@@ -37,7 +37,7 @@ export const updateOriginService = async (id: any, data: any, userId: any) => {
   }
 };
 
-export const deleteOriginService = async (id: any) => {
+export const deleteOriginService = async (id: string) => {
   try {
     await OriginModel.findByIdAndUpdate(
       id,

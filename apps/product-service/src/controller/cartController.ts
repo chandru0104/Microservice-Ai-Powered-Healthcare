@@ -69,7 +69,7 @@ export const cartDeleteController = async (req: Request, res: Response) => {
         const cartId = req.params.id
         await cartDeleteService(cartId)
 
-        return res.status(204).json({
+        return res.status(200).json({
             success: true,
             message: "Cart removed"
         })

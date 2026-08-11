@@ -53,7 +53,8 @@ import { cartAddController, cartListController, cartDeleteController, cartEditCo
 import {Authorization} from "../middleware/authorization"
 import { authMiddleware } from '../middleware/authMiddleware';
 import { uploader } from '../utils/multer';
-
+import {ValidationMiddleware} from "../middleware/validationMiddleware"
+import {Validation} from "../utils/validation"
 export const router = express.Router();
 
 //Category api list
@@ -189,10 +190,11 @@ router.put('/origin/delete/:id', authMiddleware, deleteOriginController);
  */
 
 router.post(
-  '/api/v1/product',
+  '/add',
   uploader.any(),
   authMiddleware,
   Authorization("admin"),
+   ValidationMiddleware(Validation),
   addProductController,
 );
 
@@ -209,7 +211,7 @@ router.post(
  *       200:
  *         description: Product list fetched successfully
  */
-router.get('/api/v1/product', authMiddleware, productListController);
+router.get('/list', authMiddleware, productListController);
 
 
 /**
@@ -272,7 +274,7 @@ router.get('/api/v1/product', authMiddleware, productListController);
  *         description: Product updated successfully
  */
 
-router.put('/api/v1/product/update/:id', uploader.any(),authMiddleware, updateProductController);
+router.put('/update/:id', uploader.any(),authMiddleware, updateProductController);
 
 /**
  * @swagger
@@ -294,7 +296,7 @@ router.put('/api/v1/product/update/:id', uploader.any(),authMiddleware, updatePr
  *         description: Product deleted successfully
  */
 
-router.put("/api/v1/product/delete/:id", authMiddleware, deleteProductController)
+router.put("/delete/:id", authMiddleware, deleteProductController)
 
 /**
  * @swagger
@@ -315,7 +317,7 @@ router.put("/api/v1/product/delete/:id", authMiddleware, deleteProductController
  *       200:
  *         description: Product details fetched successfully
  */
-router.get("/api/v1/product/view/:id", authMiddleware, viewProductController)
+router.get("/view/:id", authMiddleware, viewProductController)
 
 //Cart api
 
