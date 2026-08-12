@@ -50,7 +50,7 @@ export const router = Router()
  *       400:
  *         description: Bad Request
  */
-router.post("/api/v1/appointment", authMiddleware,appointmentValidationMiddleware(appointmentValidation), addAppointmentController);
+router.post("/add", authMiddleware,appointmentValidationMiddleware(appointmentValidation), addAppointmentController);
 
 
 /**
@@ -63,7 +63,7 @@ router.post("/api/v1/appointment", authMiddleware,appointmentValidationMiddlewar
  *       200:
  *         description: Success
  */
-router.get("/api/v1/appointment", authMiddleware, listAppointmentController);
+router.get("/list", authMiddleware, listAppointmentController);
 
 /**
  * @swagger

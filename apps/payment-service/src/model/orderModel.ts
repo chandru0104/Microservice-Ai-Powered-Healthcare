@@ -11,28 +11,28 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: "pending",
         enum: ["pending", "success"],
-        require: true
+        required: true
     },
     shippingAddress: {
         type: String,
-        require: true
+        required: true
     },
     items: [
         {
             product: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref:"Product",
-                require: true
+                required: true
             },
             quantity: {
                 type: Number,
-                require: true
+                required: true
             },
         }
     ],
     price: {
         type: Number,
-        require: true
+        required: true
     }
 
 }, { timestamps: true })

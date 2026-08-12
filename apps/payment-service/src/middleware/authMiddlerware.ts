@@ -6,7 +6,7 @@ export const authMiddleware = async (req: any, res: any, next: NextFunction) => 
         const header = req.headers.authorization
 
         if (!header || !header.startsWith("Bearer")) {
-            return res.status(404).json({
+            return res.status(401).json({
                 success: false,
                 message: "Unauthorization"
             })
@@ -21,7 +21,7 @@ export const authMiddleware = async (req: any, res: any, next: NextFunction) => 
 
 
     } catch (error: any) {
-        return res.status(404).json({
+        return res.status(401).json({
             success: false,
             message: error.message
         })

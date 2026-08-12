@@ -2,7 +2,7 @@ import { z } from "zod"
 
 export const appointmentValidation = z.object({
     doctor: z.string(),
-    date: z.date(),
+    date: z.string(),
     time: z.string(),
     day: z.string(),
     user: z.string(),

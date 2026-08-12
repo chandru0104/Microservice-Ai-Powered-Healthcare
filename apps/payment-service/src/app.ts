@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 app.use(helmet())
 app.use(compression())
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: [process.env.ORIGIN as string],
     credentials: true
 }))
 

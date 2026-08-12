@@ -3,23 +3,23 @@ import mongoose from "mongoose";
 const paymentSchema = new mongoose.Schema({
     amount: {
         type: Number,
-        require: true
+        required: true
     },
     currency: {
         type: String,
-        require: true
+        required: true
     },
     key: {
         type: String,
-        require: true
+        required: true
     },
     order_id: {
         type: String,
-        require: true
+        required: true
     },
     receipt: {
         type: String,
-        require: true
+        required: true
     }
 })
 

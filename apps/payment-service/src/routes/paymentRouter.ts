@@ -24,7 +24,7 @@ export const router = Router()
  *       200:
  *         description: Payment created successfully
  */
-router.post('/api/v1/payment', authMiddleware, createPaymentController)
+router.post('/add', authMiddleware, createPaymentController)
 
 /**
  * @swagger
