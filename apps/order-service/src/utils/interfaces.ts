@@ -6,7 +6,7 @@ export interface OrderItem {
 
 export interface OrderInterface {
     user: string,
-    paymetStatus: "success" | "pening",
+    paymetStatus: "success" | "pending",
     shippingAddress: string,
     items: OrderItem[],
 }

@@ -38,7 +38,7 @@ export const orderRouter = Router()
  *       200:
  *         description: Order placed successfully
  */
-orderRouter.post("/api/v1/order", authMiddleware, validationMiddlerware(orderValidation), addOrderController)
+orderRouter.post("/add", authMiddleware, validationMiddlerware(orderValidation), addOrderController)
 /**
  * @swagger
  * /api/v1/order:
@@ -51,7 +51,7 @@ orderRouter.post("/api/v1/order", authMiddleware, validationMiddlerware(orderVal
  *         description: Orders fetched successfully
  */
 orderRouter.get(
-    '/api/v1/order',
+    '/list',
     authMiddleware,
     checkRole('admin'),
     listOderController

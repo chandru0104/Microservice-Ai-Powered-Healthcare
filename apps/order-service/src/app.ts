@@ -5,7 +5,10 @@ import morgan from "morgan"
 import {orderRouter} from "./router/orderRouter"
 import {swaggerSpec} from "./utils/swagger"
 import swaggerUi from "swagger-ui-express"
+import cors from "cors"
+import dotenv from "dotenv"
 
+dotenv.config()
 
 export const app = express()
 
@@ -16,6 +19,10 @@ app.use(express.urlencoded({ extended: true ,limit:"1mb"}));
 app.use(helmet())
 app.use(morgan("combined"))
 app.use(compression())
+app.use(cors({
+    origin:[process.env.ORIGIN as string],
+    credentials:true
+}))
 
 app.use("/api-docs/order",swaggerUi.serve,swaggerUi.setup(swaggerSpec))
 app.use(orderRouter)
