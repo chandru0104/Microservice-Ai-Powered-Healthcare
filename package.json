@@ -6,6 +6,7 @@
   "private": true,
   "dependencies": {
     "@google/genai": "^2.12.0",
+    "@reduxjs/toolkit": "^2.12.0",
     "@types/bcrypt": "^6.0.0",
     "@types/cookie-parser": "^1.4.10",
     "@types/dotenv": "^6.1.1",
@@ -43,11 +44,13 @@
     "razorpay": "^2.9.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-redux": "^9.3.0",
     "swagger-jsdoc": "^6.3.0",
     "swagger-ui-express": "^5.0.1",
     "tesseract.js": "^7.0.0",
     "validator": "^13.15.35",
-    "zod": "^4.4.3"
+    "zod": "^4.4.3",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
@@ -124,12 +127,6 @@
   "workspaces": [
     "apps/*",
     "libs/shared/*",
-    "app/*",
-    "apps",
-    "apps-e2e",
-    "lab-test-service",
-    "lab-test-service-e2e",
-    "ai-service",
-    "ai-service-e2e"
+    "app/*"
   ]
 }

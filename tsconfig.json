@@ -68,6 +68,9 @@
     },
     {
       "path": "./apps/appointment-service"
+    },
+    {
+      "path": "./apps/client-e2e"
     }
   ]
 }
