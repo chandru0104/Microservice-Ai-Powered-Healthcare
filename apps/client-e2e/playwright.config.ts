@@ -24,7 +24,7 @@ export default defineConfig({
   },
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npx nx run @ai-heathcare-platform/client:dev',
+    command: 'npx nx run client:serve',
     url: 'http://localhost:3000',
     reuseExistingServer: true,
     cwd: workspaceRoot,
