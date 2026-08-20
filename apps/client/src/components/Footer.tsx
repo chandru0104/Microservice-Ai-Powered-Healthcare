@@ -1,11 +1,12 @@
 
 import Link from "next/link"
-
-
+import { FaInstagram } from "react-icons/fa";
+import { CiFacebook } from "react-icons/ci";
+import { VscTwitter } from "react-icons/vsc";
 const Footer =()=>{
 
     return(
-              <div className="bg-[#004097] text-white ">
+              <div className="bg-[#004097] text-white mt-8">
                 <div className="flex justify-between gap-10 p-4 border-b-2">
                 <div>
                      <h5 className="font-bold">Site name</h5>
@@ -18,15 +19,14 @@ const Footer =()=>{
                                                                <Link href={"/Link"}>Lab Tests
 </Link><br />
                                                                                     <Link href={"/Link"}>AI Summary</Link><br />
-                                                                                                         <Link href={"/Link"}>About</Link>
+                                                                                                         <Link href={"/about"}>About</Link>
                 </div>
                  <div>
                      <h5 className="font-bold">Legal</h5>
-                     <Link href={"/Link"}>Privacy Policy</Link><br />
-                                          <Link href={"/Link"}>Terms & Conditions</Link><br />
-                                                               <Link href={"/Link"}>Refund Policy
-</Link><br />
-                                                                                    <Link href={"/Link"}>Contact
+                     <Link href={"/privacy-policy"}>Privacy Policy</Link><br />
+                                          <Link href={"/terms-conditions"}>Terms and Conditions</Link><br />
+
+                                                                                    <Link href={"/contact"}>Contact
 </Link><br />
                 </div>
                 </div >
@@ -35,6 +35,11 @@ const Footer =()=>{
                                         <p>+91 9999 888 777</p>
                                                                                 <p>
 info@haunlimited.com</p>
+<div className="flex gap-3">
+    <Link href={"#"}><FaInstagram size={20}/></Link>
+        <Link href={"#"}><CiFacebook size={20}/></Link>
+            <Link href={"#"}><VscTwitter size={20}/></Link>
+</div>
                 </div>
                                 <div >
 
