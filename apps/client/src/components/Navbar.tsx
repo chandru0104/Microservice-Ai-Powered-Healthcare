@@ -4,7 +4,7 @@ import Link from "next/link";
 import Button from '@mui/material/Button';
 import { User } from 'lucide-react';
 import { useState } from 'react';
-
+import Image from "next/image";
 const Navbar = () => {
     const [open, setOpen] = useState(false);
 
@@ -14,7 +14,7 @@ const Navbar = () => {
     return (
         <nav className="bg-blue-000 text-black flex gap-10 p-4 items-center justify-between border-b-2 ">
             <div>
-                <img src="/logo.png" alt="logo" height={40} width={40} />
+                <Link href={"/"}><Image src="/logo.png" alt="logo" height={40} width={40} /></Link>
             </div>
             <ul className="flex gap-10">
                 <li>
