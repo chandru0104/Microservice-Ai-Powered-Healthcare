@@ -1,9 +1,8 @@
 import HomePage from "./(site)/Home/page"
 
 const MainPage = () => {
-    return(
+    return (
         <HomePage />
-
     )
 }
 

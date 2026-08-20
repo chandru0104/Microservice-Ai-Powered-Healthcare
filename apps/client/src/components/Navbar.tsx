@@ -6,7 +6,7 @@ import { User } from 'lucide-react';
 import { useState } from 'react';
 import Image from "next/image";
 const Navbar = () => {
-    const [open, setOpen] = useState(false);
+    const [, setOpen] = useState(false);
 
     function toggleDrawer(newOpen: boolean) {
         setOpen(newOpen);
@@ -35,7 +35,7 @@ const Navbar = () => {
             </ul>
             <div>
                 <Button onClick={() => toggleDrawer(true)}><User />Login</Button>
-                
+
             </div>
 
         </nav>
