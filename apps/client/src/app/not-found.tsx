@@ -8,9 +8,9 @@ import { useRouter } from "next/navigation"
 
 export default function NotFoundPage() {
 
-    const router =useRouter()
+    const router = useRouter()
 
-    function push(){
+    function push() {
         router.push("/")
     }
 
