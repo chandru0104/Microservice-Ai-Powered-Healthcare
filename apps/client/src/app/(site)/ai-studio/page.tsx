@@ -13,7 +13,7 @@ const AiStudio =()=>{
                 </div>
             </div>
 
-
+c
             <div>
                 <div>
                   left
