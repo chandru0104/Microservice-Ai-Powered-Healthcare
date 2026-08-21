@@ -12,7 +12,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className='max-w-7xl mx-auto px-6'>{children}</body>
-    </html>
-  );
+    <head>
+      <link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet"/>
+    </head>
+          <body className='max-w-full mx-auto '>{children}</body>
+        </html>
+        );
 }

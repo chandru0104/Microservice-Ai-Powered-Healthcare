@@ -3,12 +3,28 @@
 @tailwind utilities;
 
 :root {
-  --primary-btn-bg: #004097;
+  --primary-bg: #004097;
   --primary-btn-text: #ffffff;
 }
 
+body{
+  font-family: 'Google sans';
+}
+
 .MuiButton-root {
-  background-color: var(--primary-btn-bg) !important;
+  background-color: var(--primary-bg) !important;
   color: var(--primary-btn-text) !important;
   text-transform: capitalize !important;
+}
+
+
+h1{
+  font-size:40px;
+  text-transform: capitalize;
+  color:var(--primary-bg)
+}
+h2{
+  
+  font-size: 20px;
+    color:var(--primary-bg)
 }

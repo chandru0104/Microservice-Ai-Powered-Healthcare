@@ -12,7 +12,7 @@ const Navbar = () => {
         setOpen(newOpen);
     }
     return (
-        <nav className="bg-blue-000 text-black flex gap-10 p-4 items-center justify-between border-b-2 ">
+        <nav className="bg-white text-black flex gap-10 p-4 items-center justify-center border-b-2 sticky top-0">
             <div>
                 <Link href={"/"}><Image src="/logo.png" alt="logo" height={40} width={40} /></Link>
             </div>
