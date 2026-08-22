@@ -22,7 +22,7 @@ const Footer = () => {
                     <Link href={"/Link"}>Find Doctors</Link><br />
                     <Link href={"/Link"}>Lab Tests
                     </Link><br />
-                    <Link href={"/Link"}>AI Summary</Link><br />
+                    <Link href={"/Link"}>AI Reports</Link><br />
                     <Link href={"/about"}>About</Link>
                 </div>
                 <div>
