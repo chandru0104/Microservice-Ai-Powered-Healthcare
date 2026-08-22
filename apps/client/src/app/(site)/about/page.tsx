@@ -5,10 +5,10 @@ const About = () => {
     return (
         <div>
             <Navbar />
-            <h1 className="text-center pt-4">About</h1>
+            <h1 className="text-[20px] text-center pt-4 sm:text-[40px] sm:text-center pt-4 ">About</h1>
             <p className="text-center pb-4">Learn more about Care Hub, our vision, mission, and how we deliver world-class healthcare services.</p>
             <Image src={"/img_aboutus.webp"} alt="About Image" width={1200} height={20} className="flex item-center mx-auto pb-4" />
-            <div className="max-w-7xl mx-auto">
+            <div className="text-[15px] p-2 sm:text-[18px] sm:p-0 max-w-7xl mx-auto">
                 <p className="font-semibold pt-4">Who we are?</p>
                 <p className="pb-4">We are India’s largest omnichannel digital healthcare platform with the core belief that ‘Expertise is for Everyone’. We combine Care Hub’s legacy of clinical excellence, affordable cost, and forward-looking research with cutting-edge technology to make the best quality healthcare easily accessible to every Indian, online.</p>
                 <p className="font-semibold">What we do?</p>
@@ -23,19 +23,19 @@ const About = () => {
                 </ul>
                 <p>With 6000+ Care Hub doctors from every possible specialty on-board, Care Hub empowers consumers to consult with doctors in 15 minutes or less, from the comfort and safety of their homes. Online doctor consultation is done via video conferencing, telephonic conversations or online chats.</p>
 
-                <ul className="list-disc font-semibold">
+                <ul className="list-disc font-semibold pt-4">
                     <li>Online Pharmacy</li>
 
                 </ul>
                 <p>Our extensive network of pharmacies ensures that you get 100% genuine medicines delivered straight to your doorstep. We offer a wide range of prescription medicines, over-the-counter health products, and wellness items.</p>
-                <ul className="list-disc font-semibold">
+                <ul className="list-disc font-semibold pt-4">
                     <li>At-Home Lab Tests</li>
 
                 </ul>
                 <p>Experience the convenience of diagnostic tests right at home. Care Hub provides safe and hygienic sample collection by trained professionals, with accurate digital reports delivered swiftly to your secure health vault.</p>
 
                 <p>About Care Hub</p>
-                <p>Care Hub was established in 1983 by renowned architects of modern healthcare in India. As the nation’s first corporate hospital, Care Hub is acclaimed for pioneering the private healthcare revolution in the country. The group has emerged as Asia’s foremost integrated healthcare services provider and has a robust presence across the healthcare ecosystem, including Hospitals, Pharmacies, Primary Care & Diagnostic Clinics and several retail health models. The Group also has Telemedicine facilities across several countries, Health Insurance Services, Global Projects Consultancy, Medical Colleges, Medvarsity for E-Learning, Colleges of Nursing and Management of Hospitals and a Research Foundation. Since its inception, Care Hub has been honoured by the trust of over 150 million individuals from 140 countries.</p>
+                <p>Care Hub was established in 1983 by renowned architects of modern healthcare in India. As the nation’s first corporate hospital, Care Hub is acclaimed for pioneering the private healthcare revolution in the country. The group has emerged as Asia’s foremost integrated healthcare services provider and has a robust presence across the healthcare ecosystem, including Hospitals, Pharmacies, Primary Care & Diagnostic Clinics and several retail health models. .</p>
             </div>
             <Footer />
         </div>
