@@ -7,7 +7,7 @@ import MiddleComponents from "apps/client/src/components/middleComponents"
 const HomePage = () => {
     return (
         <div><Navbar />
-            <Carousel />
+            <Carousel /> 
             <MiddleComponents />
             <HomeCaps />
             <Footer />
