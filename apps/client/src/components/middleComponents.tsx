@@ -10,18 +10,19 @@ export default function MiddleComponents() {
                 <Image src={"/ai-poster.svg"} alt="ai poster" height={20} width={1300} />
                 <Button className="">Use Ai Feature</Button>
             </div>
-
-            <div >
                 <h1>Blogs and Articles for You</h1>
+            <div className="flex max-w-7xl mx-auto items-center justify-center">
+
 
                 {
                     news.map((data: any) => (
 
-                        <div key={data.id} className="flex flex-col">
-
-                            <Image src={data.image} width={200} height={20} alt="image news" />
-                            <div>{data.news}</div>
-                            <div>{data.date}</div>
+                        <div key={data.id} className=" w-[400px] p-4 ">
+                            <div className="">
+                            <Image src={data.image} width={200} height={20} alt="image news"  className="rounded-lg"/>
+                            <p className="w-[200px]">{data.news}</p>
+                            <p className="text-sm">{data.date}</p>
+                            </div>
 
                         </div>
                     ))
