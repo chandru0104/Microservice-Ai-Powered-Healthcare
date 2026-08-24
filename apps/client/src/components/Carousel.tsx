@@ -1,8 +1,8 @@
 const Carousel = () => {
     return (
-        <div className="relative w-full group pt-8">
+        <div className="p-2 flex item-center justify-center">
 
-            <div className="carousel w-full flex overflow-x-auto scroll-smooth snap-x snap-mandatory rounded-xl shadow-md [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <div className=" carousel sm:w-[70%]  flex overflow-x-auto scroll-smooth snap-x snap-mandatory rounded-xl shadow-md [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
 
                 {/* Slide 1 */}
                 <div id="slide1" className="carousel-item relative w-full flex-shrink-0 snap-start">
