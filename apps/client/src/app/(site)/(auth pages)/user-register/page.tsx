@@ -25,8 +25,26 @@ const UserLogin: React.FC = () => {
           <h2 className='text-center'>Care Hub</h2>
 
         </div>
-        <h2 className='text-center p-8'>Doctor Login</h2>
+        <h2 className='text-center p-8'>User Login</h2>
         <Form.Item
+          name="username"
+          rules={[{ required: true, message: 'Please enter your Username!' }]}
+        >
+          <Input prefix={<UserOutlined />} placeholder="Username" />
+        </Form.Item>
+                <Form.Item
+          name="username"
+          rules={[{ required: true, message: 'Please enter your Username!' }]}
+        >
+          <Input prefix={<UserOutlined />} placeholder="Username" />
+        </Form.Item>
+                <Form.Item
+          name="username"
+          rules={[{ required: true, message: 'Please enter your Username!' }]}
+        >
+          <Input prefix={<UserOutlined />} placeholder="Username" />
+        </Form.Item>
+                <Form.Item
           name="username"
           rules={[{ required: true, message: 'Please enter your Username!' }]}
         >
@@ -38,21 +56,15 @@ const UserLogin: React.FC = () => {
         >
           <Input prefix={<LockOutlined />} type="password" placeholder="Password" />
         </Form.Item>
-        <Form.Item>
-          <Flex >
-            <div className='flex item-end justify-end pl-[150px]'>
-              <Link href="/doctor-forgot">Forgot password</Link>
-            </div>
-          </Flex>
-        </Form.Item>
+
 
         <Form.Item>
           <Button block type="primary" htmlType="submit">
-            Log in
+            Register
           </Button>
           <p className='flex item-center justify-center pt-2'>or</p>
           <div className='flex item-center justify-center p-1'>
-            <Link href="/doctor-register" className='text-center'>Register now!</Link>
+            <Link href="/user-login" className='text-center'>Login</Link>
           </div>
         </Form.Item>
       </Form>
