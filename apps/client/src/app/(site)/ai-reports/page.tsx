@@ -5,18 +5,22 @@ import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import Image from "next/image";
 import FileUpload from "apps/client/src/components/FileUpload";
-import AiSection from "apps/client/src/components/Ai-sectionA";
 
 const AiStudio = () => {
   return (
     <>
       <Navbar />
-      <AiSection/>
       <div className="max-w-6xl mx-auto p-3 ">
+                  <div className="mb-10">
+            <h1 className="text-2xl text-center sm:text-4xl">Your Health, Simplified by AI</h1>
+             <p className="text-1xl text-center sm:text-1xl ">Understand your symptoms and medical reports with clear, AI-powered insights—so you can make better-informed health decisions</p>
+
+          </div>
         <div className="flex item-center justify-center gap-20 mb-10">
+
           <div className="flex flex-col gap-3 ">
             <h2 className="text-center">Check Your Symptoms</h2>
-            <p>Not feeling well? Let our AI analyze your symptoms and suggest the right care.</p>
+            <p className="text-center">Not feeling well? Let our AI analyze your symptoms and suggest the right care.</p>
             <TextField
               label="Symptom 1"
               id="outlined-size-small"

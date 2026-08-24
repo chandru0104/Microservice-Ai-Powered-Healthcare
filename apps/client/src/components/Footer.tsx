@@ -8,29 +8,29 @@ import Image from "next/image";
 const Footer = () => {
 
     return (
-        <div className="bg-[#004097] text-white mt-8 h-[400px]  ">
-            <div className="flex justify-center gap-8 pt-8">
+        <div className="h-[700px] sm:h-[400px] bg-[#004097] text-white mt-8">
+            <div className="flex-block sm:flex justify-center gap-8 pt-8">
                 <div>
                         <Link href={"/"}><h5 className="font-bold flex items-center gap-2 p-2">
                     
                         <Image src={"/logo.png"} alt="logo" width={40} height={40} />Care Hub</h5></Link>
-                    <p>We are India’s largest omnichannel digital healthcare platform. Care Hub brings a <br /> legacy of clinical technology to make the best quality healthcare easily accessible to every Indian, online.</p>
+                    <p className="p-2 sm:p-0">We are India’s largest omnichannel digital healthcare platform. Care Hub brings a <br /> legacy of clinical technology to make the best quality healthcare easily accessible to every Indian, online.</p>
                 </div>
-                <div>
-                    <h5 className="font-bold">Quick Links</h5>
-                    <Link href={"/Link"}>Buy Medicines</Link><br />
-                    <Link href={"/Link"}>Find Doctors</Link><br />
-                    <Link href={"/Link"}>Lab Tests
+                <div className="pt-6 sm:pt-0">
+                    <h5 className="font-bold pl-2 sm:pl-0">Quick Links</h5>
+                    <Link href={"/buy-medicines"} className="pl-2 sm:pl-0">Buy Medicines</Link><br />
+                    <Link href={"/doctors"} className="pl-2 sm:pl-0">Find Doctors</Link><br />
+                    <Link href={"/lab-tests"} className="pl-2 sm:pl-0">Lab Tests
                     </Link><br />
-                    <Link href={"/Link"}>AI Reports</Link><br />
-                    <Link href={"/about"}>About</Link>
+                    <Link href={"/ai-reports"} className="pl-2 sm:pl-0">AI Reports</Link><br />
+                    <Link href={"/about"} className="pl-2 sm:pl-0">About</Link>
                 </div>
-                <div>
-                    <h5 className="font-bold">Legal</h5>
-                    <Link href={"/privacy-policy"}>Privacy Policy</Link><br />
-                    <Link href={"/terms-conditions"}>Terms and Conditions</Link><br />
+                <div className="pt-6 sm:pt-0">
+                    <h5 className="pl-2 sm:pl-0 font-bold ">Legal</h5>
+                    <Link href={"/privacy-policy"} className="pl-2 sm:pl-0">Privacy Policy</Link><br />
+                    <Link href={"/terms-conditions"} className="pl-2 sm:pl-0">Terms and Conditions</Link><br />
 
-                    <Link href={"/contact"}>Contact
+                    <Link href={"/contact"} className="pl-2 sm:pl-0">Contact
                     </Link><br />
                 </div>
                 

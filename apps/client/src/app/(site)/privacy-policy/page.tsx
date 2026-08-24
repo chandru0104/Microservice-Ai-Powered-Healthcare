@@ -5,18 +5,18 @@ const PrivacyPolicy = () => {
     return (
         <div>
             <Navbar />
-            <h1 className="text-center pt-4">Care Hub Privacy Policy</h1>
-            <p className="text-center pb-4">Please read our privacy policy carefully to understand how we collect, use, and protect your personal information.</p>
+            <h1 className="text-2xl sm:text-4xl text-center pt-4 ">Care Hub Privacy Policy</h1>
+            <p className="p-2 text-center text-[] sm:text-center pb-4">Please read our privacy policy carefully to understand how we collect, use, and protect your personal information.</p>
             <Image src={"/policy.jpg"} alt="policy image" width={1200} height={20} className="flex item-center mx-auto" />
-            <h2 className="text-center p-4">CARE HUB LIMITED-PRIVACY POLICY </h2>
-            <div className="max-w-7xl mx-auto">
+            <h2 className="text-center pt-4">CARE HUB LIMITED-PRIVACY POLICY </h2>
+            <div className="p-2 sm:p-0 max-w-7xl mx-auto">
                 <p>This Privacy Policy governs how we, Care Hub Limited, a company duly incorporated under the provisions of the Companies Act, 2013, having its registered office at #123, Healthcare Avenue, Tech Park, New Delhi, India - 110001 (collectively, “CHL”, “Care Hub”, “Company”, “we,” “us,” or “our”) collect, use, share and process your information, that you provide to us through your use of the app,  Care Hub and website [https://www.carehub.com/] in the course of availing services that are  made available on the said app and website (“Services”) as defined in the Terms of Use [https://www.carehub.com/terms] to you. </p>
 
 
                 <ol >
                     <li><h2 className="py-2">1. WHAT IS PERSONAL INFORMATION </h2></li>
 
-                    <ol type="a">
+                    <ol type="a" >
                         <li> Personal information is that information which can be used to directly or indirectly identify you. It includes de-identified data that, when linked to other information available to us, would enable us to identify you. Personal data does not include data that has been irreversibly anonymized or aggregated  so that we cannot identify you through it, even in conjugation conjunction with other information. </li>
                         <li>By signing up on the App or proceeding to the Website, and / or using our Services you represent that you voluntarily provide us with personal information including medical and financial information, and  consent to their collection, use, and disclosure in accordance with this Privacy Policy. You also  represent that you are duly authorized by any third party (including a child or an employee) whose  information you share with us. We shall act as per your representation of authority and shall not make  any independent enquiries to ascertain the veracity of your authorization. In the event you do not  have sufficient authorization you shall be solely responsible for your acts and omissions including  sharing of information with us by you and the consequential processing and actions taken by us in  accordance with this Privacy Policy. </li>
                     </ol>
