@@ -2,13 +2,17 @@
 
 import React from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Flex, Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
-const UserLogin: React.FC = () => {
+
+const DoctorRegsiter: React.FC = () => {
+  
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
   };
+
+
 
   return (
     <div className='min-h-screen flex items-center justify-center'>
@@ -70,4 +74,4 @@ const UserLogin: React.FC = () => {
   );
 };
 
-export default UserLogin;
+export default DoctorRegsiter;

@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 import Button from '@mui/material/Button';
-import { User } from 'lucide-react';
+import { User, Menu, BriefcaseMedical } from 'lucide-react';
 import { useState } from 'react';
 import Image from "next/image";
-import { RiMenuLine } from "react-icons/ri";
-import { BriefcaseMedical } from 'lucide-react';
 import NavMenu from "./NavMenu";
 import { useRouter } from "next/navigation";
 
@@ -34,7 +32,7 @@ const Navbar = () => {
         <>
             <nav className=" bg-white text-black flex gap-10 p-4 items-center justify-center border-b-2 sticky top-0 z-50">
                 <div className="block sm:hidden mr-auto">
-                    <RiMenuLine size={30} onClick={toggleDrawer} />
+                    <Menu size={30} onClick={toggleDrawer} className="cursor-pointer" />
                 </div>
                 <div className="flex gap-2">
                 <div className="block sm:hidden ml-auto">

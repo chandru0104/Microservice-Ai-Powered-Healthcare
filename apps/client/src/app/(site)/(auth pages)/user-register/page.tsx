@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Flex, Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
-const UserLogin: React.FC = () => {
+
+const UserRegister: React.FC = () => {
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
   };
@@ -72,4 +73,4 @@ const UserLogin: React.FC = () => {
   );
 };
 
-export default UserLogin;
+export default UserRegister;
