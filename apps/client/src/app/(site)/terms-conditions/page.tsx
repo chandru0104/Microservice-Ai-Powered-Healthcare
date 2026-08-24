@@ -5,11 +5,11 @@ const Terms = () => {
     return (
         <>
             <Navbar />
-            <h1 className="text-center pt-4">terms & conditions</h1>
+            <h1 className="text-2xl text-center sm:text-4xl text-center pt-4">terms & conditions</h1>
             <p className="text-center pb-4">please read all of our terms and conditions before doing anything.</p>
-            <Image src={"/term.jpg"} height={20} width={1200} alt="terms image" className="h-[550px] flex item-center mx-auto" />
-            <h1 className="text-center pt-4">CARE HUB LIMITED - TERMS OF USE</h1>
-            <div className="max-w-7xl mx-auto">
+            <Image src={"/termandcondition.jpg"} height={20} width={1200} alt="terms image" className="sm:h-[400px] flex item-center mx-auto" />
+            <h1 className="text-[20px] text-center pb-2 sm:text-2xl text-center pt-4">CARE HUB LIMITED - TERMS OF USE</h1>
+            <div className="pl-6 sm:max-w-7xl mx-auto">
                 <ol className="list-decimal pb-4 font-semibold">
                     <li>GENERAL</li>
                 </ol>
