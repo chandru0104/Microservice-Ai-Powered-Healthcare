@@ -1,13 +1,34 @@
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
+
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Flex, Form, Input } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
+import { AuthLogin } from 'apps/client/src/services/authService';
+import { Login } from "apps/client/src/models/authModel"
+import {useRouter} from "next/navigation"
+
 const UserLogin: React.FC = () => {
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
+
+  const [loading, setLoading] = useState(false)
+   
+  const router = useRouter()
+
+  const onFinish = (values: Login) => {
+    try {
+      setLoading(true)
+
+        AuthLogin(values)
+       router.push("/")
+
+    } catch (error: any) {
+      console.error(error.message);
+    } finally {
+     setLoading(false)
+    }
+
   };
 
   return (
@@ -27,7 +48,7 @@ const UserLogin: React.FC = () => {
         </div>
         <h2 className='text-center p-8'>User Login</h2>
         <Form.Item
-          name="username"
+          name="email"
           rules={[{ required: true, message: 'Please enter your Username!' }]}
         >
           <Input prefix={<UserOutlined />} placeholder="Username" />
@@ -47,7 +68,7 @@ const UserLogin: React.FC = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button block type="primary" htmlType="submit">
+          <Button block type="primary" htmlType="submit" loading={loading }>
             Log in
           </Button>
           <p className='flex item-center justify-center pt-2'>or</p>
