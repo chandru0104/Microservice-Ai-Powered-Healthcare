@@ -1,19 +1,26 @@
+"use client"
+import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import newsJson from "../app/(site)/jsons/news.json"
-export default function MiddleComponents() {
 
+export default function MiddleComponents() {
+    const [showAll, setShowAll] = useState(false)
     const news = newsJson
+
+    // Show 6 items initially, or all items if showAll is true
+    const visibleNews = showAll ? news : news.slice(0, 6)
+
     return (
         <>
             <div className="max-w-[1320px] mx-auto  pt-4 pb-4">
                 <Link href="/ai-reports" className="relative block group overflow-hidden rounded-3xl shadow-md hover:shadow-lg transition-all duration-300 bg-gradient-to-r from-[#0284c7] via-[#0369a1] to-[#0f172a] p-8 md:p-10">
-                    {/* Glowing background light spots */}
+
                     <div className="absolute -top-10 -left-10 w-64 h-64 bg-sky-400 opacity-20 rounded-full blur-3xl pointer-events-none"></div>
                     <div className="absolute -bottom-10 right-1/3 w-72 h-72 bg-indigo-500 opacity-20 rounded-full blur-3xl pointer-events-none"></div>
 
                     <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-                        {/* Left Side Content - Real HTML rendering UI's Google Sans font */}
+
                         <div className="max-w-2xl text-white">
                             <h2 className="text-2xl md:text-3xl lg:text-[36px] font-bold leading-tight tracking-tight text-white mb-3">
                                 Ask anything about your health.
@@ -67,24 +74,63 @@ export default function MiddleComponents() {
                     </div>
                 </Link>
             </div>
-            <h1 className="flex max-w-7xl mx-auto items-center justify-center">Blogs and Articles for You</h1>
-            <div className="flex max-w-7xl mx-auto items-center justify-center">
 
+            {/* Blogs and Articles Header with View All > Icon Button */}
+            <div className="max-w-[1320px] mx-auto px-4 pt-6 pb-2 flex items-center justify-between">
+                <h1 className="text-2xl md:text-3xl font-bold text-[#004097]">Blogs and Articles for You</h1>
+                {news.length > 6 && (
+                    <button 
+                        onClick={() => setShowAll(!showAll)}
+                        className="flex items-center gap-1.5 text-[#004097] hover:text-sky-600 font-semibold text-sm md:text-base group transition-colors duration-200 cursor-pointer"
+                    >
+                        <span>{showAll ? "Show Less" : "View All"}</span>
+                        <div className="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center group-hover:bg-sky-100 transition-colors shadow-sm">
+                            <svg 
+                                className={`w-4 h-4 text-[#004097] transform transition-transform duration-300 ${showAll ? "-rotate-90" : "group-hover:translate-x-0.5"}`} 
+                                fill="none" 
+                                viewBox="0 0 24 24" 
+                                stroke="currentColor" 
+                                strokeWidth="2.5"
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                    </button>
+                )}
+            </div>
 
+            {/* Articles Grid (Responsive layout for 6 items) */}
+            <div className="max-w-[1320px] mx-auto px-4 py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {
-                    news.map((data: any) => (
-
-                        <div key={data.id} className=" w-[400px] p-4 ">
-                            <div className="">
-                                <Image src={data.image} width={200} height={20} alt="image news" className="rounded-lg" />
-                                <p className="w-[200px]">{data.news}</p>
-                                <p className="text-sm">{data.date}</p>
+                    visibleNews.map((data: any) => (
+                        <div key={data.id} className="p-4 flex flex-col justify-between border-2 rounded-lg border-gray-100">
+                            <div className="flex gap-4 items-start">
+                                <Image src={data.image} width={120} height={90} alt="image news" className="rounded-lg object-cover w-[120px] h-[90px] shrink-0" />
+                                <div>
+                                    <p className="font-semibold text-slate-800 text-sm md:text-base line-clamp-3 mb-2">{data.news}</p>
+                                    <p className="text-xs text-slate-400">{data.date}</p>
+                                </div>
                             </div>
-
                         </div>
                     ))
                 }
             </div>
+
+            {/* Bottom Toggle Button if > 6 items */}
+            {news.length > 6 && !showAll && (
+                <div className="flex justify-center pt-2 pb-6">
+                    <button
+                        onClick={() => setShowAll(true)}
+                        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white border border-[#004097]/30 text-[#004097] hover:bg-[#004097] hover:text-white font-semibold text-sm transition-all duration-200 shadow-sm cursor-pointer group"
+                    >
+                        <span>View All Articles ({news.length})</span>
+                        <svg className="w-4 h-4 text-[#004097] group-hover:text-white transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            )}
+
             <div className="p-2 flex sm:flex item-center justify-center gap-20 py-4">
                 <div className="flex flex-col items-center">
                     <Image src={"/secure.svg"} height={20} width={80} alt="secure svg" />
