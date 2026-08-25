@@ -2,7 +2,12 @@
   "name": "@ai-heathcare-platform/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start": "node scripts/start-client.js",
+    "dev": "node scripts/start-client.js",
+    "start:client": "node scripts/start-client.js",
+    "serve:client": "node scripts/start-client.js"
+  },
   "private": true,
   "dependencies": {
     "@emotion/cache": "^11.14.0",
