@@ -3,11 +3,11 @@
 export default function HomeCaps() {
     return (
         <>
-            <div>
-                <p className="font-semibold">Care Hub - Your Most Trusted Healthcare Brand</p>
+            <div className="p-2  sm:max-w-7xl mx-auto ">
+                <p className="font-semibold pb-2">Care Hub - Your Most Trusted Healthcare Brand</p>
                 <p>Care Hub is the largest multi-channel digital healthcare platform in India, created with a vision of eliminating flexibility blockages from the healthcare industry. We believe in making healthcare affordable to everyone by combining analytic excellence, affordable cost, and extensive research with advanced technology. Care Hub is a single online platform where you have access to a wide range of services such as online pharmacy, online doctor consultations, and diagnostic lab tests at home. We also provide expert solutions for chronic conditions and COVID-care with a secured digital vault, where you can safely upload all your medical reports. </p>
                 <p>Make the best decision for your health by choosing Care Hub. Here’s why you can count on us:</p>
-                <ol className="list-disc pl-4">
+                <ol className="list-disc pl-4 pt-2">
                     <li>40 years of legacy in the healthcare industry</li>
                     <li>24x7 availability of top specialist doctors</li>
                     <li>Fast and secure home medicine delivery</li>
@@ -16,8 +16,8 @@ export default function HomeCaps() {
                     <li>Personalised care and treatment plans for every patient</li>
                 </ol>
 
-                <p>Online doctor consultations take place through online doctor chat, call, or video call. This helps you to talk to doctors online from the comfort of your home by simply choosing a doctor from different specialties. Avail personalised solutions for any health problem with prompt online doctor consultation with Care Hub.</p>
-                <ol className="list-disc pl-4">
+                <p className="pt-2">Online doctor consultations take place through online doctor chat, call, or video call. This helps you to talk to doctors online from the comfort of your home by simply choosing a doctor from different specialties. Avail personalised solutions for any health problem with prompt online doctor consultation with Care Hub.</p>
+                <ol className="list-disc pl-4 pt-2">
                     <li>Safe and secure platform</li>
                     <li>Video and chat options</li>
                 </ol>
