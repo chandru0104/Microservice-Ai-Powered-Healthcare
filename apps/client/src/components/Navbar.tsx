@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 
 const Navbar = () => {
     const [openMenu, setOpenMenu] = useState(false);
+    
+const userName  = localStorage.getItem("user_name")
 
     const router = useRouter()
 
@@ -23,6 +25,12 @@ const Navbar = () => {
 
     function doctorNavigation(data: String) {
         if (data == "user") {
+            if(userName){
+                localStorage.removeItem("user_name")
+                localStorage.removeItem("user_id")
+                localStorage.removeItem("user_role")
+                localStorage.removeItem("user_accessToken")
+            }
             router.push("/user-login")
         } else {
             router.push("/doctor-login")
@@ -67,7 +75,7 @@ const Navbar = () => {
                     <Button onClick={() => { doctorNavigation("doctor") }}><BriefcaseMedical /> &nbsp; Doctor Login</Button>
                 </div>
                 <div className="hidden sm:block">
-                    <Button onClick={() => { doctorNavigation("user") }}><User /> &nbsp; User Login</Button>
+                    <Button onClick={() => { doctorNavigation("user") }}><User /> &nbsp; {userName ? userName : "User Login"}</Button>
                 </div>
             </nav>
             {

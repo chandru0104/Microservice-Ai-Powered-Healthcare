@@ -8,25 +8,33 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { AuthLogin } from 'apps/client/src/services/authService';
 import { Login } from "apps/client/src/models/authModel"
-import {useRouter} from "next/navigation"
+import { useRouter } from "next/navigation"
 
 const UserLogin: React.FC = () => {
 
   const [loading, setLoading] = useState(false)
-   
+
   const router = useRouter()
 
-  const onFinish = (values: Login) => {
+  const onFinish = async (values: Login) => {
     try {
       setLoading(true)
 
-        AuthLogin(values)
-       router.push("/")
+      const userData = await AuthLogin(values)
+
+      const {name, id, role, accessToken } = userData.data
+
+      localStorage.setItem("user_name", name)
+      localStorage.setItem("user_id", id)
+      localStorage.setItem("user_role", role)
+      localStorage.setItem("user_accessToken", accessToken)
+
+      router.push("/")
 
     } catch (error: any) {
       console.error(error.message);
     } finally {
-     setLoading(false)
+      setLoading(false)
     }
 
   };
@@ -68,7 +76,7 @@ const UserLogin: React.FC = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button block type="primary" htmlType="submit" loading={loading }>
+          <Button block type="primary" htmlType="submit" loading={loading}>
             Log in
           </Button>
           <p className='flex item-center justify-center pt-2'>or</p>
