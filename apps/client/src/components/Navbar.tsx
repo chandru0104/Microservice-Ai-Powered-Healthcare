@@ -26,12 +26,8 @@ const userName  = localStorage.getItem("user_name")
     function doctorNavigation(data: String) {
         if (data == "user") {
             if(userName){
-                localStorage.removeItem("user_name")
-                localStorage.removeItem("user_id")
-                localStorage.removeItem("user_role")
-                localStorage.removeItem("user_accessToken")
-            }
             router.push("/user-profile")
+            }
         } else {
             router.push("/doctor-login")
         }
