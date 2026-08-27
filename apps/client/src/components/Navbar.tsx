@@ -31,7 +31,7 @@ const userName  = localStorage.getItem("user_name")
                 localStorage.removeItem("user_role")
                 localStorage.removeItem("user_accessToken")
             }
-            router.push("/user-login")
+            router.push("/user-profile")
         } else {
             router.push("/doctor-login")
         }

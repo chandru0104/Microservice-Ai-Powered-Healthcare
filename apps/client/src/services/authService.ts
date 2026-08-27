@@ -44,10 +44,11 @@ export const Otp = async (otp: number) => {
     try {
 
 
-        const getUserEmail = localStorage.getItem("temUserEmail")
-        const data = { otp, email }
+        const email = localStorage.getItem("temUserEmail")
+        const stringOtp = otp.toString()
+        const payload = { otp: stringOtp, email }
 
-        const verfiy = await axios.post(`${API_GATEWAY_URL}/api/v1/user/verify/otp`, data, {
+        const verfiy = await axios.post(`${API_GATEWAY_URL}/api/v1/user/verify/otp`, payload, {
             headers: {
                 "Content-Type": "application/json"
             }

@@ -12,15 +12,15 @@ const OtpSend: React.FC = () => {
 
     const router = useRouter()
 
-    const onFinish = async (values:number) => {
+    const onFinish = async (values: {otp:string}) => {
         try {
             setLoading(true)
 
-            const getOtp =await Otp(values)
+            const getOtp = await Otp(Number(values.otp))
             if (getOtp) {
-                router.push("/login")
+                router.push("/user-login")
             }
-
+            localStorage.setItem("tempEmail", values.toString())
         } catch (error: any) {
             console.error(error.message);
         } finally {
@@ -49,7 +49,7 @@ const OtpSend: React.FC = () => {
                     name="otp"
                     rules={[{ required: true, message: 'Please enter your Otp!' }]}
                 >
-                    <Input  placeholder="Otp" />
+                    <Input placeholder="Otp" />
                 </Form.Item>
 
 
