@@ -3,15 +3,23 @@
 import Link from "next/link";
 import Button from '@mui/material/Button';
 import { User, Menu, BriefcaseMedical } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from "next/image";
 import NavMenu from "./NavMenu";
 import { useRouter } from "next/navigation";
 
 const Navbar = () => {
     const [openMenu, setOpenMenu] = useState(false);
-    
-const userName  = localStorage.getItem("user_name")
+    const [userName, setUserName] = useState<string | null>(null)
+    const [doctorName, setDoctorName] = useState<string | null>(null)
+
+    useEffect(() => {
+        const userNames = localStorage.getItem("userName")
+        const doctorNames = localStorage.getItem("doctorName")
+        setUserName(userNames)
+        setDoctorName(doctorNames)
+    }, [])
+
 
     const router = useRouter()
 
@@ -24,12 +32,18 @@ const userName  = localStorage.getItem("user_name")
     }
 
     function doctorNavigation(data: String) {
-        if (data == "user") {
-            if(userName){
-            router.push("/user-profile")
+        if (data === "user") {
+            if (userName) {
+                router.push("/user-profile")
+            } else {
+                router.push("/user-login")
             }
-        } else {
-            router.push("/doctor-login")
+        } else if (data === "doctor") {
+            if (doctorName) {
+                router.push("/dashboard")
+            } else {
+                router.push("/doctor-login")
+            }
         }
     }
     return (
@@ -39,12 +53,12 @@ const userName  = localStorage.getItem("user_name")
                     <Menu size={30} onClick={toggleDrawer} className="cursor-pointer" />
                 </div>
                 <div className="flex gap-2">
-                <div className="block sm:hidden ml-auto">
-                    <Button onClick={() => { doctorNavigation("user") }}><User />Login</Button>
-                </div>
-                <div className="block sm:hidden ml-auto ">
-                    <Button onClick={() => { doctorNavigation("doctor") }}><BriefcaseMedical /> &nbsp; Doctor Login</Button>
-                </div>
+                    <div className="block sm:hidden ml-auto">
+                        <Button onClick={() => { doctorNavigation("user") }}><User />Login</Button>
+                    </div>
+                    <div className="block sm:hidden ml-auto ">
+                        <Button onClick={() => { doctorNavigation("doctor") }}><BriefcaseMedical /> &nbsp; Doctor Login</Button>
+                    </div>
                 </div>
 
                 <div className="hidden sm:block">
@@ -68,7 +82,7 @@ const userName  = localStorage.getItem("user_name")
                     </li>
                 </ul>
                 <div className="hidden sm:block ">
-                    <Button onClick={() => { doctorNavigation("doctor") }}><BriefcaseMedical /> &nbsp; Doctor Login</Button>
+                    <Button onClick={() => { doctorNavigation("doctor") }}><BriefcaseMedical /> &nbsp; {doctorName ? doctorName : "Doctor Login"}</Button>
                 </div>
                 <div className="hidden sm:block">
                     <Button onClick={() => { doctorNavigation("user") }}><User /> &nbsp; {userName ? userName : "User Login"}</Button>

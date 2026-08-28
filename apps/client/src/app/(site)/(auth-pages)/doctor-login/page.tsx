@@ -1,17 +1,44 @@
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Flex, Form, Input } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Login } from "../../../../models/authModel"
+import { DoctorLogin } from "../../../../services/authService"
+import { useRouter } from 'next/navigation';
+const DoctorLogins: React.FC = () => {
 
-const DoctorLogin: React.FC = () => {
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
-  };
-    
-  
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+
+
+  const onFinish = async (values: Login) => {
+    try {
+
+      setLoading(true)
+
+      const doctorData = await DoctorLogin(values)
+      console.log(doctorData)
+      const { id, name, accessToken } = doctorData.data
+ 
+      localStorage.setItem("doctorId", id)
+      localStorage.setItem("doctorName", name)
+      localStorage.setItem("doctorAccessToken", accessToken)
+
+      if (doctorData) {
+        router.push("/dashboard")
+      }
+
+    } catch (error: any) {
+      throw new Error(error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+
 
   return (
     <div className='min-h-screen flex items-center justify-center'>
@@ -30,10 +57,10 @@ const DoctorLogin: React.FC = () => {
         </div>
         <h2 className='text-center p-8'>Doctor Login</h2>
         <Form.Item
-          name="username"
-          rules={[{ required: true, message: 'Please enter your Username!' }]}
+          name="email"
+          rules={[{ required: true, message: 'Please enter your Email!' }]}
         >
-          <Input prefix={<UserOutlined />} placeholder="Username" />
+          <Input prefix={<UserOutlined />} placeholder="Email" />
         </Form.Item>
         <Form.Item
           name="password"
@@ -50,7 +77,7 @@ const DoctorLogin: React.FC = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button block type="primary" htmlType="submit">
+          <Button block type="primary" htmlType="submit" loading={loading}>
             Log in
           </Button>
           <p className='flex item-center justify-center pt-2'>or</p>
@@ -63,4 +90,4 @@ const DoctorLogin: React.FC = () => {
   );
 };
 
-export default DoctorLogin;
+export default DoctorLogins;

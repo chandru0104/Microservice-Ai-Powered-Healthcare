@@ -1,10 +1,10 @@
-import { Login, UserRegister } from "../models/authModel"
+import { Login, UserRegister, DoctorRegister} from "../models/authModel"
 
 import axios from "axios"
 
 const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
 
-export const AuthLogin = async (data: Login) => {
+export const AuthUserLogin = async (data: Login) => {
     try {
         if (!data.email || !data.password) {
             throw new Error("Please fill all values")
@@ -57,6 +57,35 @@ export const Otp = async (otp: number) => {
         return verfiy
 
     } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export const DoctorLogin = async (data: Login) => {
+    try {
+        if (!data.email || !data.password) {
+            throw new Error("Please fill all values")
+        }
+        const loginData = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/doctor/login`, data, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        return loginData.data
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export const DoctorRegisters =async(data:DoctorRegister)=>{
+    try{
+          const Register =await axios.post(`${API_GATEWAY_URL}/api/v1/docter/register`,data,{
+            headers:{
+                "Content-Type":"application/json"
+            }
+          })
+          return Register.data
+    }catch(error:any){
         throw new Error(error.message)
     }
 }

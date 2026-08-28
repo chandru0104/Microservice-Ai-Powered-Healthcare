@@ -6,7 +6,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Flex, Form, Input } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AuthLogin } from 'apps/client/src/services/authService';
+import { AuthUserLogin } from 'apps/client/src/services/authService';
 import { Login } from "apps/client/src/models/authModel"
 import { useRouter } from "next/navigation"
 
@@ -20,14 +20,14 @@ const UserLogin: React.FC = () => {
     try {
       setLoading(true)
 
-      const userData = await AuthLogin(values)
+      const userData = await AuthUserLogin(values)
 
       const {name, id, role, accessToken } = userData.data
 
-      localStorage.setItem("user_name", name)
-      localStorage.setItem("user_id", id)
-      localStorage.setItem("user_role", role)
-      localStorage.setItem("user_accessToken", accessToken)
+      localStorage.setItem("userName", name)
+      localStorage.setItem("userId", id)
+      localStorage.setItem("userRole", role)
+      localStorage.setItem("userAccessToken", accessToken)
 
       router.push("/")
 

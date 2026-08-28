@@ -8,3 +8,14 @@ export interface UserRegister{
     email:string,
     password:string
 }
+
+export interface DoctorRegister{
+    name:string
+    password:string
+    specialties:string
+    email:string
+    experience:string
+    price:string
+    register:string
+    profile:File
+}

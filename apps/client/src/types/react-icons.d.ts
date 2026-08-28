@@ -11,3 +11,4 @@ declare module 'react-icons/hi2';
 declare module 'react-icons/bs';
 declare module 'react-icons/ai';
 declare module 'react-icons/ri';
+declare module "react-icons/cg";

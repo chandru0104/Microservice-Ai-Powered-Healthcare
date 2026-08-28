@@ -71,7 +71,7 @@ const UserRegister: React.FC = () => {
           </Button>
           <p className='flex item-center justify-center pt-2'>or</p>
           <div className='flex item-center justify-center p-1'>
-            <Link href="/user-login" className='text-center'>Login</Link>
+            <Link href="/user-login" className='text-center'>Already have an account?</Link>
           </div>
         </Form.Item>
       </Form>
