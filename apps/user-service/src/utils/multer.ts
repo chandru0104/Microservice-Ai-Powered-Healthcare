@@ -2,7 +2,7 @@ import multer from 'multer';
 import path from 'path';
 import fs, { mkdirSync } from 'fs';
 
-const upoladPath = path.resolve('/app/user-service/uploader');
+const upoladPath = path.resolve(process.cwd(), 'apps/user-service/uploader');
 
 if (!fs.existsSync(upoladPath)) {
   mkdirSync(upoladPath, { recursive: true });

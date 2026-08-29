@@ -52,7 +52,7 @@ const doctorProxy = createProxyMiddleware({
   changeOrigin: true,
   target: process.env.USER_SERVICE_URL as string,
   pathRewrite: {
-    "^/api/v1/doctors": "/doctor"
+    "^/api/v1/doctors": ""
   }
 })
 

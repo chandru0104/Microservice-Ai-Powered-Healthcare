@@ -18,7 +18,7 @@ const UserRegister: React.FC = () => {
       setLoading(true)
       const register = await UserRegisters(values)
       if (register) {
-        router.push("/otp")
+        router.push("/otp/user")
       }
     } catch (error: any) {
       throw new Error(error.message)
@@ -27,7 +27,6 @@ const UserRegister: React.FC = () => {
       setLoading(false)
     }
 
-    console.log('Received values of form: ', values);
   };
 
   return (

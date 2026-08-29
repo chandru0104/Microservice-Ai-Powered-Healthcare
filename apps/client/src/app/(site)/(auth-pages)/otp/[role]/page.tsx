@@ -3,24 +3,33 @@
 import React, { useState } from 'react';
 import { Button, Form, Input } from 'antd';
 import Image from 'next/image';
-import { Otp } from 'apps/client/src/services/authService';
+import { OtpUser, OtpDoctor } from 'apps/client/src/services/authService';
 import { useRouter } from "next/navigation"
+import { useParams } from 'next/navigation';
 
 const OtpSend: React.FC = () => {
 
     const [loading, setLoading] = useState(false)
 
     const router = useRouter()
+    const params = useParams()
 
-    const onFinish = async (values: {otp:string}) => {
+    const onFinish = async (values: { otp: string }) => {
         try {
             setLoading(true)
-
-            const getOtp = await Otp(Number(values.otp))
-            if (getOtp) {
-                router.push("/user-login")
+            if (params.role === "user") {
+                const getOtp = await OtpUser(Number(values.otp))
+                if (getOtp) {
+                    router.push("/user-login")
+                }
+                localStorage.setItem("tempEmailUser", values.toString())
+            } else if (params.role === "doctor") {
+                const getOtpdoc = await OtpDoctor(Number(values.otp))
+                if (getOtpdoc) {
+                    router.push("/doctor-login")
+                }
+                localStorage.set("tempEmailDoctor", values.toString())
             }
-            localStorage.setItem("tempEmail", values.toString())
         } catch (error: any) {
             console.error(error.message);
         } finally {

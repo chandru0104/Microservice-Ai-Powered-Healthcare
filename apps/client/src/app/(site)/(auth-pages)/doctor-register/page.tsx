@@ -13,16 +13,32 @@ import Grid from '@mui/material/Grid';
 import DocfileUpload from "../../../../components/DocfileUpload"
 import { DoctorRegisters } from "../../../../services/authService"
 import { useRouter } from 'next/navigation';
+import { MdOutlineLocationOn } from "react-icons/md";
 
 const DoctorRegsiter: React.FC = () => {
   const router = useRouter()
   const onFinish = async (values: any) => {
-    const add = await DoctorRegisters(values)
+    const formData = new FormData();
+
+    formData.append("name", values.name);
+    formData.append("email", values.email);
+    formData.append("password", values.password);
+    formData.append("specialties", values.specialties);
+    formData.append("experience", values.experience);
+    formData.append("price", values.price);
+    formData.append("register", values.register);
+    formData.append("place",values.place)
+    if (values.profile && values.profile.length > 0) {
+      formData.append("profile", values.profile[0].originFileObj);
+    }
+
+
+    const add = await DoctorRegisters(formData as any);
     if (add) {
-      router.push('/doctor-login')
+      router.push(`/otp/doctor`)
     }
   };
-
+      
 
 
   return (
@@ -91,9 +107,20 @@ const DoctorRegsiter: React.FC = () => {
             >
               <Input prefix={<FaRegBookmark />} placeholder="Register No" />
             </Form.Item>
-            <div className='mb-3'>
-              <label>Profile: &nbsp; </label><DocfileUpload />
-            </div>
+            <Form.Item
+              name="place"
+              rules={[{ required: true, message: 'Please enter your Location!' }]}
+            >
+              <Input prefix={<MdOutlineLocationOn />} placeholder="Location" />
+            </Form.Item>
+            <Form.Item
+              name="profile"
+              label="Profile"
+              valuePropName="fileList"
+              getValueFromEvent={(e) => Array.isArray(e) ? e : e?.fileList}
+            >
+              <DocfileUpload />
+            </Form.Item>
           </Grid>
 
         </Grid>
