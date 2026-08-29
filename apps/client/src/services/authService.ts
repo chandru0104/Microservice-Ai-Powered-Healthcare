@@ -1,4 +1,4 @@
-import { Login, UserRegister, DoctorRegister} from "../models/authModel"
+import { Login, UserRegister } from "../models/authModel"
 
 import axios from "axios"
 
@@ -33,18 +33,18 @@ export const UserRegisters = async (data: UserRegister) => {
             }
         })
 
-        localStorage.setItem("temUserEmail", data.email)
+        localStorage.setItem("tempEmailUser", data.email)
         return Register.data
     } catch (error: any) {
         throw new Error(error.message)
     }
 }
 
-export const Otp = async (otp: number) => {
+export const OtpUser = async (otp: number) => {
     try {
 
 
-        const email = localStorage.getItem("temUserEmail")
+        const email = localStorage.getItem("tempEmailUser")
         const stringOtp = otp.toString()
         const payload = { otp: stringOtp, email }
 
@@ -53,9 +53,28 @@ export const Otp = async (otp: number) => {
                 "Content-Type": "application/json"
             }
         })
-        localStorage.removeItem("temUserEmail")
+        if (verfiy) {
+            localStorage.removeItem("tempEmailUser")
+        }
+
         return verfiy
 
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export const OtpDoctor = async (otp: number) => {
+    try {
+        const email = localStorage.getItem("tempDoctorEmail")
+        const payload = { otp: otp.toString(), email }
+        const verfiy = await axios.post(`${API_GATEWAY_URL}/api/v1/doctors/doctor-verfiy`, payload, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        localStorage.removeItem("tempDoctorEmail")
+        return verfiy
     } catch (error: any) {
         throw new Error(error.message)
     }
@@ -77,15 +96,23 @@ export const DoctorLogin = async (data: Login) => {
     }
 }
 
-export const DoctorRegisters =async(data:DoctorRegister)=>{
-    try{
-          const Register =await axios.post(`${API_GATEWAY_URL}/api/v1/docter/register`,data,{
-            headers:{
-                "Content-Type":"application/json"
+export const DoctorRegisters = async (data: any) => {
+    try {
+
+        const Register = await axios.post(`${API_GATEWAY_URL}/api/v1/doctors/doctor-register`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data"
             }
-          })
-          return Register.data
-    }catch(error:any){
+        })
+        const userEmail = data instanceof FormData ? data.get("email") : data.email
+        if (!userEmail) {
+            throw new Error("Email not found in request")
+        }
+        if (typeof window == 'object') {
+            localStorage.setItem("tempDoctorEmail", String(userEmail))
+        }
+        return Register.data
+    } catch (error: any) {
         throw new Error(error.message)
     }
 }

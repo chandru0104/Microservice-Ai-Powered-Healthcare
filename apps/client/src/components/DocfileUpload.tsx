@@ -1,32 +1,13 @@
 import React from 'react';
 import { UploadOutlined } from '@ant-design/icons';
+import { Button, Upload } from 'antd';
 import type { UploadProps } from 'antd';
-import { Button, message, Upload } from 'antd';
 
-const DocfileUpload: React.FC = () => {
-  const [messageApi, contextHolder] = message.useMessage();
-
-  const props: UploadProps = {
-    name: 'profile',
-    onChange(info) {
-      if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === 'done') {
-        messageApi.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === 'error') {
-        messageApi.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
-
+const DocfileUpload: React.FC<UploadProps> = (props) => {
   return (
-    <>
-      {contextHolder}
-      <Upload {...props}>
-        <Button icon={<UploadOutlined />}>Click to Upload</Button>
-      </Upload>
-    </>
+    <Upload {...props} beforeUpload={() => false} maxCount={1}>
+      <Button icon={<UploadOutlined />}>Click to Upload</Button>
+    </Upload>
   );
 };
 
