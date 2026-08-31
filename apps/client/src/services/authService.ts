@@ -116,3 +116,45 @@ export const DoctorRegisters = async (data: any) => {
         throw new Error(error.message)
     }
 }
+
+
+export const UserForgotEmail = async (data: { email: string }) => {
+    try {
+
+        const enterEmail = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/forgot/password`, data, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        return enterEmail
+
+    } catch (error: any) {
+        console.log(error.message)
+        throw new Error(error.message)
+    }
+}
+
+export const UserForgotOtp = async (data: any) => {
+    try {
+
+        const { email, otp } = data
+
+        const payload = { email, userOtp: otp }
+
+        const verfiy = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/verfiy/otp`, payload, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        const resetToken = verfiy.data.resetToken || verfiy.data.token
+        if (resetToken) {
+            localStorage.setItem("resetToken", resetToken)
+        }
+        return verfiy.data
+    } catch (error: any) {
+        console.log(error.message)
+        throw new Error(error.message)
+    }
+}
