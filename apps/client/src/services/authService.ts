@@ -1,5 +1,5 @@
 import { Login, UserRegister } from "../models/authModel"
-
+import { ResetPassword } from "../models/authModel"
 import axios from "axios"
 
 const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
@@ -157,4 +157,27 @@ export const UserForgotOtp = async (data: any) => {
         console.log(error.message)
         throw new Error(error.message)
     }
+}
+
+export const UserResetPassword = async (data: ResetPassword) => {
+    try {
+        const { email, token, newPassword, confirmPassword } = data
+
+        if (!email || !token || !newPassword) {
+            throw new Error("Please provided all values")
+        }
+
+        const payload = { email: email, token: token, newPassword: newPassword, confirmPassword: confirmPassword }
+
+        const resetPassword = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/new/password`, payload, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        return resetPassword
+
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+
 }

@@ -19,3 +19,9 @@ export interface DoctorRegister{
     register:string
     profile:File
 }
+export interface ResetPassword{
+    email:string
+    token:string
+    newPassword:string
+    confirmPassword:string
+}

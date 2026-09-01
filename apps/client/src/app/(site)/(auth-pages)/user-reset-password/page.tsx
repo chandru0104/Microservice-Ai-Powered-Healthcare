@@ -3,10 +3,10 @@
 import React, { useState } from 'react';
 import { Button, Form, Input } from 'antd';
 import Image from 'next/image';
-
+import { UserResetPassword } from "../../../../services/authService"
 import { useRouter } from "next/navigation"
 
-
+import { ResetPassword } from "../../../../models/authModel"
 const UserForgot: React.FC = () => {
 
     const [loading, setLoading] = useState(false)
@@ -14,8 +14,29 @@ const UserForgot: React.FC = () => {
     const router = useRouter()
 
 
-    const onFinish = async (values: { otp: string }) => {
+    const onFinish = async (values: any) => {
+        try {
+            setLoading(true)
+            const { newPassword, confirmPassword } = values
 
+            const email = localStorage.getItem("forgotTempEmail")
+            const token = localStorage.getItem("resetToken")
+            if (!email || !token || !newPassword || !confirmPassword) {
+                throw new Error("Please fill all values")
+            }
+            const data: ResetPassword = { email, token, newPassword, confirmPassword }
+            const reset = await UserResetPassword(data)
+
+            if (reset) {
+                localStorage.removeItem("forgotTempEmail")
+                localStorage.removeItem("resetToken")   
+                router.push("/user-login")
+            }
+        } catch (error: any) {
+            throw new Error(error.message)
+        } finally {
+            setLoading(false)
+        }
     };
 
     return (
@@ -33,12 +54,18 @@ const UserForgot: React.FC = () => {
                     <h2 className='text-center'>Care Hub</h2>
 
                 </div>
-                <h2 className='text-center p-8'>Otp verify</h2>
+                <h2 className='text-center p-8'>Reset Password</h2>
                 <Form.Item
-                    name="otp"
-                    rules={[{ required: true, message: 'Please enter your Otp!' }]}
+                    name="newPassword"
+                    rules={[{ required: true, message: 'Please enter your new password!' }]}
                 >
-                    <Input placeholder="Otp" />
+                    <Input placeholder="New Password" type='password' />
+                </Form.Item>
+                <Form.Item
+                    name="confirmPassword"
+                    rules={[{ required: true, message: 'Please enter your confirm password!' }]}
+                >
+                    <Input placeholder="Confirm Password" type='password' />
                 </Form.Item>
 
 
