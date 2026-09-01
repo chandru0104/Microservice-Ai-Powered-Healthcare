@@ -1,5 +1,5 @@
 import { Login, UserRegister } from "../models/authModel"
-import { ResetPassword ,ResetPasswordDoctor} from "../models/authModel"
+import { ResetPassword, ResetPasswordDoctor } from "../models/authModel"
 import axios from "axios"
 
 const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
@@ -13,7 +13,8 @@ export const AuthUserLogin = async (data: Login) => {
         const userLogin = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/user/login`, data, {
             headers: {
                 "Content-Type": "application/json"
-            }
+            },
+            withCredentials: true
         })
         return userLogin.data
 
@@ -88,7 +89,8 @@ export const DoctorLogin = async (data: Login) => {
         const loginData = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/doctor/login`, data, {
             headers: {
                 "Content-Type": "application/json"
-            }
+            },
+            withCredentials: true
         })
         return loginData.data
     } catch (error: any) {
@@ -246,4 +248,21 @@ export const DoctorResetPassword = async (data: ResetPasswordDoctor) => {
         throw new Error(error.message)
     }
 
+}
+
+export const AdminLogin = async (data: Login) => {
+    try {
+        if (!data.email || !data.password) {
+            throw new Error("Please fill all values")
+        }
+        const loginData = await axios.post(`${API_GATEWAY_URL}/api/v1/admin/admin-login`, data, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            withCredentials: true
+        })
+        return loginData.data
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
 }

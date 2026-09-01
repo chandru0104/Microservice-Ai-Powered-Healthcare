@@ -22,7 +22,7 @@ const UserLogin: React.FC = () => {
 
       const userData = await AuthUserLogin(values)
 
-      const {name, id, role, accessToken } = userData.data
+      const { name, id, role, accessToken } = userData.data
 
       localStorage.setItem("userName", name)
       localStorage.setItem("userId", id)
@@ -80,6 +80,7 @@ const UserLogin: React.FC = () => {
             Log in
           </Button>
           <p className='flex item-center justify-center pt-2'>or</p>
+          <p className='flex items-center justify-center gap-2 p-1 border-2 rounded-md'><Image src="/google-logo.jpg" alt="logo" height={20} width={20} /> Google Login</p >
           <div className='flex item-center justify-center p-1'>
             <Link href="/user-register" className='text-center'>Register now!</Link>
           </div>

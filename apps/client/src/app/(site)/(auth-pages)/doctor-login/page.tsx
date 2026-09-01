@@ -22,7 +22,7 @@ const DoctorLogins: React.FC = () => {
       const doctorData = await DoctorLogin(values)
       console.log(doctorData)
       const { id, name, accessToken } = doctorData.data
- 
+
       localStorage.setItem("doctorId", id)
       localStorage.setItem("doctorName", name)
       localStorage.setItem("doctorAccessToken", accessToken)
@@ -80,12 +80,15 @@ const DoctorLogins: React.FC = () => {
           <Button block type="primary" htmlType="submit" loading={loading}>
             Log in
           </Button>
-          <p className='flex item-center justify-center pt-2'>or</p>
-          <div className='flex item-center justify-center p-1'>
-            <Link href="/doctor-register" className='text-center'>Register now!</Link>
-          </div>
+
         </Form.Item>
+        <p className='flex item-center justify-center pb-2'>or</p>
+        <p className='flex items-center justify-center gap-2 p-1 border-2 rounded-md'><Image src="/google-logo.jpg" alt="logo" height={20} width={20} /> Google Login</p >
+        <div className='flex item-center justify-center p-2'>
+          <Link href="/doctor-register" className='text-center'>Register now!</Link>
+        </div>
       </Form>
+
     </div>
   );
 };
