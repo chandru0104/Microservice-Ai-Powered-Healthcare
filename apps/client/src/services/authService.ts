@@ -1,5 +1,5 @@
 import { Login, UserRegister } from "../models/authModel"
-import { ResetPassword } from "../models/authModel"
+import { ResetPassword ,ResetPasswordDoctor} from "../models/authModel"
 import axios from "axios"
 
 const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
@@ -170,6 +170,72 @@ export const UserResetPassword = async (data: ResetPassword) => {
         const payload = { email: email, token: token, newPassword: newPassword, confirmPassword: confirmPassword }
 
         const resetPassword = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/new/password`, payload, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        return resetPassword
+
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+
+}
+
+
+export const DoctorForgotEmail = async (data: { email: string }) => {
+    try {
+
+        const enterEmail = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/forgot-doctor/password`, data, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        return enterEmail
+
+    } catch (error: any) {
+        console.log(error.message)
+        throw new Error(error.message)
+    }
+}
+
+
+export const DoctorForgotOtp = async (data: any) => {
+    try {
+
+        const { email, otp } = data
+
+        const payload = { email, userOtp: otp }
+
+        const verfiy = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/verify-doctor/otp`, payload, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        const resetToken = verfiy.data.resetToken || verfiy.data.token
+        if (resetToken) {
+            localStorage.setItem("resetTokenDoctor", resetToken)
+        }
+        return verfiy.data
+    } catch (error: any) {
+        console.log(error.message)
+        throw new Error(error.message)
+    }
+}
+
+export const DoctorResetPassword = async (data: ResetPasswordDoctor) => {
+    try {
+        const { email, resetToken, newPassword, confirmPassword } = data
+
+        if (!email || !resetToken || !newPassword) {
+            throw new Error("Please provided all values")
+        }
+
+        const payload = { email: email, resetToken: resetToken, newPassword: newPassword, confirmPassword: confirmPassword }
+
+        const resetPassword = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/reset-doctor/password`, payload, {
             headers: {
                 "Content-Type": "application/json"
             }

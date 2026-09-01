@@ -25,3 +25,9 @@ export interface ResetPassword{
     newPassword:string
     confirmPassword:string
 }
+export interface ResetPasswordDoctor{
+    email:string
+    resetToken:string
+    newPassword:string
+    confirmPassword:string
+}
