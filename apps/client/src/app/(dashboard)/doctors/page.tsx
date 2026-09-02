@@ -10,10 +10,21 @@ import { useState } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
-
-
+import { FiEdit3 } from "react-icons/fi";
+import { MdDeleteOutline } from "react-icons/md";
 const columns: GridColDef<(typeof rows)[number]>[] = [
     { field: 'id', headerName: 'ID', width: 90 },
+    {
+        field: 'Action',
+        headerName: 'Action',
+        width: 150,
+        renderCell: (params) => (
+            <div className='flex gap-4 p-4'>
+                <FiEdit3 size={20} color='blue' />
+                <MdDeleteOutline size={20} color='red'/>
+            </div>
+        ),
+    },
     {
         field: 'firstName',
         headerName: 'First name',
@@ -59,7 +70,7 @@ const rows = [
 
 
 
-const ProductsPage = () => {
+const DoctorPage = () => {
     const [open, setOpen] = React.useState(false);
 
     const toggleDrawer = (newOpen: boolean) => () => {
@@ -111,4 +122,4 @@ const ProductsPage = () => {
     );
 };
 
-export default ProductsPage;
+export default DoctorPage;
