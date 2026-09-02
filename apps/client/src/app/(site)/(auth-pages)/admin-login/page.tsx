@@ -28,7 +28,7 @@ const AdminLogins: React.FC = () => {
             localStorage.setItem("adminAccessToken", accessToken)
 
             if (adminData) {
-                router.push("/admin/dashboard")
+                router.push("/dashboard")
             }
 
         } catch (error: any) {

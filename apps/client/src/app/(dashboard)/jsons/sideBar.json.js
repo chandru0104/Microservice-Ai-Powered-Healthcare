@@ -51,8 +51,14 @@ const sideBar = [
     name: "Products",
     path: "/products",
   },
-  {
+    {
     id: 8,
+    icon: <LuShoppingCart />,
+    name: "Origin",
+    path: "/origin",
+  },
+  {
+    id: 9,
     icon: <LuStethoscope />,
     name: "Doctors",
     path: "/doctors",
