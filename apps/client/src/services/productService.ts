@@ -19,7 +19,7 @@ export const OriginList = async () => {
 export const AddOrgin = async (name: string) => {
     try {
         const adminAccessToekn = localStorage.getItem("adminAccessToken")
-        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/product/origin`, JSON.stringify({ name }), {
+        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/product/origin`, { name }, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToekn}`
