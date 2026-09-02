@@ -59,7 +59,7 @@ const rows = [
 
 
 
-const ProductsPage = () => {
+const LabtestPage = () => {
     const [open, setOpen] = React.useState(false);
 
     const toggleDrawer = (newOpen: boolean) => () => {
@@ -111,4 +111,4 @@ const ProductsPage = () => {
     );
 };
 
-export default ProductsPage;
+export default LabtestPage;

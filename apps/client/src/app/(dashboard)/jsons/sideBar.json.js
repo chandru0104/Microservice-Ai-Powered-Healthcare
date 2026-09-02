@@ -1,13 +1,13 @@
 import {
   LuLayoutDashboard,
   LuUsers,
-  LuSettings,
+  LuTestTubeDiagonal ,
   LuUser,
   LuFileText,
   LuBell,
   LuLogOut,
+  LuShoppingCart,LuStethoscope
 } from "react-icons/lu";
-
 const sideBar = [
   {
     id: 1,
@@ -41,16 +41,22 @@ const sideBar = [
   },
   {
     id: 6,
-    icon: <LuSettings />,
-    name: "Settings",
-    path: "/settings",
+    icon: <LuTestTubeDiagonal  />,
+    name: "Lab Test",
+    path: "/lab-test",
   },
   {
     id: 7,
-    icon: <LuLogOut />,
-    name: "Logout",
-    path: "/logout",
+    icon: <LuShoppingCart />,
+    name: "Products",
+    path: "/products",
   },
+  {
+    id: 8,
+    icon: <LuStethoscope />,
+    name: "Doctors",
+    path: "/doctors",
+  }
 ];
 
 export default sideBar;
