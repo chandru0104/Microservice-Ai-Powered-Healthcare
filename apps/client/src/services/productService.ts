@@ -30,3 +30,96 @@ export const AddOrgin = async (name: string) => {
         throw new Error(error.message)
     }
 }
+
+export const UpdateOrigin = async (id: string, name: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const update = await axios.put(`${API_GATEWAY_URL}/api/v1/product/origin/update/${id}`, { name }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return update
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export const DeleteOrigin = async (id: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/origin/delete/${id}`, {}, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return del
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+
+export const CategoryAdd = async (name: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/product/child-category`, { name }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return add
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+export const categoryList = async () => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const list = await axios.get(`${API_GATEWAY_URL}/api/v1/product/child-category`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return list
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export const categoryUpdate = async (id: string, name: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const update = await axios.put(`${API_GATEWAY_URL}/api/v1/product/child-category/update/${id}`, { name }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return update
+    }catch(error:any){
+        throw new Error(error.message)
+    }
+}
+
+export const categoryDelete = async (id: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/child-category/delete/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return del
+    }catch(error:any){
+        throw new Error(error.message)
+    }
+}
