@@ -10,85 +10,96 @@ import { useState, useEffect } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
-import { categoryList, CategoryAdd, categoryUpdate, categoryDelete } from "../../../services/productService"
+import { OriginList, AddOrgin, UpdateOrigin, DeleteOrigin } from "../../../services/productService"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 
-interface Category {
+interface Origin {
+    id: string | number,
     name: string,
-    _id: string,
+    _id?: string,
 }
 
-const ProductsPage = () => {
+const ProductsAgeGroup = () => {
     const [open, setOpen] = React.useState(false);
+    const [rows, setRow] = useState<Origin[]>([])
     const [loading, setLoading] = useState(false)
-    const [rows, setRow] = useState<Category[]>([])
     const [name, setName] = useState("")
-    const [editId, setEditId] = useState<Category | null>(null)
+    const [editId, setEditId] = useState<string | null>(null)
+
     const toggleDrawer = (newOpen: boolean) => () => {
-        setOpen(newOpen)
+        setOpen(newOpen);
+        if (!newOpen) {
+            setEditId(null);
+            setName("");
+        }
     };
 
-    const handleSubmit = async () => {
-        try {
-            if (editId) {
-                await categoryUpdate(editId._id, name)
-            } else {
-                await CategoryAdd(name)
-            }
-        } catch (error: any) {
-            alert(error.message)
-        } finally {
+    const handleOpenAdd = () => {
+        setEditId(null);
+        setName("");
+        setOpen(true);
+    };
 
-        }
-    }
-
-
-    const handleList = async () => {
+    const getData = async () => {
         try {
             setLoading(true)
-            const row = await categoryList()
-
-            const { data } = row
-
-            const rowData = Array.isArray(data?.data) ? data.data : []
-            const mapdata = rowData.map((item: any, index: number) => ({
+            const dataOrigin = await OriginList()
+            const { data } = dataOrigin
+            const originArray = Array.isArray(data?.data) ? data.data : []
+            const mappedData = originArray.map((item: any, index: number) => ({
                 ...item,
-                id: index + 1
+                id: index + 1,
             }))
-
-            setRow(mapdata)
+            setRow(mappedData)
         } catch (error: any) {
-            throw new Error(error.message)
+            console.error(error.message)
         } finally {
             setLoading(false)
         }
     }
 
     useEffect(() => {
-        handleList()
+        getData()
     }, [])
 
-    const handleDelete = async (row: any) => {
+    const submitOrigin = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!name.trim()) {
+            alert("Please provide name")
+            return
+        }
         try {
-            await categoryDelete(row._id)
-            handleList()
+            if (editId) {
+                await UpdateOrigin(editId, name)
+            } else {
+                await AddOrgin(name)
+            }
+            setOpen(false)
+            setEditId(null)
+            setName("")
+            getData()
         } catch (error: any) {
-            throw new Error(error.message)
+            alert(error.message)
         }
     }
 
-    const handleOpen = () => {
-        setOpen(true)
-        setName("")
-        setEditId(null)
-    }
-
-    const handleOpenEdit = (row: any) => {
-        setOpen(true)
+    const handleEdit = (row: any) => {
+        setEditId(row._id || row.id)
         setName(row.name)
-        setEditId(row)
+        setOpen(true)
     }
 
+    const handleDelete = async (row: any) => {
+        const id = row._id || row.id
+        if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
+            try {
+                await DeleteOrigin(id)
+                getData()
+            } catch (error: any) {
+                alert(error.message)
+            }
+        }
+    }
 
     const columns: GridColDef<(typeof rows)[number]>[] = [
         { field: 'id', headerName: 'ID', width: 90 },
@@ -101,7 +112,7 @@ const ProductsPage = () => {
                     <button
                         type="button"
                         className="p-2 text-blue-900 hover:text-blue-700 cursor-pointer"
-                        onClick={() => handleOpenEdit(params.row)}
+                        onClick={() => handleEdit(params.row)}
                     >
                         <FiEdit3 size={20} />
                     </button>
@@ -125,7 +136,7 @@ const ProductsPage = () => {
     const DrawerList = (
         <Box sx={{ width: 350 }} role="presentation" >
             <p className="p-4 font-semibold text-lg">{editId ? "Edit Origin" : "Add Origin"}</p>
-            <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
+            <Box component="form" onSubmit={submitOrigin} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
                 <TextField
                     label='Name'
                     name='name'
@@ -145,9 +156,9 @@ const ProductsPage = () => {
     return (
         <div className='w-full'>
             <div className='flex items-center justify-between py-3'>
-                <h3 className="text-xl font-bold">Origin</h3>
-                <Button variant="contained" onClick={handleOpen}>
-                    Add Child Category
+                <h3 className="text-xl font-bold">Product Age Group</h3>
+                <Button variant="contained" onClick={handleOpenAdd}>
+                    Add Product Age Group
                     <AddIcon />
                 </Button>
                 <Drawer open={open} onClose={toggleDrawer(false)} anchor='right'>
@@ -173,4 +184,4 @@ const ProductsPage = () => {
     );
 };
 
-export default ProductsPage;
+export default ProductsAgeGroup;

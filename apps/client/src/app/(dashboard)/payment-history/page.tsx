@@ -59,7 +59,7 @@ const rows = [
 
 
 
-const UserPage = () => {
+const PaymentHistory = () => {
     const [open, setOpen] = React.useState(false);
 
     const toggleDrawer = (newOpen: boolean) => () => {
@@ -71,7 +71,7 @@ const UserPage = () => {
     return (
         <div className='w-full'>
             <div className='flex items-center justify-between py-3'>
-                <h3 className="text-xl font-bold">Users</h3>
+                <h3 className="text-xl font-bold">Payment History</h3>
 
 
             </div>
@@ -94,4 +94,4 @@ const UserPage = () => {
     );
 };
 
-export default UserPage;
+export default PaymentHistory;

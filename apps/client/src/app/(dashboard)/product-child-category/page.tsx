@@ -11,8 +11,7 @@ import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
 import { OriginList, AddOrgin, UpdateOrigin, DeleteOrigin } from "../../../services/productService"
-import { FiEdit3 } from "react-icons/fi";
-import { RiDeleteBin5Line } from "react-icons/ri";
+import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 
 interface Origin {
     id: string | number,
@@ -20,7 +19,7 @@ interface Origin {
     _id?: string,
 }
 
-const ProductsPage = () => {
+const ProductChildCategoryPage = () => {
     const [open, setOpen] = React.useState(false);
     const [rows, setRow] = useState<Origin[]>([])
     const [loading, setLoading] = useState(false)
@@ -157,9 +156,9 @@ const ProductsPage = () => {
     return (
         <div className='w-full'>
             <div className='flex items-center justify-between py-3'>
-                <h3 className="text-xl font-bold">Origin</h3>
+                <h3 className="text-xl font-bold">Product Child Category</h3>
                 <Button variant="contained" onClick={handleOpenAdd}>
-                    Add Origin
+                    Add Product Child Category
                     <AddIcon />
                 </Button>
                 <Drawer open={open} onClose={toggleDrawer(false)} anchor='right'>
@@ -185,4 +184,4 @@ const ProductsPage = () => {
     );
 };
 
-export default ProductsPage;
+export default ProductChildCategoryPage;

@@ -6,85 +6,158 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import { Loading } from "../../../components/Loading"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
+import { OriginList, AddOrgin, UpdateOrigin, DeleteOrigin } from "../../../services/productService"
+import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 
-
-const columns: GridColDef<(typeof rows)[number]>[] = [
-    { field: 'id', headerName: 'ID', width: 90 },
-    {
-        field: 'firstName',
-        headerName: 'First name',
-        width: 150,
-        editable: true,
-    },
-    {
-        field: 'lastName',
-        headerName: 'Last name',
-        width: 150,
-        editable: true,
-    },
-    {
-        field: 'age',
-        headerName: 'Age',
-        type: 'number',
-        width: 110,
-        editable: true,
-    },
-    {
-        field: 'fullName',
-        headerName: 'Full name',
-        rowHeader: true,
-        description: 'This column has a value getter and is not sortable.',
-        sortable: false,
-        width: 160,
-        valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
-    },
-];
-
-const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 14 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 31 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 31 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 11 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
-
-
-
+interface Origin {
+    id: string | number,
+    name: string,
+    _id?: string,
+}
 
 const ProductsPage = () => {
     const [open, setOpen] = React.useState(false);
+    const [rows, setRow] = useState<Origin[]>([])
+    const [loading, setLoading] = useState(false)
+    const [name, setName] = useState("")
+    const [editId, setEditId] = useState<string | null>(null)
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
+        if (!newOpen) {
+            setEditId(null);
+            setName("");
+        }
     };
-    const [loading, setLoading] = useState(false)
 
-    const submit = () => {
-        return null
+    const handleOpenAdd = () => {
+        setEditId(null);
+        setName("");
+        setOpen(true);
+    };
+
+    const getData = async () => {
+        try {
+            setLoading(true)
+            const dataOrigin = await OriginList()
+            const { data } = dataOrigin
+            const originArray = Array.isArray(data?.data) ? data.data : []
+            const mappedData = originArray.map((item: any, index: number) => ({
+                ...item,
+                id: index + 1,
+            }))
+            setRow(mappedData)
+        } catch (error: any) {
+            console.error(error.message)
+        } finally {
+            setLoading(false)
+        }
     }
+
+    useEffect(() => {
+        getData()
+    }, [])
+
+    const submitOrigin = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!name.trim()) {
+            alert("Please provide name")
+            return
+        }
+        try {
+            if (editId) {
+                await UpdateOrigin(editId, name)
+            } else {
+                await AddOrgin(name)
+            }
+            setOpen(false)
+            setEditId(null)
+            setName("")
+            getData()
+        } catch (error: any) {
+            alert(error.message)
+        }
+    }
+
+    const handleEdit = (row: any) => {
+        setEditId(row._id || row.id)
+        setName(row.name)
+        setOpen(true)
+    }
+
+    const handleDelete = async (row: any) => {
+        const id = row._id || row.id
+        if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
+            try {
+                await DeleteOrigin(id)
+                getData()
+            } catch (error: any) {
+                alert(error.message)
+            }
+        }
+    }
+
+    const columns: GridColDef<(typeof rows)[number]>[] = [
+        { field: 'id', headerName: 'ID', width: 90 },
+        {
+            field: 'action',
+            headerName: 'Action',
+            width: 300,
+            renderCell: (params) => (
+                <div className="flex items-center">
+                    <button
+                        type="button"
+                        className="p-2 text-blue-900 hover:text-blue-700 cursor-pointer"
+                        onClick={() => handleEdit(params.row)}
+                    >
+                        <FiEdit3 size={20} />
+                    </button>
+                    <button
+                        type="button"
+                        className="p-2 text-red-900 hover:text-red-700 cursor-pointer"
+                        onClick={() => handleDelete(params.row)}
+                    >
+                        <RiDeleteBin5Line size={20} />
+                    </button>
+                </div>
+            )
+        },
+        {
+            field: 'name',
+            headerName: 'Name',
+            width: 500,
+        }
+    ];
+
     const DrawerList = (
         <Box sx={{ width: 350 }} role="presentation" >
-            <p className="p-2 font-semibold">Product Add</p>
-            <Box component="form" onSubmit={submit} sx={{ display: "flex", flexDirection: "column", gap: "10px", padding: "10px" }}>
-                <TextField label='name' name='name' placeholder='Enter name' />
-                <TextField label='description' name='description' placeholder='Enter description' />
-                <Button type='submit' onClick={toggleDrawer(false)}>Submit</Button>
+            <p className="p-4 font-semibold text-lg">{editId ? "Edit Origin" : "Add Origin"}</p>
+            <Box component="form" onSubmit={submitOrigin} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
+                <TextField
+                    label='Name'
+                    name='name'
+                    placeholder='Enter name'
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    fullWidth
+                />
+                <Button variant="contained" type='submit'>
+                    {editId ? "Update" : "Submit"}
+                </Button>
             </Box>
         </Box>
     );
+
     return (
         <div className='w-full'>
             <div className='flex items-center justify-between py-3'>
-                <h3 >Products</h3>
-                <Button onClick={toggleDrawer(true)}>
+                <h3 className="text-xl font-bold">Products</h3>
+                <Button variant="contained" onClick={handleOpenAdd}>
                     Add Products
                     <AddIcon />
                 </Button>
@@ -103,7 +176,7 @@ const ProductsPage = () => {
                             },
                         },
                     }}
-                    pageSizeOptions={[10]}
+                    pageSizeOptions={[5, 10, 20]}
                 />
             </Box>
             }

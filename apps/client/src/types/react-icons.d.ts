@@ -13,3 +13,4 @@ declare module 'react-icons/ai';
 declare module 'react-icons/ri';
 declare module "react-icons/cg";
 declare module "lucide-react";
+declare module "react-icons/tb"

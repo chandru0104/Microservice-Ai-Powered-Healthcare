@@ -10,21 +10,10 @@ import { useState } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
-import { FiEdit3 } from "react-icons/fi";
-import { MdDeleteOutline } from "react-icons/md";
+
+
 const columns: GridColDef<(typeof rows)[number]>[] = [
     { field: 'id', headerName: 'ID', width: 90 },
-    {
-        field: 'Action',
-        headerName: 'Action',
-        width: 150,
-        renderCell: (params) => (
-            <div className='flex gap-4 p-4'>
-                <FiEdit3 size={20} color='blue' />
-                <MdDeleteOutline size={20} color='red'/>
-            </div>
-        ),
-    },
     {
         field: 'firstName',
         headerName: 'First name',
@@ -78,30 +67,13 @@ const DoctorPage = () => {
     };
     const [loading, setLoading] = useState(false)
 
-    const submit = () => {
-        return null
-    }
-    const DrawerList = (
-        <Box sx={{ width: 350 }} role="presentation" >
-            <p className="p-2 font-semibold">Product Add</p>
-            <Box component="form" onSubmit={submit} sx={{ display: "flex", flexDirection: "column", gap: "10px", padding: "10px" }}>
-                <TextField label='name' name='name' placeholder='Enter name' />
-                <TextField label='description' name='description' placeholder='Enter description' />
-                <Button type='submit' onClick={toggleDrawer(false)}>Submit</Button>
-            </Box>
-        </Box>
-    );
+   
     return (
         <div className='w-full'>
             <div className='flex items-center justify-between py-3'>
-                <h3 >Products</h3>
-                <Button onClick={toggleDrawer(true)}>
-                    Add Products
-                    <AddIcon />
-                </Button>
-                <Drawer open={open} onClose={toggleDrawer(false)} anchor='right'>
-                    {DrawerList}
-                </Drawer>
+                <h3 className="text-xl font-bold">Doctors</h3>
+
+
             </div>
             {loading ? <Loading /> : <Box sx={{ height: 400, width: '100%' }}>
                 <DataGrid
@@ -111,7 +83,7 @@ const DoctorPage = () => {
                         pagination: {
                             paginationModel: {
                                 pageSize: 5,
-                            },
+                            },  
                         },
                     }}
                     pageSizeOptions={[10]}
