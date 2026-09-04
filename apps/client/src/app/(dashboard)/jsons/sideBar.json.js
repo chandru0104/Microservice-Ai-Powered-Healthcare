@@ -23,27 +23,9 @@ const sideBar = [
   },
   {
     id: 3,
-    icon: <LuFileText />,
-    name: "Reports",
-    path: "/reports",
-  },
-  {
-    id: 4,
-    icon: <LuBell />,
-    name: "Notifications",
-    path: "/notifications",
-  },
-  {
-    id: 5,
-    icon: <LuUser />,
-    name: "Profile",
-    path: "/profile",
-  },
-  {
-    id: 6,
-    icon: <LuTestTubeDiagonal  />,
-    name: "Lab Test",
-    path: "/lab-test",
+    icon: <LuStethoscope  />,
+    name: "Doctors",
+    path: "/doctor",
   },
   {
     id: 7,
