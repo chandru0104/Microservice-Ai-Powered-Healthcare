@@ -67,7 +67,7 @@ const DoctorPage = () => {
     };
     const [loading, setLoading] = useState(false)
 
-   
+
     return (
         <div className='w-full'>
             <div className='flex items-center justify-between py-3'>
@@ -83,7 +83,7 @@ const DoctorPage = () => {
                         pagination: {
                             paginationModel: {
                                 pageSize: 5,
-                            },  
+                            },
                         },
                     }}
                     pageSizeOptions={[10]}
