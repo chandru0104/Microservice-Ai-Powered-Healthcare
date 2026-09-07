@@ -3,13 +3,11 @@
 
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
+
 import { Loading } from "../../../components/Loading"
 import { useState } from 'react';
 import * as React from 'react';
-import Drawer from '@mui/material/Drawer';
-import { TextField } from '@mui/material';
+
 
 
 const columns: GridColDef<(typeof rows)[number]>[] = [
@@ -21,8 +19,8 @@ const columns: GridColDef<(typeof rows)[number]>[] = [
         editable: true,
     },
     {
-        field: 'lastName',
-        headerName: 'Last name',
+        field: 'email',
+        headerName: 'Email',
         width: 150,
         editable: true,
     },

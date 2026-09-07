@@ -252,16 +252,34 @@ export const DoctorResetPassword = async (data: ResetPasswordDoctor) => {
 
 export const AdminLogin = async (data: Login) => {
     try {
+                const adminAccessToekn = localStorage.getItem("adminAccessToken")
         if (!data.email || !data.password) {
             throw new Error("Please fill all values")
         }
         const loginData = await axios.post(`${API_GATEWAY_URL}/api/v1/admin/admin-login`, data, {
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization":`Bearer ${adminAccessToekn}`
             },
             withCredentials: true
         })
         return loginData.data
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+
+export const UserAllList = async () => {
+
+    try {
+        const users = await axios.get(`${API_GATEWAY_URL}/api/v1/user/users`, {
+            headers: {
+                "Content-Type": "application/json",
+            }, withCredentials: true
+        })
+        return users
     } catch (error: any) {
         throw new Error(error.message)
     }
