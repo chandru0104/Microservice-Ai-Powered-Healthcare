@@ -3,67 +3,116 @@
 
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-
+import { doctorList } from "../../../services/authService"
 import { Loading } from "../../../components/Loading"
 import { useState } from 'react';
 import * as React from 'react';
-
-
-
-const columns: GridColDef<(typeof rows)[number]>[] = [
-    { field: 'id', headerName: 'ID', width: 90 },
-    {
-        field: 'firstName',
-        headerName: 'First name',
-        width: 150,
-        editable: true,
-    },
-    {
-        field: 'email',
-        headerName: 'Email',
-        width: 150,
-        editable: true,
-    },
-    {
-        field: 'age',
-        headerName: 'Age',
-        type: 'number',
-        width: 110,
-        editable: true,
-    },
-    {
-        field: 'fullName',
-        headerName: 'Full name',
-        rowHeader: true,
-        description: 'This column has a value getter and is not sortable.',
-        sortable: false,
-        width: 160,
-        valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
-    },
-];
-
-const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 14 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 31 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 31 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 11 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
-
-
-
+import { doctorVerifyData } from "../../../services/authService"
+import { FaEye } from "react-icons/fa";
 
 const DoctorPage = () => {
-    const [open, setOpen] = React.useState(false);
+    const [DoctorData, setDoctorData] = useState<any>([]);
 
-    const toggleDrawer = (newOpen: boolean) => () => {
-        setOpen(newOpen);
-    };
+
     const [loading, setLoading] = useState(false)
+
+
+    const DoctorListData = async () => {
+        try {
+            setLoading(true)
+            const list = await doctorList()
+            const { data } = list
+            const dataList = Array.isArray(data?.data) ? data.data : []
+
+            const mappingData = dataList.map((list: any, index: any) => ({
+                ...list,
+                id: index + 1
+
+            }))
+            setDoctorData(mappingData)
+        } catch (error: any) {
+            throw new Error(error.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+    React.useEffect(() => {
+        DoctorListData()
+    }, [])
+    const doctorVerify = async (row: any) => {
+        try {
+
+            const updateData = await doctorVerifyData(row._id)
+            if (updateData) {
+                DoctorListData()
+            }
+        } catch (error: any) {
+            throw new Error(error.message)
+        }
+    }
+
+
+    const columns: GridColDef<any>[] = [
+        { field: 'id', headerName: 'ID', width: 90 },
+        {
+            field: 'name',
+            headerName: 'Name',
+            width: 250,
+            editable: true,
+        },
+        {
+            field: 'action',
+            headerName: 'Action',
+            width: 300,
+            editable: false,
+            renderCell: (params) => (
+                <div className='flex gap-4 items-center '>
+                    <div className=''>
+                        {params.row.is_approved == 1 ? <div className='flex items-center gap-2'>
+                            <button className='bg-green-500 rounded-md  w-[60px] h-[50px]'>Verify</button>
+
+                        </div> : <div className=''>
+                            <button className='bg-red-500 rounded-md  w-[70px] h-[50px]' onClick={() => { doctorVerify(params.row) }}>Not Verify</button>
+                        </div>
+
+                        }
+
+                    </div>
+                    <button ><FaEye size={35} className='flex items-center justify-center pl-4' color="blue" /></button>
+                </div>
+
+            )
+
+        },
+        {
+            field: 'email',
+            headerName: 'Email',
+            width: 300,
+            editable: true,
+        },
+        {
+            field: 'specialties',
+            headerName: 'Specialties',
+            type: 'number',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'experience',
+            headerName: 'Experience',
+            type: 'number',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'register',
+            headerName: 'Register No',
+            type: 'number',
+            width: 110,
+            editable: true,
+        },
+
+    ];
 
 
     return (
@@ -75,7 +124,7 @@ const DoctorPage = () => {
             </div>
             {loading ? <Loading /> : <Box sx={{ height: 400, width: '100%' }}>
                 <DataGrid
-                    rows={rows}
+                    rows={DoctorData}
                     columns={columns}
                     initialState={{
                         pagination: {

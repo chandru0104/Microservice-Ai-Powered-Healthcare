@@ -252,14 +252,14 @@ export const DoctorResetPassword = async (data: ResetPasswordDoctor) => {
 
 export const AdminLogin = async (data: Login) => {
     try {
-                const adminAccessToekn = localStorage.getItem("adminAccessToken")
+        const adminAccessToekn = localStorage.getItem("adminAccessToken")
         if (!data.email || !data.password) {
             throw new Error("Please fill all values")
         }
         const loginData = await axios.post(`${API_GATEWAY_URL}/api/v1/admin/admin-login`, data, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization":`Bearer ${adminAccessToekn}`
+                "Authorization": `Bearer ${adminAccessToekn}`
             },
             withCredentials: true
         })
@@ -285,3 +285,32 @@ export const UserAllList = async () => {
     }
 }
 
+
+export const doctorList = async () => {
+    try {
+        const list = await axios.get(`${API_GATEWAY_URL}/api/v1/doctors/list`, {
+            headers: {
+                "Content-Type": "application/json",
+            }, withCredentials: true
+        })
+        return list
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+export const doctorVerifyData = async (id: any) => {
+    try {
+        const adminAccessToekn = localStorage.getItem("adminAccessToken")
+        const verify = await axios.put(`${API_GATEWAY_URL}/api/v1/doctors/doctor-update/${id}`, { is_approved: 1 }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToekn}`
+            }
+        })
+        return verify
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}

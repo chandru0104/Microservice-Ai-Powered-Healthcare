@@ -36,7 +36,7 @@ const doctorSchema = new mongoose.Schema({
     },
     profile: {
         type: String,
-        required: true
+
     },
     is_active: {
         type: Boolean,
