@@ -1,4 +1,6 @@
 import axios from "axios"
+import { productAdd } from "../models/lab"
+
 const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
 
 export const OriginList = async () => {
@@ -63,7 +65,7 @@ export const DeleteOrigin = async (id: string) => {
 
 
 
-export const CategoryAdd = async (name: string) => {
+export const childCategoryAdd = async (name: string) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
         const add = await axios.post(`${API_GATEWAY_URL}/api/v1/product/child-category`, { name }, {
@@ -79,7 +81,7 @@ export const CategoryAdd = async (name: string) => {
 }
 
 
-export const categoryList = async () => {
+export const childCategoryList = async () => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
         const list = await axios.get(`${API_GATEWAY_URL}/api/v1/product/child-category`, {
@@ -94,7 +96,7 @@ export const categoryList = async () => {
     }
 }
 
-export const categoryUpdate = async (id: string, name: string) => {
+export const childCategoryUpdate = async (id: string, name: string) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
         const update = await axios.put(`${API_GATEWAY_URL}/api/v1/product/child-category/update/${id}`, { name }, {
@@ -104,12 +106,12 @@ export const categoryUpdate = async (id: string, name: string) => {
             }
         })
         return update
-    }catch(error:any){
+    } catch (error: any) {
         throw new Error(error.message)
     }
 }
 
-export const categoryDelete = async (id: string) => {
+export const childCategoryDelete = async (id: string) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
         const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/child-category/delete/${id}`, {
@@ -119,7 +121,343 @@ export const categoryDelete = async (id: string) => {
             }
         })
         return del
-    }catch(error:any){
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+
+export const subCategoryAdd = async (name: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/product/sub-category`, { name }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return add
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+export const subCategoryList = async () => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const list = await axios.get(`${API_GATEWAY_URL}/api/v1/product/sub-category`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return list
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export const subCategoryUpdate = async (id: string, name: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const update = await axios.put(`${API_GATEWAY_URL}/api/v1/product/sub-category/update/${id}`, { name }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return update
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export const subCategoryDelete = async (id: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/sub-category/delete/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return del
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+
+
+
+export const productCategoryAdd = async (name: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/product/category`, { name }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return add
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+export const productCategoryList = async () => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const list = await axios.get(`${API_GATEWAY_URL}/api/v1/product/category`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return list
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export const productCategoryUpdate = async (id: string, name: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const update = await axios.put(`${API_GATEWAY_URL}/api/v1/product/category/update/${id}`, { name }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return update
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export const productCategoryDelete = async (id: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/category/delete/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return del
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+
+
+export const brandAdd = async (name: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/product/brand`, { name }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return add
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+export const brandList = async () => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const list = await axios.get(`${API_GATEWAY_URL}/api/v1/product/brand`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return list
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export const brandUpdate = async (id: string, name: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const update = await axios.put(`${API_GATEWAY_URL}/api/v1/product/brand/update/${id}`, { name }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return update
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export const brandDelete = async (id: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/brand/delete/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return del
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+
+
+
+export const ageGroupAdd = async (name: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/product/age-group`, { name }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return add
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+export const ageGroupList = async () => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const list = await axios.get(`${API_GATEWAY_URL}/api/v1/product/age-group`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return list
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export const ageGroupUpdate = async (id: string, name: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const update = await axios.put(`${API_GATEWAY_URL}/api/v1/product/age-group/update/${id}`, { name }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return update
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export const ageGroupDelete = async (id: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/age-group/delete/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return del
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+
+export const productAdds = async (data: productAdd) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/product/add`, data, {
+            headers: {
+                "Content-Type": "multipart/from-data",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return add
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+export const productList = async () => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const list = await axios.get(`${API_GATEWAY_URL}/api/v1/product/list`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return list
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export const productView = async (id: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const view = await axios.get(`${API_GATEWAY_URL}/api/v1/product/view/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return view
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+export const productUpdate = async (id: string, data: productAdd) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const update = await axios.put(`${API_GATEWAY_URL}/api/v1/product/update/${id}`, data, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return update
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export const productDelete = async (id: string) => {
+    try {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/age-group/delete/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${adminAccessToken}`
+            }
+        })
+        return del
+    } catch (error: any) {
         throw new Error(error.message)
     }
 }
