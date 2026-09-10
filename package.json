@@ -6,7 +6,8 @@
     "start": "node scripts/start-client.js",
     "dev": "node scripts/start-client.js",
     "start:client": "node scripts/start-client.js",
-    "serve:client": "node scripts/start-client.js"
+    "serve:client": "node scripts/start-client.js",
+    "seed:admin": "node scripts/seed-admin.js"
   },
   "private": true,
   "dependencies": {

@@ -10,96 +10,90 @@ import { useState, useEffect } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
-import { OriginList, AddOrgin, UpdateOrigin, DeleteOrigin } from "../../../services/productService"
+import { addLabTestlabCategory, updateLabTestlabCategory, listLabTestlabCategory } from "../../../services/labtest"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 
-interface Origin {
-    id: string | number,
-    name: string,
-    _id?: string,
-}
+
 
 const LabTestCategory = () => {
     const [open, setOpen] = React.useState(false);
-    const [rows, setRow] = useState<Origin[]>([])
+    const [rows, setRow] = useState<any>([])
     const [loading, setLoading] = useState(false)
     const [name, setName] = useState("")
     const [editId, setEditId] = useState<string | null>(null)
-
+    const [description, setDescription] = useState("")
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
         if (!newOpen) {
             setEditId(null);
             setName("");
+            setDescription("")
         }
     };
 
     const handleOpenAdd = () => {
         setEditId(null);
         setName("");
+        setDescription("")
         setOpen(true);
     };
 
-    const getData = async () => {
+    const submitLabTestCategory = async (e: React.FormEvent) => {
+        setLoading(true)
+        e.preventDefault();
+        try {
+            if (editId) {
+                let payload = { name, description }
+                const edit = await updateLabTestlabCategory(editId, payload)
+                setOpen(false)
+                return edit
+
+            } else {
+                let payload = { name, description }
+                const add = await addLabTestlabCategory(payload)
+                setOpen(false)
+                return add
+            }
+
+        } catch (error: any) {
+            alert(error.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const listTestCategory = async () => {
         try {
             setLoading(true)
-            const dataOrigin = await OriginList()
-            const { data } = dataOrigin
-            const originArray = Array.isArray(data?.data) ? data.data : []
-            const mappedData = originArray.map((item: any, index: number) => ({
-                ...item,
-                id: index + 1,
+            const list = await listLabTestlabCategory()
+           
+            const arrayData = Array.isArray(list?.data)? list?.data:[]
+
+            const mappingData = arrayData?.map((data: any, index: any) => ({
+                    ...data,    
+                    id: index + 1
+               
             }))
-            setRow(mappedData)
+            return setRow(mappingData)
         } catch (error: any) {
-            console.error(error.message)
+            alert(error.message)
         } finally {
             setLoading(false)
         }
     }
 
     useEffect(() => {
-        getData()
+        listTestCategory()
     }, [])
 
-    const submitOrigin = async (e: React.FormEvent) => {
-        e.preventDefault()
-        if (!name.trim()) {
-            alert("Please provide name")
-            return
-        }
-        try {
-            if (editId) {
-                await UpdateOrigin(editId, name)
-            } else {
-                await AddOrgin(name)
-            }
-            setOpen(false)
-            setEditId(null)
-            setName("")
-            getData()
-        } catch (error: any) {
-            alert(error.message)
-        }
+
+    const handleEdit = (name: any) => {
+
+    }
+    const handleDelete = (name: any) => {
+
     }
 
-    const handleEdit = (row: any) => {
-        setEditId(row._id || row.id)
-        setName(row.name)
-        setOpen(true)
-    }
-
-    const handleDelete = async (row: any) => {
-        const id = row._id || row.id
-        if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
-            try {
-                await DeleteOrigin(id)
-                getData()
-            } catch (error: any) {
-                alert(error.message)
-            }
-        }
-    }
 
     const columns: GridColDef<(typeof rows)[number]>[] = [
         { field: 'id', headerName: 'ID', width: 90 },
@@ -136,7 +130,7 @@ const LabTestCategory = () => {
     const DrawerList = (
         <Box sx={{ width: 350 }} role="presentation" >
             <p className="p-4 font-semibold text-lg">{editId ? "Edit Origin" : "Add Origin"}</p>
-            <Box component="form" onSubmit={submitOrigin} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
+            <Box component="form" onSubmit={submitLabTestCategory} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
                 <TextField
                     label='Name'
                     name='name'
@@ -146,7 +140,16 @@ const LabTestCategory = () => {
                     required
                     fullWidth
                 />
-                <Button variant="contained" type='submit'>
+                <TextField
+                    label='Description'
+                    name='description'
+                    placeholder='Description'
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
+                    fullWidth
+                />
+                <Button variant="contained" type='submit' loading={loading}>
                     {editId ? "Update" : "Submit"}
                 </Button>
             </Box>
