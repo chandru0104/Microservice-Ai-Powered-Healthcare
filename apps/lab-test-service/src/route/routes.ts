@@ -6,8 +6,8 @@ import { testAddController, testListController, testUpdatController, testDeleteC
 import { validationMiddleware } from "../utils/validationMiddleware"
 import { categoryValidation } from "../validation/categoryValidation"
 import { labTestValidation } from "../validation/labTes"
-import {authMiddlewares} from "../middlewares/authMiddlewares"
-import {authorize} from "../utils/authorize"
+import { authMiddlewares } from "../middlewares/authMiddlewares"
+import { authorize } from "../utils/authorize"
 export const router = express.Router()
 
 /**
@@ -48,7 +48,7 @@ router.post(
  *       200:
  *         description: Listed data
  */
-router.get("/category",listCategoryController)
+router.get("/category", listCategoryController)
 
 /**
  * @swagger
@@ -200,9 +200,9 @@ router.get("/tests/:id", testListOneController);
  *         description: Internal server error
  */
 router.put(
-    "/tests/:id",authMiddlewares,  authorize("admin"),
-    validationMiddleware(labTestValidation),
-    testUpdatController
+  "/tests/:id", authMiddlewares, authorize("admin"),
+  validationMiddleware(labTestValidation),
+  testUpdatController
 );
 
 /**

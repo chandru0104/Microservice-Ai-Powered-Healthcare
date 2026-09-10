@@ -66,18 +66,18 @@ const UserPage = () => {
 
 
             </div>
-            {loading ? <Loading /> : <Box sx={{ height: 400, width: '100%' }}>
+            {loading ? <Loading /> : <Box sx={{ height: 800, width: '100%' }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
                     initialState={{
                         pagination: {
                             paginationModel: {
-                                pageSize: 5,
+                                pageSize: 20,
                             },
                         },
                     }}
-                    pageSizeOptions={[10]}
+                    pageSizeOptions={[20,50,100]}
                 />
             </Box>
             }

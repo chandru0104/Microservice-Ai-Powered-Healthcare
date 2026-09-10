@@ -40,7 +40,7 @@ export const listLabTestlabCategory = () => {
 export const updateLabTestlabCategory = (id: string, data: addLabTestCategory) => {
     try {
         const adminAccessToekn = localStorage.getItem("adminAccessToken")
-        const update = axios.put(`${API_GATEWAY_URL}/api/v1/lab/category/${id}`, data, {
+        const update = axios.put(`${API_GATEWAY_URL}/api/v1/lab/update/category/${id}`, data, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToekn}`
@@ -56,7 +56,7 @@ export const updateLabTestlabCategory = (id: string, data: addLabTestCategory) =
 export const deleteLabTestlabCategory = (id: string) => {
     try {
         const adminAccessToekn = localStorage.getItem("adminAccessToken")
-        const deleteItem = axios.put(`${API_GATEWAY_URL}/api/v1/lab/category/${id}`, {
+        const deleteItem = axios.delete(`${API_GATEWAY_URL}/api/v1/lab/category/delete/${id}`, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToekn}`

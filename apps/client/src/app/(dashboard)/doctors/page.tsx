@@ -8,7 +8,7 @@ import { Loading } from "../../../components/Loading"
 import { useState } from 'react';
 import * as React from 'react';
 import { doctorVerifyData } from "../../../services/authService"
-import { FaEye } from "react-icons/fa";
+import Image from 'next/image';
 
 const DoctorPage = () => {
     const [DoctorData, setDoctorData] = useState<any>([]);
@@ -61,9 +61,25 @@ const DoctorPage = () => {
             editable: true,
         },
         {
+            field: 'profile',
+            headerName: 'Profile',
+            type: 'number',
+            width: 100,
+            editable: true,
+            renderCell: (params) => {
+                if (params.row.profile === "") {
+                    return "No Profile"
+                }
+                return <div className='p-2 w-[50px] h-[50px] '>
+                    <img src={params.row.profile} alt="profile" />
+                </div>
+            }
+
+        },
+        {
             field: 'action',
             headerName: 'Action',
-            width: 300,
+            width: 100,
             editable: false,
             renderCell: (params) => (
                 <div className='flex gap-4 items-center '>
@@ -78,7 +94,6 @@ const DoctorPage = () => {
                         }
 
                     </div>
-                    <button ><FaEye size={35} className='flex items-center justify-center pl-4' color="blue" /></button>
                 </div>
 
             )
@@ -94,21 +109,21 @@ const DoctorPage = () => {
             field: 'specialties',
             headerName: 'Specialties',
             type: 'number',
-            width: 110,
+            width: 200,
             editable: true,
         },
         {
             field: 'experience',
             headerName: 'Experience',
             type: 'number',
-            width: 110,
+            width: 200,
             editable: true,
         },
         {
-            field: 'register',
-            headerName: 'Register No',
+            field: 'place',
+            headerName: 'Place',
             type: 'number',
-            width: 110,
+            width: 200,
             editable: true,
         },
 
@@ -122,18 +137,18 @@ const DoctorPage = () => {
 
 
             </div>
-            {loading ? <Loading /> : <Box sx={{ height: 400, width: '100%' }}>
+            {loading ? <Loading /> : <Box sx={{ height: 800, width: '100%' }}>
                 <DataGrid
                     rows={DoctorData}
                     columns={columns}
                     initialState={{
                         pagination: {
                             paginationModel: {
-                                pageSize: 5,
+                                pageSize: 20,
                             },
                         },
                     }}
-                    pageSizeOptions={[10]}
+                    pageSizeOptions={[20,50,100]}
                 />
             </Box>
             }

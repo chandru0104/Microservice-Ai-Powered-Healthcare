@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
-import { addLabTestlabCategory, updateLabTestlabCategory, listLabTestlabCategory } from "../../../services/labtest"
+import { addLabTestlabCategory, updateLabTestlabCategory, listLabTestlabCategory,deleteLabTestlabCategory } from "../../../services/labtest"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 
 
@@ -46,12 +46,14 @@ const LabTestCategory = () => {
                 let payload = { name, description }
                 const edit = await updateLabTestlabCategory(editId, payload)
                 setOpen(false)
+                listTestCategory()
                 return edit
 
             } else {
                 let payload = { name, description }
                 const add = await addLabTestlabCategory(payload)
                 setOpen(false)
+                listTestCategory()
                 return add
             }
 
@@ -66,14 +68,15 @@ const LabTestCategory = () => {
         try {
             setLoading(true)
             const list = await listLabTestlabCategory()
-           
-            const arrayData = Array.isArray(list?.data)? list?.data:[]
 
-            const mappingData = arrayData?.map((data: any, index: any) => ({
-                    ...data,    
-                    id: index + 1
-               
+            const arrayData = Array.isArray(list?.data.data) ? list?.data.data : []
+
+            const mappingData = arrayData.map((data: any, index: any) => ({
+                ...data,
+                id: index + 1
+
             }))
+            console.log("mappingData : ", mappingData)
             return setRow(mappingData)
         } catch (error: any) {
             alert(error.message)
@@ -87,11 +90,22 @@ const LabTestCategory = () => {
     }, [])
 
 
-    const handleEdit = (name: any) => {
+    const handleEdit = (data: any) => {
+        setOpen(true)
+        setEditId(data._id)
+        setName(data.name)
+        setDescription(data.description)
+
 
     }
-    const handleDelete = (name: any) => {
-
+    const handleDelete = (data: any) => {
+      try{
+       const deleteItem = deleteLabTestlabCategory(data._id)
+        listTestCategory()
+       return deleteItem
+      }catch(error:any){
+        alert(error.message)
+      }
     }
 
 
@@ -123,6 +137,11 @@ const LabTestCategory = () => {
         {
             field: 'name',
             headerName: 'Name',
+            width: 500,
+        },
+        {
+            field: 'description',
+            headerName: 'Description',
             width: 500,
         }
     ];
@@ -168,18 +187,18 @@ const LabTestCategory = () => {
                     {DrawerList}
                 </Drawer>
             </div>
-            {loading ? <Loading /> : <Box sx={{ height: 400, width: '100%' }}>
+            {loading ? <Loading /> : <Box sx={{ height: 800, width: '100%' }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
                     initialState={{
                         pagination: {
                             paginationModel: {
-                                pageSize: 5,
+                                pageSize: 20,
                             },
                         },
                     }}
-                    pageSizeOptions={[5, 10, 20]}
+                    pageSizeOptions={[20, 50, 100]}
                 />
             </Box>
             }
