@@ -73,8 +73,12 @@ export const deleteLabTestlabCategory = (id: string) => {
 
 export const addLabTests = (data: addLabTest) => {
     try {
+
+        const { name, categoryId, price, sampleType, gender, ageGroup, reportDelivery, address, description, authorDetailsId } = data
+        const prices = Number(price)
+        const payload = { name, categoryId, price: prices, sampleType, gender, ageGroup, reportDelivery, address, description, authorDetailsId }
         const adminAccessToekn = localStorage.getItem("adminAccessToken")
-        const add = axios.post(`${API_GATEWAY_URL}/api/v1/lab/tests`, data, {
+        const add = axios.post(`${API_GATEWAY_URL}/api/v1/lab/tests`, payload, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToekn}`

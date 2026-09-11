@@ -10,95 +10,93 @@ import { useState, useEffect } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
-import { OriginList, AddOrgin, UpdateOrigin, DeleteOrigin } from "../../../services/productService"
+import { listLabTestlabCategory, addLabTests } from "../../../services/labtest"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
+import Autocomplete from '@mui/material/Autocomplete';
 
-interface Origin {
-    id: string | number,
+interface AddLabTest {
     name: string,
-    _id?: string,
+    categoryId: string,
+    price: string,
+    sampleType: string,
+    gender: string,
+    ageGroup: string,
+    reportDelivery: string,
+    address: string,
+    description: string,
+    authorDetailsId: string
 }
 
 const LabTest = () => {
     const [open, setOpen] = React.useState(false);
-    const [rows, setRow] = useState<Origin[]>([])
+    const [rows, setRow] = useState<[]>([])
     const [loading, setLoading] = useState(false)
-    const [name, setName] = useState("")
     const [editId, setEditId] = useState<string | null>(null)
+    const [labCategory, setLabCategory] = useState([])
+    const [categoryId, setCategoryId] = useState("")
+    const [name, setName] = useState("")
+    const [price, setPrice] = useState("")
+    const [sampleType, setSampleType] = useState("")
+    const [gender, setGender] = useState("")
+    const [ageGroup, setAgeGroup] = useState("")
+    const [reportDelivery, setReportDelivery] = useState("")
+    const [address, setAddress] = useState("")
+    const [description, setDescription] = useState("")
+    const [authorDetailsId, setAuthorDetailsId] = useState("")
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
-        if (!newOpen) {
-            setEditId(null);
-            setName("");
+
+    };
+
+    const addData = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!categoryId) {
+            alert("Please select a Category from the dropdown");
+            return;
+        }
+        try {
+            const dataAdd = await addLabTests({
+                name,
+                categoryId,
+                price,
+                sampleType,
+                gender,
+                ageGroup,
+                reportDelivery,
+                address,
+                description,
+                authorDetailsId
+            });
+            setOpen(false);
+            return dataAdd;
+        } catch (error: any) {
+            console.error("Error adding lab test:", error);
+            alert(error?.response?.data?.message || error.message);
         }
     };
+
+    const handleEdit = (data: any) => {
+        setEditId(data.id)
+    }
+    const handleDelete = (data: any) => {
+
+    }
+
+    const labCategoryList = async () => {
+        const list = await listLabTestlabCategory()
+        const mapping = Array.isArray(list?.data?.data) ? list.data.data.map((items: any) => ({
+            label: items.name,
+            value: items._id || items.id
+        })) : []
+
+        setLabCategory(mapping)
+        console.log("Categories mapped:", mapping)
+    }
 
     const handleOpenAdd = () => {
-        setEditId(null);
-        setName("");
-        setOpen(true);
-    };
-
-    const getData = async () => {
-        try {
-            setLoading(true)
-            const dataOrigin = await OriginList()
-            const { data } = dataOrigin
-            const originArray = Array.isArray(data?.data) ? data.data : []
-            const mappedData = originArray.map((item: any, index: number) => ({
-                ...item,
-                id: index + 1,
-            }))
-            setRow(mappedData)
-        } catch (error: any) {
-            console.error(error.message)
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    useEffect(() => {
-        getData()
-    }, [])
-
-    const submitOrigin = async (e: React.FormEvent) => {
-        e.preventDefault()
-        if (!name.trim()) {
-            alert("Please provide name")
-            return
-        }
-        try {
-            if (editId) {
-                await UpdateOrigin(editId, name)
-            } else {
-                await AddOrgin(name)
-            }
-            setOpen(false)
-            setEditId(null)
-            setName("")
-            getData()
-        } catch (error: any) {
-            alert(error.message)
-        }
-    }
-
-    const handleEdit = (row: any) => {
-        setEditId(row._id || row.id)
-        setName(row.name)
         setOpen(true)
-    }
-
-    const handleDelete = async (row: any) => {
-        const id = row._id || row.id
-        if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
-            try {
-                await DeleteOrigin(id)
-                getData()
-            } catch (error: any) {
-                alert(error.message)
-            }
-        }
+        labCategoryList()
     }
 
     const columns: GridColDef<(typeof rows)[number]>[] = [
@@ -136,13 +134,95 @@ const LabTest = () => {
     const DrawerList = (
         <Box sx={{ width: 350 }} role="presentation" >
             <p className="p-4 font-semibold text-lg">{editId ? "Edit Origin" : "Add Origin"}</p>
-            <Box component="form" onSubmit={submitOrigin} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
+            <Box component="form" onSubmit={addData} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
+                <Autocomplete
+                    disablePortal
+                    options={labCategory}
+                    sx={{ width: 300 }}
+                    onChange={(event, newValue: any) => {
+                        setCategoryId(newValue ? newValue.value : "");
+                    }}
+                    renderInput={(params) => <TextField {...params} label="Category" required />}
+                />
                 <TextField
                     label='Name'
                     name='name'
                     placeholder='Enter name'
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    required
+                    fullWidth
+                />
+
+                <TextField
+                    label='Price'
+                    name='price'
+                    placeholder='Enter Price'
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    required
+                    fullWidth
+                />
+                <TextField
+                    label='Sample Type'
+                    name='sampleType'
+                    placeholder='Enter Sample Type'
+                    value={sampleType}
+                    onChange={(e) => setSampleType(e.target.value)}
+                    required
+                    fullWidth
+                />
+                <TextField
+                    label='Gender'
+                    name='gender'
+                    placeholder='Enter Gender'
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                    required
+                    fullWidth
+                />
+                <TextField
+                    label='Age Group'
+                    name='ageGroup'
+                    placeholder='Enter Age Group'
+                    value={ageGroup}
+                    onChange={(e) => setAgeGroup(e.target.value)}
+                    required
+                    fullWidth
+                />
+                <TextField
+                    label='Report Delivery'
+                    name='reportDelivery'
+                    placeholder='Enter Report Delivery'
+                    value={reportDelivery}
+                    onChange={(e) => setReportDelivery(e.target.value)}
+                    required
+                    fullWidth
+                />
+                <TextField
+                    label='Address'
+                    name='address'
+                    placeholder='Enter Address'
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    required
+                    fullWidth
+                />
+                <TextField
+                    label='Description'
+                    name='description'
+                    placeholder='Enter Description'
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
+                    fullWidth
+                />
+                <TextField
+                    label='Author Details Id'
+                    name='authorDetailsId'
+                    placeholder='Enter Author Details Id'
+                    value={authorDetailsId}
+                    onChange={(e) => setAuthorDetailsId(e.target.value)}
                     required
                     fullWidth
                 />
