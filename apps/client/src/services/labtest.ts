@@ -108,11 +108,11 @@ export const listLabTest = () => {
 export const deletelabTest = (id: string) => {
     try {
         const adminAccessToekn = localStorage.getItem("adminAccessToken")
-        const deleteItem = axios.put(`${API_GATEWAY_URL}/api/v1/lab/tests/${id}`, {
+        const deleteItem = axios.put(`${API_GATEWAY_URL}/api/v1/lab/tests/delete/${id}`,{}, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToekn}`
-            }
+            },withCredentials:true
         })
         return deleteItem
     } catch (error: any) {
@@ -120,10 +120,12 @@ export const deletelabTest = (id: string) => {
     }
 }
 
-export const UpdatelabTest = (data: string, id: string) => {
+export const UpdatelabTest = (data: addLabTest, id: any) => {
     try {
         const adminAccessToekn = localStorage.getItem("adminAccessToken")
-        const update = axios.put(`${API_GATEWAY_URL}/api/v1/lab/tests/${id}`, data, {
+        const { name, categoryId, price, sampleType, gender, ageGroup, reportDelivery, address, description, authorDetailsId } = data
+        const prices = Number(price)
+        const update = axios.put(`${API_GATEWAY_URL}/api/v1/lab/tests/${id}`, { name, categoryId, price: prices, sampleType, gender, ageGroup, reportDelivery, address, description, authorDetailsId }, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToekn}`

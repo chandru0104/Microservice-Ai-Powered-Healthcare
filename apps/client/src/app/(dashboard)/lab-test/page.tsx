@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
-import { listLabTestlabCategory, addLabTests } from "../../../services/labtest"
+import { listLabTestlabCategory, addLabTests, UpdatelabTest, listLabTest, deletelabTest } from "../../../services/labtest"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 import Autocomplete from '@mui/material/Autocomplete';
 
@@ -31,7 +31,7 @@ const LabTest = () => {
     const [open, setOpen] = React.useState(false);
     const [rows, setRow] = useState<[]>([])
     const [loading, setLoading] = useState(false)
-    const [editId, setEditId] = useState<string | null>(null)
+    const [editId, setEditId] = useState<string | boolean>(false)
     const [labCategory, setLabCategory] = useState([])
     const [categoryId, setCategoryId] = useState("")
     const [name, setName] = useState("")
@@ -49,6 +49,28 @@ const LabTest = () => {
 
     };
 
+    const listData = async () => {
+        try {
+            setLoading(true)
+
+            const list = await listLabTest()
+            const mappingData = Array.isArray(list?.data?.data) ? list.data.data.map((items: any, index: any) => ({
+                ...items,
+                id: index + 1
+            })) : []
+            setRow(mappingData)
+
+        } catch (error: any) {
+            alert(error.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    React.useEffect(() => {
+        listData()
+    }, [])
+
     const addData = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!categoryId) {
@@ -56,33 +78,44 @@ const LabTest = () => {
             return;
         }
         try {
-            const dataAdd = await addLabTests({
-                name,
-                categoryId,
-                price,
-                sampleType,
-                gender,
-                ageGroup,
-                reportDelivery,
-                address,
-                description,
-                authorDetailsId
-            });
-            setOpen(false);
-            return dataAdd;
+            if (editId) {
+                const dataUpdate = await UpdatelabTest({
+                    name,
+                    categoryId,
+                    price,
+                    sampleType,
+                    gender,
+                    ageGroup,
+                    reportDelivery,
+                    address,
+                    description,
+                    authorDetailsId
+                }, editId);
+                listData()
+                setOpen(false);
+                return dataUpdate;
+            } else {
+                const addData = await addLabTests({
+                    name,
+                    categoryId,
+                    price,
+                    sampleType,
+                    gender,
+                    ageGroup,
+                    reportDelivery,
+                    address,
+                    description,
+                    authorDetailsId
+                })
+                listData()
+                setOpen(false)
+                return addData
+            }
         } catch (error: any) {
             console.error("Error adding lab test:", error);
             alert(error?.response?.data?.message || error.message);
         }
     };
-
-    const handleEdit = (data: any) => {
-        setEditId(data.id)
-    }
-    const handleDelete = (data: any) => {
-
-    }
-
     const labCategoryList = async () => {
         const list = await listLabTestlabCategory()
         const mapping = Array.isArray(list?.data?.data) ? list.data.data.map((items: any) => ({
@@ -94,17 +127,63 @@ const LabTest = () => {
         console.log("Categories mapped:", mapping)
     }
 
+    React.useEffect(() => {
+        listData();
+        labCategoryList();
+    }, [])
+
     const handleOpenAdd = () => {
+        setEditId(false)
+        setCategoryId("")
+        setName("")
+        setPrice("")
+        setSampleType("")
+        setGender("")
+        setAgeGroup("")
+        setReportDelivery("")
+        setAddress("")
+        setDescription("")
+        setAuthorDetailsId("")
         setOpen(true)
         labCategoryList()
     }
+
+    const handleEdit = (data: any) => {
+        labCategoryList()
+        setEditId(data._id || data.id)
+        setCategoryId(data.categoryId?._id || "")
+        setPrice(data.price ? String(data.price) : "")
+        setName(data.name || "")
+        setSampleType(data.sampleType || "")
+        setGender(data.gender || "")
+        setAgeGroup(data.ageGroup || "")
+        setReportDelivery(data.reportDelivery || "")
+        setAddress(data.address || "")
+        setDescription(data.description || "")
+        setAuthorDetailsId(data.authorDetailsId || "")
+        setOpen(true)
+    }
+
+    const handleDelete = async (data: any) => {
+        try {
+            setLoading(false)
+            const deleteData = await deletelabTest(data._id)
+            await listData();
+            await labCategoryList();
+            return deleteData
+        } catch (error: any) {
+            alert(error.message)
+        } finally {
+            setLoading(false)
+        }
+    } 
 
     const columns: GridColDef<(typeof rows)[number]>[] = [
         { field: 'id', headerName: 'ID', width: 90 },
         {
             field: 'action',
             headerName: 'Action',
-            width: 300,
+            width: 100,
             renderCell: (params) => (
                 <div className="flex items-center">
                     <button
@@ -125,24 +204,71 @@ const LabTest = () => {
             )
         },
         {
+            field: 'categoryId',
+            headerName: 'Category',
+            width: 300,
+            valueGetter: (value: any) => value ? value.name : ""
+        },
+        {
             field: 'name',
             headerName: 'Name',
+            width: 300,
+        },
+        {
+            field: 'price',
+            headerName: 'Price',
+            width: 150,
+        },
+        {
+            field: 'gender',
+            headerName: 'Gender',
+            width: 100,
+        },
+
+        {
+            field: 'sampleType',
+            headerName: 'Sample Type',
+            width: 150,
+        },
+
+        {
+            field: 'ageGroup',
+            headerName: 'Age Group',
+            width: 150,
+        },
+        {
+            field: 'reportDelivery',
+            headerName: 'Report Delivery',
+            width: 200,
+        },
+
+        {
+            field: 'address',
+            headerName: 'Address',
+            width: 500,
+        },
+        {
+            field: 'description',
+            headerName: 'Description',
             width: 500,
         }
+
     ];
 
     const DrawerList = (
         <Box sx={{ width: 350 }} role="presentation" >
-            <p className="p-4 font-semibold text-lg">{editId ? "Edit Origin" : "Add Origin"}</p>
+            <p className="p-4 font-semibold text-lg">{editId ? "Edit Lab Test" : "Add Lab Test"}</p>
             <Box component="form" onSubmit={addData} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
                 <Autocomplete
                     disablePortal
                     options={labCategory}
+                    value={labCategory.find((item: any) => item.value === categoryId) || null}
+                    isOptionEqualToValue={(option: any, val: any) => option.value === (val?.value || val)}
                     sx={{ width: 300 }}
                     onChange={(event, newValue: any) => {
                         setCategoryId(newValue ? newValue.value : "");
                     }}
-                    renderInput={(params) => <TextField {...params} label="Category" required />}
+                    renderInput={(params) => <TextField {...params} label="Category" required={!categoryId} />}
                 />
                 <TextField
                     label='Name'
@@ -217,15 +343,7 @@ const LabTest = () => {
                     required
                     fullWidth
                 />
-                <TextField
-                    label='Author Details Id'
-                    name='authorDetailsId'
-                    placeholder='Enter Author Details Id'
-                    value={authorDetailsId}
-                    onChange={(e) => setAuthorDetailsId(e.target.value)}
-                    required
-                    fullWidth
-                />
+
                 <Button variant="contained" type='submit'>
                     {editId ? "Update" : "Submit"}
                 </Button>
@@ -245,18 +363,18 @@ const LabTest = () => {
                     {DrawerList}
                 </Drawer>
             </div>
-            {loading ? <Loading /> : <Box sx={{ height: 400, width: '100%' }}>
+            {loading ? <Loading /> : <Box sx={{ height: 800, width: '100%' }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
                     initialState={{
                         pagination: {
                             paginationModel: {
-                                pageSize: 5,
+                                pageSize: 20,
                             },
                         },
                     }}
-                    pageSizeOptions={[5, 10, 20]}
+                    pageSizeOptions={[20, 50, 100]}
                 />
             </Box>
             }
