@@ -50,11 +50,11 @@ import {
 } from '../controller/productController';
 
 import { cartAddController, cartListController, cartDeleteController, cartEditController } from "../controller/cartController"
-import {Authorization} from "../middleware/authorization"
+import { Authorization } from "../middleware/authorization"
 import { authMiddleware } from '../middleware/authMiddleware';
 import { uploader } from '../utils/multer';
-import {ValidationMiddleware} from "../middleware/validationMiddleware"
-import {Validation} from "../utils/validation"
+import { ValidationMiddleware } from "../middleware/validationMiddleware"
+import { Validation } from "../utils/validation"
 export const router = express.Router();
 
 //Category api list
@@ -194,7 +194,7 @@ router.post(
   uploader.any(),
   authMiddleware,
   Authorization("admin"),
-   ValidationMiddleware(Validation),
+  ValidationMiddleware(Validation),
   addProductController,
 );
 
@@ -274,7 +274,7 @@ router.get('/list', authMiddleware, productListController);
  *         description: Product updated successfully
  */
 
-router.put('/update/:id', uploader.any(),authMiddleware, updateProductController);
+router.put('/update/:id', uploader.any(), authMiddleware, updateProductController);
 
 /**
  * @swagger

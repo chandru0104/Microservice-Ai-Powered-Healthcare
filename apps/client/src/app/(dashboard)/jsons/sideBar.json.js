@@ -54,52 +54,46 @@ const sideBar = [
   },
   {
     id: 7,
-    icon: <LuGitFork />,
+    icon: <LuGitCommitVertical />,
+    name: "Product ChildCategory",
+    path: "/product-child-category",
+  },
+  {
+    id: 8,
+    icon: <LuGlobe />,
     name: "Product Subcategory",
     path: "/product-subcategory",
   },
   {
-    id: 8,
-    icon: <LuGitCommitVertical />,
-    name: "Product Child Category",
-    path: "/product-child-category",
+    id: 9,
+    icon: <LuGitFork />,
+    name: "Product Origin",
+    path: "/product-origin",
   },
   {
-    id: 9,
+    id: 10,
     icon: <LuTag />,
     name: "Product Brand",
     path: "/product-brand",
   },
   {
-    id: 10,
+    id: 11,
     icon: <LuBaby />,
     name: "Product Age Group",
     path: "/product-age-group",
   },
   {
-    id: 11,
-    icon: <LuGlobe />,
-    name: "Product Origin",
-    path: "/product-origin",
-  },
-  {
-    id: 12,
+    id: 13,
     icon: <LuPackage />,
     name: "Products",
     path: "/products",
   },
   {
-    id: 13,
+    id: 14,
     icon: <LuShoppingBag />,
     name: "Order History",
     path: "/order-history",
   },
-  {
-    id: 14,
-    icon: <LuReceipt />,
-    name: "Payment History",
-    path: "/payment-history",
-  }
 ];
 
 export default sideBar;

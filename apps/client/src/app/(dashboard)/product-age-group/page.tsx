@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
-import { OriginList, AddOrgin, UpdateOrigin, DeleteOrigin } from "../../../services/productService"
+import { ageGroupAdd, ageGroupList, ageGroupUpdate, ageGroupDelete } from "../../../services/productService"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 
 interface Origin {
@@ -40,66 +40,63 @@ const ProductsAgeGroup = () => {
         setOpen(true);
     };
 
-    const getData = async () => {
+
+    const list = async () => {
         try {
             setLoading(true)
-            const dataOrigin = await OriginList()
-            const { data } = dataOrigin
-            const originArray = Array.isArray(data?.data) ? data.data : []
-            const mappedData = originArray.map((item: any, index: number) => ({
-                ...item,
-                id: index + 1,
-            }))
-            setRow(mappedData)
+            const list = await ageGroupList()
+            const mapping = Array.isArray(list?.data?.data) ? list?.data.data.map((items: any, index: any) => ({
+                ...items,
+                id: index + 1
+            })) : []
+            setRow(mapping)
         } catch (error: any) {
-            console.error(error.message)
+            alert(error.message)
         } finally {
             setLoading(false)
         }
     }
 
     useEffect(() => {
-        getData()
+        list()
     }, [])
 
     const submitOrigin = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!name.trim()) {
-            alert("Please provide name")
-            return
-        }
         try {
             if (editId) {
-                await UpdateOrigin(editId, name)
+                const edit = await ageGroupUpdate(editId, name)
+                setOpen(false)
+                list()
+                return edit
             } else {
-                await AddOrgin(name)
+                const add = await ageGroupAdd(name)
+                setOpen(false)
+                list()
+                return add
             }
-            setOpen(false)
-            setEditId(null)
-            setName("")
-            getData()
         } catch (error: any) {
             alert(error.message)
         }
     }
 
-    const handleEdit = (row: any) => {
-        setEditId(row._id || row.id)
-        setName(row.name)
+
+    const handleEdit = (data: any) => {
+        setEditId(data._id)
+        setName(data.name)
         setOpen(true)
     }
 
-    const handleDelete = async (row: any) => {
-        const id = row._id || row.id
-        if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
-            try {
-                await DeleteOrigin(id)
-                getData()
-            } catch (error: any) {
-                alert(error.message)
-            }
+    const handleDelete = async (data: any) => {
+        try {
+            await ageGroupDelete(data._id)
+            list()
+        } catch (error: any) {
+            alert(error.message)
         }
     }
+
+
 
     const columns: GridColDef<(typeof rows)[number]>[] = [
         { field: 'id', headerName: 'ID', width: 90 },
@@ -135,7 +132,7 @@ const ProductsAgeGroup = () => {
 
     const DrawerList = (
         <Box sx={{ width: 350 }} role="presentation" >
-            <p className="p-4 font-semibold text-lg">{editId ? "Edit Origin" : "Add Origin"}</p>
+            <p className="p-4 font-semibold text-lg">{editId ? "Edit Product Age Group" : "Add Product Age Group"}</p>
             <Box component="form" onSubmit={submitOrigin} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
                 <TextField
                     label='Name'
@@ -165,18 +162,18 @@ const ProductsAgeGroup = () => {
                     {DrawerList}
                 </Drawer>
             </div>
-            {loading ? <Loading /> : <Box sx={{ height: 400, width: '100%' }}>
+            {loading ? <Loading /> : <Box sx={{ height: 800, width: '100%' }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
                     initialState={{
                         pagination: {
                             paginationModel: {
-                                pageSize: 5,
+                                pageSize: 20,
                             },
                         },
                     }}
-                    pageSizeOptions={[5, 10, 20]}
+                    pageSizeOptions={[20, 50, 100]}
                 />
             </Box>
             }

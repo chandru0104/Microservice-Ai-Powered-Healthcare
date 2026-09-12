@@ -10,18 +10,13 @@ import { useState, useEffect } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
-import { OriginList, AddOrgin, UpdateOrigin, DeleteOrigin } from "../../../services/productService"
+import { subCategoryAdd, subCategoryList, subCategoryUpdate, subCategoryDelete } from "../../../services/productService"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 
-interface Origin {
-    id: string | number,
-    name: string,
-    _id?: string,
-}
 
-const ProductSubCategoryPage = () => {
+const ProductsOrigin = () => {
     const [open, setOpen] = React.useState(false);
-    const [rows, setRow] = useState<Origin[]>([])
+    const [rows, setRow] = useState([])
     const [loading, setLoading] = useState(false)
     const [name, setName] = useState("")
     const [editId, setEditId] = useState<string | null>(null)
@@ -33,71 +28,67 @@ const ProductSubCategoryPage = () => {
             setName("");
         }
     };
-
     const handleOpenAdd = () => {
-        setEditId(null);
-        setName("");
-        setOpen(true);
-    };
+        setOpen(true)
+    }
 
-    const getData = async () => {
+
+    const listData = async () => {
         try {
             setLoading(true)
-            const dataOrigin = await OriginList()
-            const { data } = dataOrigin
-            const originArray = Array.isArray(data?.data) ? data.data : []
-            const mappedData = originArray.map((item: any, index: number) => ({
-                ...item,
-                id: index + 1,
-            }))
-            setRow(mappedData)
+            const list = await subCategoryList()
+            const mapping = Array.isArray(list?.data?.data) ? list.data.data.map((items: any, index: any) => ({
+                ...items,
+                id: index + 1
+            })) : []
+            setRow(mapping)
         } catch (error: any) {
-            console.error(error.message)
+            alert(error.message)
         } finally {
             setLoading(false)
         }
     }
 
     useEffect(() => {
-        getData()
+        listData()
     }, [])
-
     const submitOrigin = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!name.trim()) {
-            alert("Please provide name")
-            return
-        }
         try {
             if (editId) {
-                await UpdateOrigin(editId, name)
+                const update = await subCategoryUpdate(editId, name)
+                setOpen(false)
+                setName("");
+                listData()
+                return update
             } else {
-                await AddOrgin(name)
+                const add = await subCategoryAdd(name)
+                setOpen(false)
+                setName("");
+                listData()
+                return add
             }
-            setOpen(false)
-            setEditId(null)
-            setName("")
-            getData()
         } catch (error: any) {
             alert(error.message)
         }
     }
 
-    const handleEdit = (row: any) => {
-        setEditId(row._id || row.id)
-        setName(row.name)
-        setOpen(true)
+    const handleEdit = (data: any) => {
+        try {
+            setOpen(true)
+            setName(data.name)
+            setEditId(data._id)
+        } catch (error: any) {
+            alert(error.message)
+        }
     }
 
-    const handleDelete = async (row: any) => {
-        const id = row._id || row.id
-        if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
-            try {
-                await DeleteOrigin(id)
-                getData()
-            } catch (error: any) {
-                alert(error.message)
-            }
+    const handleDelete = async (data: any) => {
+        try {
+            await subCategoryDelete  (data._id)
+            listData()
+        } catch (error: any) {
+             alert(error.message)
         }
     }
 
@@ -135,7 +126,7 @@ const ProductSubCategoryPage = () => {
 
     const DrawerList = (
         <Box sx={{ width: 350 }} role="presentation" >
-            <p className="p-4 font-semibold text-lg">{editId ? "Edit Origin" : "Add Origin"}</p>
+            <p className="p-4 font-semibold text-lg">{editId ? "Edit Subcategory" : "Add Subcategory"}</p>
             <Box component="form" onSubmit={submitOrigin} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
                 <TextField
                     label='Name'
@@ -158,25 +149,25 @@ const ProductSubCategoryPage = () => {
             <div className='flex items-center justify-between py-3'>
                 <h3 className="text-xl font-bold">Product Subcategory</h3>
                 <Button variant="contained" onClick={handleOpenAdd}>
-                    Add Product Subcategory
-                    <AddIcon /> 
+                    Add Products Subcategory
+                    <AddIcon />
                 </Button>
                 <Drawer open={open} onClose={toggleDrawer(false)} anchor='right'>
                     {DrawerList}
                 </Drawer>
             </div>
-            {loading ? <Loading /> : <Box sx={{ height: 400, width: '100%' }}>
+            {loading ? <Loading /> : <Box sx={{ height: 800, width: '100%' }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
                     initialState={{
                         pagination: {
                             paginationModel: {
-                                pageSize: 5,
+                                pageSize: 20,
                             },
                         },
                     }}
-                    pageSizeOptions={[5, 10, 20]}
+                    pageSizeOptions={[20, 50, 100]}
                 />
             </Box>
             }
@@ -184,4 +175,4 @@ const ProductSubCategoryPage = () => {
     );
 };
 
-export default ProductSubCategoryPage;
+export default ProductsOrigin;

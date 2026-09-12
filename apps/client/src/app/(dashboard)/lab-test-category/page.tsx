@@ -148,7 +148,7 @@ const LabTestCategory = () => {
 
     const DrawerList = (
         <Box sx={{ width: 350 }} role="presentation" >
-            <p className="p-4 font-semibold text-lg">{editId ? "Edit Origin" : "Add Origin"}</p>
+            <p className="p-4 font-semibold text-lg">{editId ? "Edit Lab Test Category" : "Add Lab Test Category"}</p>
             <Box component="form" onSubmit={submitLabTestCategory} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
                 <TextField
                     label='Name'
