@@ -11,7 +11,7 @@ export const consumer = kafka.consumer({
 
 const connectConsumer = async () => {
   try {
-    consumer.connect();
+    await consumer.connect();
     console.log('auth service consumer connected');
 
     await consumer.subscribe({

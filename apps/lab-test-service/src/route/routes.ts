@@ -118,7 +118,7 @@ router.delete("/category/delete/:id", authMiddlewares, authorize("admin"), delet
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:,./
+ *         application/json:
  *           schema:
  *             type: object
  *     responses:
