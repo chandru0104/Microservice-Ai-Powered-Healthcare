@@ -176,7 +176,7 @@ const LabTest = () => {
         } finally {
             setLoading(false)
         }
-    }
+    } 
 
     const columns: GridColDef<(typeof rows)[number]>[] = [
         { field: 'id', headerName: 'ID', width: 90 },
