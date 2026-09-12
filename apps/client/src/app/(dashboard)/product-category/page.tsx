@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
-import { OriginList, AddOrgin, UpdateOrigin, DeleteOrigin } from "../../../services/productService"
+import { productCategoryAdd, productCategoryList, productCategoryUpdate, productCategoryDelete } from "../../../services/productService"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 
 interface Origin {
@@ -23,83 +23,83 @@ const ProductCategoryPage = () => {
     const [open, setOpen] = React.useState(false);
     const [rows, setRow] = useState<Origin[]>([])
     const [loading, setLoading] = useState(false)
+    const [editId, setEditId] = useState("")
     const [name, setName] = useState("")
-    const [editId, setEditId] = useState<string | null>(null)
+
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
         if (!newOpen) {
-            setEditId(null);
+            setEditId("");
             setName("");
+
         }
     };
 
-    const handleOpenAdd = () => {
-        setEditId(null);
-        setName("");
-        setOpen(true);
-    };
-
-    const getData = async () => {
+    const listData = async () => {
         try {
             setLoading(true)
-            const dataOrigin = await OriginList()
-            const { data } = dataOrigin
-            const originArray = Array.isArray(data?.data) ? data.data : []
-            const mappedData = originArray.map((item: any, index: number) => ({
-                ...item,
-                id: index + 1,
-            }))
-            setRow(mappedData)
+
+            const list = await productCategoryList()
+            const mapping = Array.isArray(list?.data.data) ? list?.data.data.map((items: any, index: any) => ({
+                ...items,
+                id: index + 1
+            })) : []
+            setRow(mapping)
+            setEditId("")
+            return mapping
+
         } catch (error: any) {
-            console.error(error.message)
+            alert(error.message)
         } finally {
             setLoading(false)
         }
     }
 
     useEffect(() => {
-        getData()
+        listData()
     }, [])
 
-    const submitOrigin = async (e: React.FormEvent) => {
+
+    const submitData = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!name.trim()) {
-            alert("Please provide name")
-            return
-        }
         try {
+
             if (editId) {
-                await UpdateOrigin(editId, name)
+                const updateData = await productCategoryUpdate(editId, name)
+                setOpen(false)
+                listData()
+                return updateData
             } else {
-                await AddOrgin(name)
+                const addData = await productCategoryAdd(name)
+                setOpen(false)
+                listData()
+                return addData
             }
-            setOpen(false)
-            setEditId(null)
-            setName("")
-            getData()
+
         } catch (error: any) {
             alert(error.message)
         }
     }
-
-    const handleEdit = (row: any) => {
-        setEditId(row._id || row.id)
-        setName(row.name)
+    const handleEdit = (data: any) => {
         setOpen(true)
+        setName(data.name)
+        setEditId(data._id)
     }
-
-    const handleDelete = async (row: any) => {
-        const id = row._id || row.id
-        if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
-            try {
-                await DeleteOrigin(id)
-                getData()
-            } catch (error: any) {
-                alert(error.message)
-            }
+    const handleDelete = async (data: any) => {
+        try {
+            setLoading(true)
+            const det = await productCategoryDelete(data._id)
+            listData()
+            setName("")
+            return det
+        } catch (error: any) {
+            alert(error.message)
+        } finally {
+            setLoading(false)
         }
     }
+
 
     const columns: GridColDef<(typeof rows)[number]>[] = [
         { field: 'id', headerName: 'ID', width: 90 },
@@ -135,8 +135,8 @@ const ProductCategoryPage = () => {
 
     const DrawerList = (
         <Box sx={{ width: 350 }} role="presentation" >
-            <p className="p-4 font-semibold text-lg">{editId ? "Edit Origin" : "Add Origin"}</p>
-            <Box component="form" onSubmit={submitOrigin} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
+            <p className="p-4 font-semibold text-lg">{editId ? "Edit Product Category" : "Add Product Category"}</p>
+            <Box component="form" onSubmit={submitData} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
                 <TextField
                     label='Name'
                     name='name'
@@ -157,7 +157,7 @@ const ProductCategoryPage = () => {
         <div className='w-full'>
             <div className='flex items-center justify-between py-3'>
                 <h3 className="text-xl font-bold">Product Category</h3>
-                <Button variant="contained" onClick={handleOpenAdd}>
+                <Button variant="contained" onClick={() => setOpen(true)}>
                     Add Product Category
                     <AddIcon />
                 </Button>
@@ -165,18 +165,18 @@ const ProductCategoryPage = () => {
                     {DrawerList}
                 </Drawer>
             </div>
-            {loading ? <Loading /> : <Box sx={{ height: 400, width: '100%' }}>
+            {loading ? <Loading /> : <Box sx={{ height: 800, width: '100%' }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
                     initialState={{
                         pagination: {
                             paginationModel: {
-                                pageSize: 5,
+                                pageSize: 20,
                             },
                         },
                     }}
-                    pageSizeOptions={[5, 10, 20]}
+                    pageSizeOptions={[20, 50, 100]}
                 />
             </Box>
             }

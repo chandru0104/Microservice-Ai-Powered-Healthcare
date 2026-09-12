@@ -19,7 +19,7 @@ interface Origin {
     _id?: string,
 }
 
-const ProductsOrigin = () => {
+const ProductSubCategoryPage = () => {
     const [open, setOpen] = React.useState(false);
     const [rows, setRow] = useState<Origin[]>([])
     const [loading, setLoading] = useState(false)
@@ -158,7 +158,7 @@ const ProductsOrigin = () => {
             <div className='flex items-center justify-between py-3'>
                 <h3 className="text-xl font-bold">Product Origin</h3>
                 <Button variant="contained" onClick={handleOpenAdd}>
-                    Add Products Origin
+                    Add Product Origin
                     <AddIcon />
                 </Button>
                 <Drawer open={open} onClose={toggleDrawer(false)} anchor='right'>
@@ -184,4 +184,4 @@ const ProductsOrigin = () => {
     );
 };
 
-export default ProductsOrigin;
+export default ProductSubCategoryPage;

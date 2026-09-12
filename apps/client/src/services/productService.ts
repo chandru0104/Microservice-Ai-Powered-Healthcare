@@ -114,7 +114,7 @@ export const childCategoryUpdate = async (id: string, name: string) => {
 export const childCategoryDelete = async (id: string) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
-        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/child-category/delete/${id}`, {
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/child-category/delete/${id}`,{}, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToken}`
@@ -177,7 +177,7 @@ export const subCategoryUpdate = async (id: string, name: string) => {
 export const subCategoryDelete = async (id: string) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
-        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/sub-category/delete/${id}`, {
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/sub-category/delete/${id}`,{}, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToken}`
@@ -242,7 +242,7 @@ export const productCategoryUpdate = async (id: string, name: string) => {
 export const productCategoryDelete = async (id: string) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
-        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/category/delete/${id}`, {
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/category/delete/${id}`,{}, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToken}`
@@ -306,7 +306,7 @@ export const brandUpdate = async (id: string, name: string) => {
 export const brandDelete = async (id: string) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
-        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/brand/delete/${id}`, {
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/brand/delete/${id}`,{}, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToken}`
@@ -371,7 +371,7 @@ export const ageGroupUpdate = async (id: string, name: string) => {
 export const ageGroupDelete = async (id: string) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
-        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/age-group/delete/${id}`, {
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/age-group/delete/${id}`, {},{
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToken}`

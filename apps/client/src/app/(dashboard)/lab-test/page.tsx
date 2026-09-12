@@ -264,7 +264,7 @@ const LabTest = () => {
                     options={labCategory}
                     value={labCategory.find((item: any) => item.value === categoryId) || null}
                     isOptionEqualToValue={(option: any, val: any) => option.value === (val?.value || val)}
-                    sx={{ width: 300 }}
+                    sx={{ width: 320 }}
                     onChange={(event, newValue: any) => {
                         setCategoryId(newValue ? newValue.value : "");
                     }}
