@@ -250,6 +250,7 @@ const ProductsPage = () => {
     const submitOrigin = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
+            setLoading(true)
             const payload = {
                 name,
                 description,
@@ -271,10 +272,27 @@ const ProductsPage = () => {
             alert("Product added successfully!")
             setOpen(false)
             getData()
+            setName("")
+            setDescription("")
+            setPrice("")
+            setExpiryDate("")
+            setBenefit("")
+            setReturnPolicy("")
+            setVariant("")
+            setStock("")
+            setSelectedCategory("")
+            setSelectedSubCategory("")
+            setSelectedChildCategory("")
+            setSelectedBrand("")
+            setSelectedOrigin("")
+            setSelectedAgeGroup("")
+            setFile(null)
             return add
         } catch (error: any) {
             console.log(error.message)
             alert(error.message)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -488,12 +506,12 @@ const ProductsPage = () => {
                         </div>
                     </Grid>
                 </Grid>
-                <div className='h-[250px] pb-10 m-2'>
+                <div className='h-[100px]  m-2'>
                     <p className='pt-2'>Porduct image </p>
                     <input type="file" name='files' onChange={(e) => setFile(e.target.files?.[0] || null)} />
                 </div>
-                <Button variant="contained" type='submit'>
-                    {editId ? "Update" : "Submit"}
+                <Button variant="contained" type='submit' disabled={loading}>
+                    { loading? "Loading..." : editId ? "Update" : "Submit"}
                 </Button>
             </Box>
         </Box>
