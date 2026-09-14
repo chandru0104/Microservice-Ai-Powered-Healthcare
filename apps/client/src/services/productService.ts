@@ -1,5 +1,6 @@
 import axios from "axios"
 import { productAdd } from "../models/lab"
+import { Key } from "lucide-react"
 
 const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
 
@@ -114,7 +115,7 @@ export const childCategoryUpdate = async (id: string, name: string) => {
 export const childCategoryDelete = async (id: string) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
-        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/child-category/delete/${id}`,{}, {
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/child-category/delete/${id}`, {}, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToken}`
@@ -177,7 +178,7 @@ export const subCategoryUpdate = async (id: string, name: string) => {
 export const subCategoryDelete = async (id: string) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
-        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/sub-category/delete/${id}`,{}, {
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/sub-category/delete/${id}`, {}, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToken}`
@@ -242,7 +243,7 @@ export const productCategoryUpdate = async (id: string, name: string) => {
 export const productCategoryDelete = async (id: string) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
-        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/category/delete/${id}`,{}, {
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/category/delete/${id}`, {}, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToken}`
@@ -306,7 +307,7 @@ export const brandUpdate = async (id: string, name: string) => {
 export const brandDelete = async (id: string) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
-        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/brand/delete/${id}`,{}, {
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/brand/delete/${id}`, {}, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToken}`
@@ -371,7 +372,7 @@ export const ageGroupUpdate = async (id: string, name: string) => {
 export const ageGroupDelete = async (id: string) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
-        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/age-group/delete/${id}`, {},{
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/age-group/delete/${id}`, {}, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToken}`
@@ -385,12 +386,45 @@ export const ageGroupDelete = async (id: string) => {
 
 
 
-export const productAdds = async (data: productAdd) => {
+export const productAdds = async (data: any) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
-        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/product/add`, data, {
+
+        const { name,
+            description, price,
+            returnPolicy,
+            benefit,
+            expiryDate,
+            brandId,
+            categoryId,
+            subcategoryId,
+            childCategoryId,
+            originId,
+            ageGroupId,
+            variant,
+            stock,
+            file } = data
+        const formData = new FormData()
+
+        formData.append("name", name)
+        formData.append("description", description)
+        formData.append("price", String(price))
+        formData.append("returnPolicy", returnPolicy)
+        formData.append("benefit", benefit)
+        if (expiryDate) formData.append("expiryOn", expiryDate)
+        formData.append("variant", variant)
+        formData.append("stock", String(stock))
+        formData.append("brandId", brandId)
+        formData.append("categoryId", categoryId)
+        formData.append("subcategoryId", subcategoryId)
+        formData.append("childCategoryId", childCategoryId)
+        formData.append("originId", originId)
+        formData.append("ageGroupId", ageGroupId)
+        if (file) formData.append("file", file)
+
+
+        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/product/add`, formData, {
             headers: {
-                "Content-Type": "multipart/from-data",
                 "Authorization": `Bearer ${adminAccessToken}`
             }
         })

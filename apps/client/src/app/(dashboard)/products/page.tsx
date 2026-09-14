@@ -10,21 +10,44 @@ import { useState, useEffect } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
-import { OriginList, AddOrgin, UpdateOrigin, DeleteOrigin } from "../../../services/productService"
+import { OriginList, childCategoryList, subCategoryList, productCategoryList, brandList, ageGroupList, productAdds, productList, productView, productUpdate } from "../../../services/productService"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
+import Autocomplete from '@mui/material/Autocomplete';
+import Grid from "@mui/material/Grid"
 
-interface Origin {
-    id: string | number,
-    name: string,
-    _id?: string,
-}
+
 
 const ProductsPage = () => {
     const [open, setOpen] = React.useState(false);
-    const [rows, setRow] = useState<Origin[]>([])
+    const [rows, setRow] = useState<[]>([])
     const [loading, setLoading] = useState(false)
+
+
+    const [brandOptions, setBrandOptions] = useState<{ value: string; label: string }[]>([])
+    const [originOptions, setOriginOptions] = useState<{ value: string; label: string }[]>([])
+    const [categoryOptions, setCategoryOptions] = useState<{ value: string; label: string }[]>([])
+    const [childCategoryOptions, setChildCategoryOptions] = useState<{ value: string; label: string }[]>([])
+    const [subCategoryOptions, setSubCategoryOptions] = useState<{ value: string; label: string }[]>([])
+    const [ageGroupOptions, setAgeGroupOptions] = useState<{ value: string; label: string }[]>([])
+
+    // Selected Form Values
     const [name, setName] = useState("")
+    const [description, setDescription] = useState("")
+    const [price, setPrice] = useState("")
+    const [returnPolicy, setReturnPolicy] = useState("")
+    const [benefit, setBenefit] = useState("")
+    const [expiryDate, setExpiryDate] = useState("")
+    const [variant, setVariant] = useState("")
+    const [stock, setStock] = useState("")
+    const [file, setFile] = useState<File | null>(null)
     const [editId, setEditId] = useState<string | null>(null)
+
+    const [selectedBrand, setSelectedBrand] = useState<string>("")
+    const [selectedOrigin, setSelectedOrigin] = useState<string>("")
+    const [selectedCategory, setSelectedCategory] = useState<string>("")
+    const [selectedChildCategory, setSelectedChildCategory] = useState<string>("")
+    const [selectedSubCategory, setSelectedSubCategory] = useState<string>("")
+    const [selectedAgeGroup, setSelectedAgeGroup] = useState<string>("")
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
@@ -41,47 +64,14 @@ const ProductsPage = () => {
     };
 
     const getData = async () => {
-        try {
-            setLoading(true)
-            const dataOrigin = await OriginList()
-            const { data } = dataOrigin
-            const originArray = Array.isArray(data?.data) ? data.data : []
-            const mappedData = originArray.map((item: any, index: number) => ({
-                ...item,
-                id: index + 1,
-            }))
-            setRow(mappedData)
-        } catch (error: any) {
-            console.error(error.message)
-        } finally {
-            setLoading(false)
-        }
+
     }
 
     useEffect(() => {
         getData()
     }, [])
 
-    const submitOrigin = async (e: React.FormEvent) => {
-        e.preventDefault()
-        if (!name.trim()) {
-            alert("Please provide name")
-            return
-        }
-        try {
-            if (editId) {
-                await UpdateOrigin(editId, name)
-            } else {
-                await AddOrgin(name)
-            }
-            setOpen(false)
-            setEditId(null)
-            setName("")
-            getData()
-        } catch (error: any) {
-            alert(error.message)
-        }
-    }
+
 
     const handleEdit = (row: any) => {
         setEditId(row._id || row.id)
@@ -106,7 +96,7 @@ const ProductsPage = () => {
         {
             field: 'action',
             headerName: 'Action',
-            width: 300,
+            width: 100,
             renderCell: (params) => (
                 <div className="flex items-center">
                     <button
@@ -129,23 +119,379 @@ const ProductsPage = () => {
         {
             field: 'name',
             headerName: 'Name',
-            width: 500,
+            width: 300,
+        },
+        {
+            field: 'image',
+            headerName: 'Image',
+            width: 100,
+        },
+        {
+            field: 'price',
+            headerName: 'Price',
+            width: 100,
+        },
+        {
+            field: 'returnPolicy',
+            headerName: 'Return Policy',
+            width: 100,
+        },
+        {
+            field: 'brand',
+            headerName: 'Brand',
+            width: 100,
+        },
+        {
+            field: 'category',
+            headerName: 'Category',
+            width: 250,
+        },
+        {
+            field: 'ageGroup',
+            headerName: 'Age Group',
+            width: 100,
         }
     ];
 
+    //options api
+
+    const originList = async () => {
+        try {
+            const list = await OriginList()
+            const mapping = Array.isArray(list?.data?.data) ? list?.data.data.map((items: any) => ({
+                value: items._id || items.id,
+                label: items.name
+            })) : []
+            setOriginOptions(mapping)
+        } catch (error: any) {
+            alert(error.message)
+        }
+    }
+
+    const childCategoryLists = async () => {
+        try {
+            const list = await childCategoryList()
+            const mapping = Array.isArray(list?.data?.data) ? list?.data.data.map((item: any) => ({
+                value: item._id || item.id,
+                label: item.name
+            })) : []
+            setChildCategoryOptions(mapping)
+
+        } catch (error: any) {
+            alert(error.message)
+        }
+    }
+
+    const subCategoryLists = async () => {
+        try {
+            const list = await subCategoryList()
+            const mapping = Array.isArray(list?.data?.data) ? list?.data.data.map((items: any) => ({
+                value: items._id || items.id,
+                label: items.name
+            })) : []
+            setSubCategoryOptions(mapping)
+        } catch (error: any) {
+            alert(error.message)
+        }
+    }
+
+
+    const productCategoryLists = async () => {
+        try {
+            const list = await productCategoryList()
+            const mapping = Array.isArray(list?.data?.data) ? list?.data.data.map((items: any) => ({
+                value: items._id || items.id,
+                label: items.name
+            })) : []
+            setCategoryOptions(mapping)
+        } catch (error: any) {
+            alert(error.message)
+        }
+    }
+
+
+    const brandLists = async () => {
+        try {
+            const list = await brandList()
+            const mapping = Array.isArray(list?.data?.data) ? list?.data.data.map((items: any) => ({
+                value: items._id || items.id,
+                label: items.name
+            })) : []
+            setBrandOptions(mapping)
+        } catch (error: any) {
+            alert(error.message)
+        }
+    }
+
+
+    const ageGroupLists = async () => {
+        try {
+            const list = await ageGroupList()
+            const mapping = Array.isArray(list?.data?.data) ? list?.data.data.map((items: any) => ({
+                value: items._id || items.id,
+                label: items.name
+            })) : []
+            setAgeGroupOptions(mapping)
+        } catch (error: any) {
+            alert(error.message)
+        }
+    }
+
+    useEffect(() => {
+        originList()
+        childCategoryLists()
+        subCategoryLists()
+        productCategoryLists()
+        brandLists()
+        ageGroupLists()
+    }, [])
+
+
+    const submitOrigin = async (e: React.FormEvent) => {
+        e.preventDefault()
+        try {
+            const payload = {
+                name,
+                description,
+                price: Number(price),
+                expiryDate,
+                benefit,
+                returnPolicy,
+                variant,
+                stock: Number(stock),
+                categoryId: selectedCategory,
+                subcategoryId: selectedSubCategory,
+                childCategoryId: selectedChildCategory,
+                brandId: selectedBrand,
+                originId: selectedOrigin,
+                ageGroupId: selectedAgeGroup,
+                file
+            }
+            const add = await productAdds(payload)
+            alert("Product added successfully!")
+            setOpen(false)
+            getData()
+            return add
+        } catch (error: any) {
+            console.log(error.message)
+            alert(error.message)
+        }
+    }
+
+
     const DrawerList = (
-        <Box sx={{ width: 350 }} role="presentation" >
-            <p className="p-4 font-semibold text-lg">{editId ? "Edit Origin" : "Add Origin"}</p>
+        <Box sx={{ width: 700 }} role="presentation" >
+            <p className="p-4 font-semibold text-lg">{editId ? "Edit Products" : "Add Products"}</p>
             <Box component="form" onSubmit={submitOrigin} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
-                <TextField
-                    label='Name'
-                    name='name'
-                    placeholder='Enter name'
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    fullWidth
-                />
+                <p>Select Product Require Options</p>
+                <Grid container spacing={0}>
+                    <Grid size={6} >
+                        <div >
+                            <div className='p-2'>
+                                <Autocomplete
+                                    disablePortal
+                                    options={categoryOptions}
+                                    getOptionKey={(option: any) => option.value}
+                                    getOptionLabel={(option: any) => option.label || ""}
+                                    onChange={(_, newValue: any) => {
+                                        setSelectedCategory(newValue ? newValue.value : "")
+                                    }}
+                                    sx={{ width: 300 }}
+                                    renderInput={(params) => <TextField {...params} label="Category" required />}
+                                />
+                            </div>
+                            <div className='p-2'>
+                                <Autocomplete
+                                    disablePortal
+                                    options={childCategoryOptions}
+                                    getOptionKey={(option: any) => option.value}
+                                    getOptionLabel={(option: any) => option.label || ""}
+                                    onChange={(_, newValue: any) => {
+                                        setSelectedChildCategory(newValue.value)
+                                    }}
+                                    sx={{ width: 300 }}
+                                    renderInput={(params) => <TextField {...params} label="Childcategory" required />}
+                                />
+                            </div>
+                        </div>
+                    </Grid>
+                    <Grid size={6}>
+                        <div>
+                            <div className='p-2'>
+                                <Autocomplete
+                                    disablePortal
+                                    options={brandOptions}
+                                    getOptionKey={(option: any) => option.value}
+                                    getOptionLabel={(option: any) => option.label || ""}
+                                    onChange={(_, newValue: any) => {
+                                        setSelectedBrand(newValue ? newValue.value : "")
+                                    }}
+                                    sx={{ width: 300 }}
+                                    renderInput={(params) => <TextField {...params} label="Brand" required />}
+                                />
+                            </div>
+                            <div className='p-2'>
+                                <Autocomplete
+                                    disablePortal
+                                    options={ageGroupOptions}
+                                    getOptionKey={(option: any) => option.value}
+                                    getOptionLabel={(option: any) => option.label || ""}
+                                    onChange={(_, newValue: any) => {
+                                        setSelectedAgeGroup(newValue ? newValue.value : "")
+                                    }}
+                                    sx={{ width: 300 }}
+                                    renderInput={(params) => <TextField {...params} label="Age Group" required />}
+                                />
+                            </div>
+                        </div>
+                    </Grid>
+                    <Grid size={6}>
+                        <div>
+                            <div className='p-2'>
+                                <Autocomplete
+                                    disablePortal
+                                    options={subCategoryOptions}
+                                    sx={{ width: 300 }}
+                                    getOptionKey={(option: any) => option.value}
+                                    getOptionLabel={(option: any) => option.label || ""}
+                                    onChange={(_, newValue: any) => {
+                                        setSelectedSubCategory(newValue ? newValue.value : "")
+                                    }}
+                                    renderInput={(params) => <TextField {...params} label="Subcategory" required />}
+                                />
+                            </div>
+                            <div className='p-2'>
+                                <Autocomplete
+                                    disablePortal
+                                    options={originOptions}
+                                    sx={{ width: 300 }}
+                                    getOptionKey={(option: any) => option.value}
+                                    getOptionLabel={(option: any) => option.label || ""}
+                                    onChange={(_, newValue: any) => {
+                                        setSelectedOrigin(newValue ? newValue.value : "")
+                                    }}
+                                    renderInput={(params) => <TextField {...params} label="Origin" required />}
+                                />
+                            </div>
+                        </div>
+                    </Grid>
+
+
+                </Grid>
+                <p>Fill Product Require Details</p>
+                <Grid container >
+                    <Grid size={6}>
+                        <div>
+                            <div className='p-2'>
+                                <TextField
+                                    label='Name'
+                                    name='name'
+                                    placeholder='Enter name'
+                                    value={name}
+                                    sx={{ width: 300 }}
+                                    onChange={(e) => setName(e.target.value)}
+                                    required
+                                    fullWidth
+                                />
+                            </div>
+                            <div className='p-2'>
+                                <TextField
+                                    label='Description'
+                                    name='description'
+                                    placeholder='Description'
+                                    value={description}
+                                    sx={{ width: 300 }}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    required
+                                    fullWidth
+                                />
+                            </div>
+                            <div className='p-2'>
+
+                                <TextField
+                                    label='Price'
+                                    name='price'
+                                    placeholder='Price'
+                                    type='number'
+                                    value={price}
+                                    sx={{ width: 300 }}
+                                    onChange={(e) => setPrice(e.target.value)}
+                                    required
+                                    fullWidth
+                                />
+                            </div>
+                            <div className='p-2'>
+                                <TextField
+                                    label='Variant'
+                                    name='variant'
+                                    placeholder='e.g., 500mg, 100ml'
+                                    value={variant}
+                                    sx={{ width: 300 }}
+                                    onChange={(e) => setVariant(e.target.value)}
+                                    required
+                                    fullWidth
+                                />
+                            </div>
+                        </div>
+
+                    </Grid>
+
+                    <Grid size={6}>
+                        <div className='p-2'>
+                            <TextField
+                                label='Expiry Date'
+                                name='expiryDate'
+                                placeholder='Expiry Date'
+                                value={expiryDate}
+                                sx={{ width: 300 }}
+                                onChange={(e) => setExpiryDate(e.target.value)}
+                                required
+                                fullWidth
+                            />
+                        </div>
+                        <div className='p-2'>
+                            <TextField
+                                label='Benefit'
+                                name='benefit'
+                                placeholder='Benefit'
+                                value={benefit}
+                                sx={{ width: 300 }}
+                                onChange={(e) => setBenefit(e.target.value)}
+                                required
+                                fullWidth
+                            />
+                        </div>
+                        <div className='p-2'>
+                            <TextField
+                                label='Return Policy'
+                                name='returnPolicy'
+                                placeholder='Return Policy'
+                                value={returnPolicy}
+                                sx={{ width: 300 }}
+                                onChange={(e) => setReturnPolicy(e.target.value)}
+                                required
+                                fullWidth
+                            />
+                        </div>
+                        <div className='p-2'>
+                            <TextField
+                                label='Stock'
+                                name='stock'
+                                placeholder='Stock count'
+                                type='number'
+                                value={stock}
+                                sx={{ width: 300 }}
+                                onChange={(e) => setStock(e.target.value)}
+                                required
+                                fullWidth
+                            />
+                        </div>
+                    </Grid>
+                </Grid>
+                <div className='h-[250px] pb-10 m-2'>
+                    <p className='pt-2'>Porduct image </p>
+                    <input type="file" name='files' onChange={(e) => setFile(e.target.files?.[0] || null)} />
+                </div>
                 <Button variant="contained" type='submit'>
                     {editId ? "Update" : "Submit"}
                 </Button>
@@ -165,18 +511,18 @@ const ProductsPage = () => {
                     {DrawerList}
                 </Drawer>
             </div>
-            {loading ? <Loading /> : <Box sx={{ height: 400, width: '100%' }}>
+            {loading ? <Loading /> : <Box sx={{ height: 800, width: '100%' }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
                     initialState={{
                         pagination: {
                             paginationModel: {
-                                pageSize: 5,
+                                pageSize: 20,
                             },
                         },
                     }}
-                    pageSizeOptions={[5, 10, 20]}
+                    pageSizeOptions={[20, 50, 100]}
                 />
             </Box>
             }

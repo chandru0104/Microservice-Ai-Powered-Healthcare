@@ -117,14 +117,28 @@ const LabTest = () => {
         }
     };
     const labCategoryList = async () => {
-        const list = await listLabTestlabCategory()
-        const mapping = Array.isArray(list?.data?.data) ? list.data.data.map((items: any) => ({
-            label: items.name,
-            value: items._id || items.id
-        })) : []
+        try {
+            const list = await listLabTestlabCategory()
+            const rawData = Array.isArray(list?.data?.data) ? list.data.data : [];
+            const seen = new Set<string>();
+            const mapping: { label: string; value: string }[] = [];
 
-        setLabCategory(mapping)
-        console.log("Categories mapped:", mapping)
+            for (const item of rawData) {
+                const val = String(item._id || item.id || "");
+                if (val && !seen.has(val)) {
+                    seen.add(val);
+                    mapping.push({
+                        label: item.name || item.label || "",
+                        value: val
+                    });
+                }
+            }
+
+            setLabCategory(mapping as any)
+            console.log("Categories mapped:", mapping)
+        } catch (error) {
+            console.error("Error fetching lab categories:", error);
+        }
     }
 
     React.useEffect(() => {
@@ -262,11 +276,21 @@ const LabTest = () => {
                 <Autocomplete
                     disablePortal
                     options={labCategory}
+                    getOptionKey={(option: any) => option.value}
+                    getOptionLabel={(option: any) => option.label || ""}
                     value={labCategory.find((item: any) => item.value === categoryId) || null}
                     isOptionEqualToValue={(option: any, val: any) => option.value === (val?.value || val)}
                     sx={{ width: 320 }}
                     onChange={(event, newValue: any) => {
                         setCategoryId(newValue ? newValue.value : "");
+                    }}
+                    renderOption={(props, option: any) => {
+                        const { key, ...optionProps } = props;
+                        return (
+                            <li key={key || option.value} {...optionProps}>
+                                {option.label}
+                            </li>
+                        );
                     }}
                     renderInput={(params) => <TextField {...params} label="Category" required={!categoryId} />}
                 />
