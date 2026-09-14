@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
-import { OriginList, childCategoryList, subCategoryList, productCategoryList, brandList, ageGroupList, productAdds, productList, productView, productUpdate } from "../../../services/productService"
+import { OriginList, childCategoryList, subCategoryList, productCategoryList, brandList, ageGroupList, productAdds, productList, productView, productUpdate, productDelete } from "../../../services/productService"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 import Autocomplete from '@mui/material/Autocomplete';
 import Grid from "@mui/material/Grid"
@@ -63,95 +63,6 @@ const ProductsPage = () => {
         setOpen(true);
     };
 
-    const getData = async () => {
-
-    }
-
-    useEffect(() => {
-        getData()
-    }, [])
-
-
-
-    const handleEdit = (row: any) => {
-        setEditId(row._id || row.id)
-        setName(row.name)
-        setOpen(true)
-    }
-
-    const handleDelete = async (row: any) => {
-        const id = row._id || row.id
-        if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
-            try {
-                await DeleteOrigin(id)
-                getData()
-            } catch (error: any) {
-                alert(error.message)
-            }
-        }
-    }
-
-    const columns: GridColDef<(typeof rows)[number]>[] = [
-        { field: 'id', headerName: 'ID', width: 90 },
-        {
-            field: 'action',
-            headerName: 'Action',
-            width: 100,
-            renderCell: (params) => (
-                <div className="flex items-center">
-                    <button
-                        type="button"
-                        className="p-2 text-blue-900 hover:text-blue-700 cursor-pointer"
-                        onClick={() => handleEdit(params.row)}
-                    >
-                        <FiEdit3 size={20} />
-                    </button>
-                    <button
-                        type="button"
-                        className="p-2 text-red-900 hover:text-red-700 cursor-pointer"
-                        onClick={() => handleDelete(params.row)}
-                    >
-                        <RiDeleteBin5Line size={20} />
-                    </button>
-                </div>
-            )
-        },
-        {
-            field: 'name',
-            headerName: 'Name',
-            width: 300,
-        },
-        {
-            field: 'image',
-            headerName: 'Image',
-            width: 100,
-        },
-        {
-            field: 'price',
-            headerName: 'Price',
-            width: 100,
-        },
-        {
-            field: 'returnPolicy',
-            headerName: 'Return Policy',
-            width: 100,
-        },
-        {
-            field: 'brand',
-            headerName: 'Brand',
-            width: 100,
-        },
-        {
-            field: 'category',
-            headerName: 'Category',
-            width: 250,
-        },
-        {
-            field: 'ageGroup',
-            headerName: 'Age Group',
-            width: 100,
-        }
-    ];
 
     //options api
 
@@ -251,42 +162,82 @@ const ProductsPage = () => {
         e.preventDefault()
         try {
             setLoading(true)
-            const payload = {
-                name,
-                description,
-                price: Number(price),
-                expiryDate,
-                benefit,
-                returnPolicy,
-                variant,
-                stock: Number(stock),
-                categoryId: selectedCategory,
-                subcategoryId: selectedSubCategory,
-                childCategoryId: selectedChildCategory,
-                brandId: selectedBrand,
-                originId: selectedOrigin,
-                ageGroupId: selectedAgeGroup,
-                file
+
+            if (editId) {
+                const payload = {
+                    name,
+                    description,
+                    price: Number(price),
+                    expiryDate,
+                    benefit,
+                    returnPolicy,
+                    variant,
+                    stock: Number(stock),
+                    categoryId: selectedCategory,
+                    subcategoryId: selectedSubCategory,
+                    childCategoryId: selectedChildCategory,
+                    brandId: selectedBrand,
+                    originId: selectedOrigin,
+                    ageGroupId: selectedAgeGroup,
+                    file
+                }
+                const update = await productUpdate(editId, payload)
+                alert("Product updated successfully!")
+                setOpen(false)
+                setName("")
+                setDescription("")
+                setPrice("")
+                setExpiryDate("")
+                setBenefit("")
+                setReturnPolicy("")
+                setVariant("")
+                setStock("")
+                setSelectedCategory("")
+                setSelectedSubCategory("")
+                setSelectedChildCategory("")
+                setSelectedBrand("")
+                setSelectedOrigin("")
+                setSelectedAgeGroup("")
+                setFile(null)
+            } else {
+
+                const payload = {
+                    name,
+                    description,
+                    price: Number(price),
+                    expiryDate,
+                    benefit,
+                    returnPolicy,
+                    variant,
+                    stock: Number(stock),
+                    categoryId: selectedCategory,
+                    subcategoryId: selectedSubCategory,
+                    childCategoryId: selectedChildCategory,
+                    brandId: selectedBrand,
+                    originId: selectedOrigin,
+                    ageGroupId: selectedAgeGroup,
+                    file
+                }
+                const add = await productAdds(payload)
+                alert("Product added successfully!")
+                setOpen(false)
+
+                setName("")
+                setDescription("")
+                setPrice("")
+                setExpiryDate("")
+                setBenefit("")
+                setReturnPolicy("")
+                setVariant("")
+                setStock("")
+                setSelectedCategory("")
+                setSelectedSubCategory("")
+                setSelectedChildCategory("")
+                setSelectedBrand("")
+                setSelectedOrigin("")
+                setSelectedAgeGroup("")
+                setFile(null)
             }
-            const add = await productAdds(payload)
-            alert("Product added successfully!")
-            setOpen(false)
-            getData()
-            setName("")
-            setDescription("")
-            setPrice("")
-            setExpiryDate("")
-            setBenefit("")
-            setReturnPolicy("")
-            setVariant("")
-            setStock("")
-            setSelectedCategory("")
-            setSelectedSubCategory("")
-            setSelectedChildCategory("")
-            setSelectedBrand("")
-            setSelectedOrigin("")
-            setSelectedAgeGroup("")
-            setFile(null)
             return add
         } catch (error: any) {
             console.log(error.message)
@@ -295,6 +246,82 @@ const ProductsPage = () => {
             setLoading(false)
         }
     }
+
+
+    const handleDelete = async (data: any) => {
+        try {
+
+            await productDelete(data._id)
+
+        } catch (error: any) {
+            throw new Error(error.message)
+        }
+    }
+
+
+
+    const columns: GridColDef<(typeof rows)[number]>[] = [
+        { field: 'id', headerName: 'ID', width: 90 },
+        {
+            field: 'action',
+            headerName: 'Action',
+            width: 100,
+            renderCell: (params) => (
+                <div className="flex items-center">
+                    <button
+                        type="button"
+                        className="p-2 text-blue-900 hover:text-blue-700 cursor-pointer"
+                        onClick={() => handleEdit(params.row)}
+                    >
+                        <FiEdit3 size={20} />
+                    </button>
+                    <button
+                        type="button"
+                        className="p-2 text-red-900 hover:text-red-700 cursor-pointer"
+                        onClick={() => handleDelete(params.row)}
+                    >
+                        <RiDeleteBin5Line size={20} />
+                    </button>
+                </div>
+            )
+        },
+        {
+            field: 'name',
+            headerName: 'Name',
+            width: 300,
+        },
+        {
+            field: 'image',
+            headerName: 'Image',
+            width: 100,
+        },
+        {
+            field: 'price',
+            headerName: 'Price',
+            width: 100,
+        },
+        {
+            field: 'returnPolicy',
+            headerName: 'Return Policy',
+            width: 100,
+        },
+        {
+            field: 'brand',
+            headerName: 'Brand',
+            width: 100,
+        },
+        {
+            field: 'category',
+            headerName: 'Category',
+            width: 250,
+        },
+        {
+            field: 'ageGroup',
+            headerName: 'Age Group',
+            width: 100,
+        }
+    ];
+
 
 
     const DrawerList = (
@@ -511,7 +538,7 @@ const ProductsPage = () => {
                     <input type="file" name='files' onChange={(e) => setFile(e.target.files?.[0] || null)} />
                 </div>
                 <Button variant="contained" type='submit' disabled={loading}>
-                    { loading? "Loading..." : editId ? "Update" : "Submit"}
+                    {loading ? "Loading..." : editId ? "Update" : "Submit"}
                 </Button>
             </Box>
         </Box>
