@@ -138,8 +138,18 @@ export const addProductService = async (file: any, data: any, userId: string) =>
 
 export const productListService = async (page: number, limit: number) => {
   try {
-    const pages = (page - 1) * limit
-    const productData = await Product.find({ status: 1 }).skip(pages).limit(limit);
+    const pages = (page - 1) * limit;
+    const productData = await Product.find({ status: 1 })
+      .populate([
+        'subcategoryId',
+        'categoryId',
+        'childCategoryId',
+        'originId',
+        'brandId',
+        'ageGroupId',
+      ])
+      .skip(pages)
+      .limit(limit);
     return productData;
   } catch (error: any) {
     throw new Error(error.message);
@@ -180,7 +190,14 @@ export const productUpdateService = async (id: string, file: any, data: any, use
     const updatePorduct = await Product.findByIdAndUpdate(id, payload, {
       new: true,
       runValidators: true,
-    });
+    }).populate([
+      'subcategoryId',
+      'categoryId',
+      'childCategoryId',
+      'originId',
+      'brandId',
+      'ageGroupId',
+    ]);
 
     return updatePorduct;
   } catch (error: any) {
@@ -202,7 +219,14 @@ export const productDeleteService = async (id: string) => {
 export const viewProductService = async (id: string) => {
   try {
 
-    const viewProduct = await Product.findById(id).populate(["subcategoryId", "childCategoryId", "originId", "brandId", "ageGroupId"])
+    const viewProduct = await Product.findById(id).populate([
+      'subcategoryId',
+      'categoryId',
+      'childCategoryId',
+      'originId',
+      'brandId',
+      'ageGroupId',
+    ]);
 
     return viewProduct
 

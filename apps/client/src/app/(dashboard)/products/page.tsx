@@ -14,7 +14,8 @@ import { OriginList, childCategoryList, subCategoryList, productCategoryList, br
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 import Autocomplete from '@mui/material/Autocomplete';
 import Grid from "@mui/material/Grid"
-
+import Image from 'next/image';
+import { dataIndexSerializer } from '@mui/x-charts/internals';
 
 
 const ProductsPage = () => {
@@ -49,17 +50,37 @@ const ProductsPage = () => {
     const [selectedSubCategory, setSelectedSubCategory] = useState<string>("")
     const [selectedAgeGroup, setSelectedAgeGroup] = useState<string>("")
 
+    const [existingImage, setExistingImage] = useState<string>("");
+
+
+    const resetForm = () => {
+        setEditId(null);
+        setName("");
+        setDescription("");
+        setPrice("");
+        setExpiryDate("");
+        setBenefit("");
+        setReturnPolicy("");
+        setVariant("");
+        setStock("");
+        setSelectedCategory("");
+        setSelectedSubCategory("");
+        setSelectedChildCategory("");
+        setSelectedBrand("");
+        setSelectedOrigin("");
+        setSelectedAgeGroup("");
+
+    };
+
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
         if (!newOpen) {
-            setEditId(null);
-            setName("");
+            resetForm();
         }
     };
 
     const handleOpenAdd = () => {
-        setEditId(null);
-        setName("");
+        resetForm();
         setOpen(true);
     };
 
@@ -75,7 +96,7 @@ const ProductsPage = () => {
             })) : []
             setOriginOptions(mapping)
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         }
     }
 
@@ -89,7 +110,7 @@ const ProductsPage = () => {
             setChildCategoryOptions(mapping)
 
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         }
     }
 
@@ -102,7 +123,7 @@ const ProductsPage = () => {
             })) : []
             setSubCategoryOptions(mapping)
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         }
     }
 
@@ -116,7 +137,7 @@ const ProductsPage = () => {
             })) : []
             setCategoryOptions(mapping)
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         }
     }
 
@@ -130,7 +151,7 @@ const ProductsPage = () => {
             })) : []
             setBrandOptions(mapping)
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         }
     }
 
@@ -144,7 +165,7 @@ const ProductsPage = () => {
             })) : []
             setAgeGroupOptions(mapping)
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         }
     }
 
@@ -157,6 +178,28 @@ const ProductsPage = () => {
         ageGroupLists()
     }, [])
 
+
+    const list = async () => {
+        try {
+            setLoading(true)
+
+            const listData = await productList()
+
+            const mapping = Array.isArray(listData?.data?.data) ? listData.data.data.map((items: any, index: any) => ({
+                ...items,
+                id: index + 1
+            })) : []
+            setRow(mapping)
+        } catch (error: any) {
+            throw new Error(error.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        list()
+    }, [])
 
     const submitOrigin = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -182,7 +225,6 @@ const ProductsPage = () => {
                     file
                 }
                 const update = await productUpdate(editId, payload)
-                alert("Product updated successfully!")
                 setOpen(false)
                 setName("")
                 setDescription("")
@@ -199,6 +241,8 @@ const ProductsPage = () => {
                 setSelectedOrigin("")
                 setSelectedAgeGroup("")
                 setFile(null)
+                list()
+                return update
             } else {
 
                 const payload = {
@@ -219,9 +263,8 @@ const ProductsPage = () => {
                     file
                 }
                 const add = await productAdds(payload)
-                alert("Product added successfully!")
                 setOpen(false)
-
+                list()
                 setName("")
                 setDescription("")
                 setPrice("")
@@ -237,11 +280,11 @@ const ProductsPage = () => {
                 setSelectedOrigin("")
                 setSelectedAgeGroup("")
                 setFile(null)
+                return add
             }
-            return add
+
         } catch (error: any) {
-            console.log(error.message)
-            alert(error.message)
+            console.error(error.message)
         } finally {
             setLoading(false)
         }
@@ -252,10 +295,32 @@ const ProductsPage = () => {
         try {
 
             await productDelete(data._id)
+            list()
 
         } catch (error: any) {
             throw new Error(error.message)
         }
+    }
+
+    const handleEdit = async (data: any) => {
+        setOpen(true)
+        setEditId(data._id)
+        setName(data.name || "")
+        setDescription(data.description || "")
+        setPrice(data.price ?? "")
+        setExpiryDate(data.expiryOn || "")
+        setBenefit(data.benefit || "")
+        setReturnPolicy(data.returnPolicy || "")
+        setVariant(data.variant || "")
+        setStock(data.stock ?? "")
+
+        setSelectedCategory(data.categoryId?._id || "")
+        setSelectedSubCategory(data.subcategoryId?._id || "")
+        setSelectedChildCategory(data.childCategoryId?._id || "")
+        setSelectedBrand(data.brandId?._id || "")
+        setSelectedOrigin(data.originId?._id || "")
+        setSelectedAgeGroup(data.ageGroupId?._id || "")
+        setExistingImage(data.image?.[0] || "")
     }
 
 
@@ -293,7 +358,18 @@ const ProductsPage = () => {
         {
             field: 'image',
             headerName: 'Image',
-            width: 100,
+            width: 150,
+            renderCell: (params: any) => {
+                const images: string[] = params.row?.image || [];
+
+                return (
+                    <div className="flex gap-2 items-center h-full overflow-x-auto py-1">
+                        {images.map((im: any, index: number) => (
+                            <Image key={index} src={im} alt="Product" width={55} height={55} className="w-[55px] h-[55px] rounded object-cover shadow-sm shrink-0" />
+                        ))}
+                    </div>
+                );
+            }
         },
         {
             field: 'price',
@@ -303,21 +379,24 @@ const ProductsPage = () => {
         {
             field: 'returnPolicy',
             headerName: 'Return Policy',
-            width: 100,
+            width: 140,
         },
         {
-            field: 'brand',
+            field: 'brandId',
             headerName: 'Brand',
-            width: 100,
+            width: 200,
+            renderCell: (params: any) => params?.value?.name
         },
         {
-            field: 'category',
+            field: 'categoryId',
             headerName: 'Category',
             width: 250,
+            renderCell: (params: any) => params?.value?.name
+
         },
         {
-            field: 'ageGroup',
-            headerName: 'Age Group',
+            field: 'stock',
+            headerName: 'Stock',
             width: 100,
         }
     ];
@@ -336,26 +415,28 @@ const ProductsPage = () => {
                                 <Autocomplete
                                     disablePortal
                                     options={categoryOptions}
+                                    value={categoryOptions.find((option: any) => option.value === selectedCategory) || null}
                                     getOptionKey={(option: any) => option.value}
                                     getOptionLabel={(option: any) => option.label || ""}
                                     onChange={(_, newValue: any) => {
                                         setSelectedCategory(newValue ? newValue.value : "")
                                     }}
                                     sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} label="Category" required />}
+                                    renderInput={(params) => <TextField {...params} label="Category" required={!selectedCategory} />}
                                 />
                             </div>
                             <div className='p-2'>
                                 <Autocomplete
                                     disablePortal
                                     options={childCategoryOptions}
+                                    value={childCategoryOptions.find((option: any) => option.value === selectedChildCategory) || null}
                                     getOptionKey={(option: any) => option.value}
                                     getOptionLabel={(option: any) => option.label || ""}
                                     onChange={(_, newValue: any) => {
-                                        setSelectedChildCategory(newValue.value)
+                                        setSelectedChildCategory(newValue ? newValue.value : "")
                                     }}
                                     sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} label="Childcategory" required />}
+                                    renderInput={(params) => <TextField {...params} label="Childcategory" required={!selectedChildCategory} />}
                                 />
                             </div>
                         </div>
@@ -366,26 +447,28 @@ const ProductsPage = () => {
                                 <Autocomplete
                                     disablePortal
                                     options={brandOptions}
+                                    value={brandOptions.find((option: any) => option.value === selectedBrand) || null}
                                     getOptionKey={(option: any) => option.value}
                                     getOptionLabel={(option: any) => option.label || ""}
                                     onChange={(_, newValue: any) => {
                                         setSelectedBrand(newValue ? newValue.value : "")
                                     }}
                                     sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} label="Brand" required />}
+                                    renderInput={(params) => <TextField {...params} label="Brand" required={!selectedBrand} />}
                                 />
                             </div>
                             <div className='p-2'>
                                 <Autocomplete
                                     disablePortal
                                     options={ageGroupOptions}
+                                    value={ageGroupOptions.find((option: any) => option.value === selectedAgeGroup) || null}
                                     getOptionKey={(option: any) => option.value}
                                     getOptionLabel={(option: any) => option.label || ""}
                                     onChange={(_, newValue: any) => {
                                         setSelectedAgeGroup(newValue ? newValue.value : "")
                                     }}
                                     sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} label="Age Group" required />}
+                                    renderInput={(params) => <TextField {...params} label="Age Group" required={!selectedAgeGroup} />}
                                 />
                             </div>
                         </div>
@@ -396,32 +479,32 @@ const ProductsPage = () => {
                                 <Autocomplete
                                     disablePortal
                                     options={subCategoryOptions}
+                                    value={subCategoryOptions.find((option: any) => option.value === selectedSubCategory) || null}
                                     sx={{ width: 300 }}
                                     getOptionKey={(option: any) => option.value}
                                     getOptionLabel={(option: any) => option.label || ""}
                                     onChange={(_, newValue: any) => {
                                         setSelectedSubCategory(newValue ? newValue.value : "")
                                     }}
-                                    renderInput={(params) => <TextField {...params} label="Subcategory" required />}
+                                    renderInput={(params) => <TextField {...params} label="Subcategory" required={!selectedSubCategory} />}
                                 />
                             </div>
                             <div className='p-2'>
                                 <Autocomplete
                                     disablePortal
                                     options={originOptions}
+                                    value={originOptions.find((option: any) => option.value === selectedOrigin) || null}
                                     sx={{ width: 300 }}
                                     getOptionKey={(option: any) => option.value}
                                     getOptionLabel={(option: any) => option.label || ""}
                                     onChange={(_, newValue: any) => {
                                         setSelectedOrigin(newValue ? newValue.value : "")
                                     }}
-                                    renderInput={(params) => <TextField {...params} label="Origin" required />}
+                                    renderInput={(params) => <TextField {...params} label="Origin" required={!selectedOrigin} />}
                                 />
                             </div>
                         </div>
                     </Grid>
-
-
                 </Grid>
                 <p>Fill Product Require Details</p>
                 <Grid container >
@@ -533,10 +616,16 @@ const ProductsPage = () => {
                         </div>
                     </Grid>
                 </Grid>
-                <div className='h-[100px]  m-2'>
+                <div className='h-[130px]  m-2'>
                     <p className='pt-2'>Porduct image </p>
-                    <input type="file" name='files' onChange={(e) => setFile(e.target.files?.[0] || null)} />
+                    <input type="file" name='files' onChange={(e) => setFile(e.target.files?.[0] || null)} multiple />
+                    {editId && <div>
+                        <div className='py-3'>
+                            <Image alt="" src={existingImage} height={100} width={100} />
+                        </div>
+                    </div>}
                 </div>
+
                 <Button variant="contained" type='submit' disabled={loading}>
                     {loading ? "Loading..." : editId ? "Update" : "Submit"}
                 </Button>
@@ -560,6 +649,7 @@ const ProductsPage = () => {
                 <DataGrid
                     rows={rows}
                     columns={columns}
+                    rowHeight={100}
                     initialState={{
                         pagination: {
                             paginationModel: {

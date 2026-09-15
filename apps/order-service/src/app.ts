@@ -2,6 +2,15 @@ import express from "express"
 import helmet from "helmet"
 import compression from "compression"
 import morgan from "morgan"
+import "./model/user"
+import "./model/category"
+import "./model/subCategory"
+import "./model/childCategory"
+import "./model/origin"
+import "./model/brand"
+import "./model/ageGroup"
+import "./model/product"
+import "./model/order"
 import {orderRouter} from "./router/orderRouter"
 import {swaggerSpec} from "./utils/swagger"
 import swaggerUi from "swagger-ui-express"
@@ -14,7 +23,6 @@ export const app = express()
 
 app.use(express.json({limit:"1mb"}));
 app.use(express.urlencoded({ extended: true ,limit:"1mb"}));
-
 
 app.use(helmet())
 app.use(morgan("combined"))

@@ -36,7 +36,7 @@ const ProductsPage = () => {
                 await CategoryAdd(name)
             }
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         } finally {
 
         }

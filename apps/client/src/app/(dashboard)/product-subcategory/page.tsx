@@ -43,7 +43,7 @@ const ProductsOrigin = () => {
             })) : []
             setRow(mapping)
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         } finally {
             setLoading(false)
         }
@@ -69,7 +69,7 @@ const ProductsOrigin = () => {
                 return add
             }
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         }
     }
 
@@ -79,7 +79,7 @@ const ProductsOrigin = () => {
             setName(data.name)
             setEditId(data._id)
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         }
     }
 
@@ -88,7 +88,7 @@ const ProductsOrigin = () => {
             await subCategoryDelete  (data._id)
             listData()
         } catch (error: any) {
-             alert(error.message)
+             console.error(error.message)
         }
     }
 

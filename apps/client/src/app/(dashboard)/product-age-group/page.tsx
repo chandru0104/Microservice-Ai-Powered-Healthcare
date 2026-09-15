@@ -51,7 +51,7 @@ const ProductsAgeGroup = () => {
             })) : []
             setRow(mapping)
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         } finally {
             setLoading(false)
         }
@@ -76,7 +76,7 @@ const ProductsAgeGroup = () => {
                 return add
             }
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         }
     }
 
@@ -92,7 +92,7 @@ const ProductsAgeGroup = () => {
             await ageGroupDelete(data._id)
             list()
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         }
     }
 

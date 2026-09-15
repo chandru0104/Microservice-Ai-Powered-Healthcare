@@ -466,12 +466,45 @@ export const productView = async (id: string) => {
 }
 
 
-export const productUpdate = async (id: string, data: productAdd) => {
+export const productUpdate = async (id: string, data: any) => {
     try {
+
+         const { name,
+            description, price,
+            returnPolicy,
+            benefit,
+            expiryDate,
+            brandId,
+            categoryId,
+            subcategoryId,
+            childCategoryId,
+            originId,
+            ageGroupId,
+            variant,
+            stock,
+            file } = data
+        const formData = new FormData()
+
+        formData.append("name", name)
+        formData.append("description", description)
+        formData.append("price", String(price))
+        formData.append("returnPolicy", returnPolicy)
+        formData.append("benefit", benefit)
+        if (expiryDate) formData.append("expiryOn", expiryDate)
+        formData.append("variant", variant)
+        formData.append("stock", String(stock))
+        formData.append("brandId", brandId)
+        formData.append("categoryId", categoryId)
+        formData.append("subcategoryId", subcategoryId)
+        formData.append("childCategoryId", childCategoryId)
+        formData.append("originId", originId)
+        formData.append("ageGroupId", ageGroupId)
+        if (file) formData.append("file", file)
+
+
         const adminAccessToken = localStorage.getItem("adminAccessToken")
-        const update = await axios.put(`${API_GATEWAY_URL}/api/v1/product/update/${id}`, data, {
+        const update = await axios.put(`${API_GATEWAY_URL}/api/v1/product/update/${id}`, formData, {
             headers: {
-                "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToken}`
             }
         })
@@ -484,7 +517,7 @@ export const productUpdate = async (id: string, data: productAdd) => {
 export const productDelete = async (id: string) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
-        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/age-group/delete/${id}`, {
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/delete/${id}`,{}, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToken}`

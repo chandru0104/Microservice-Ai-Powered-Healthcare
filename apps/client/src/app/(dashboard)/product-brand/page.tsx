@@ -51,7 +51,7 @@ const Brand = () => {
             })) : []
             setRow(mapping)
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         } finally {
             setLoading(false)
         }
@@ -78,7 +78,7 @@ const Brand = () => {
                 return add
             }
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         }
     }
 
