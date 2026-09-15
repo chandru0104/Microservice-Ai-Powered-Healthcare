@@ -19,6 +19,15 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/dashboard',
+        destination: '/admin/dashboard',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 const plugins = [

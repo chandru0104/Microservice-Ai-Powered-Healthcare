@@ -28,7 +28,7 @@ const DoctorLogins: React.FC = () => {
       localStorage.setItem("doctorAccessToken", accessToken)
 
       if (doctorData) {
-        router.push("/dashboard")
+        router.push("/admin/dashboard")
       }
 
     } catch (error: any) {

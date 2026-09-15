@@ -1,6 +1,5 @@
 import axios from "axios"
-import { productAdd } from "../models/lab"
-import { Key } from "lucide-react"
+
 
 const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
 
@@ -254,6 +253,12 @@ export const productCategoryDelete = async (id: string) => {
         throw new Error(error.message)
     }
 }
+
+export const CategoryAdd = productCategoryAdd
+export const categoryAdd = productCategoryAdd
+export const categoryList = productCategoryList
+export const categoryUpdate = productCategoryUpdate
+export const categoryDelete = productCategoryDelete
 
 
 
