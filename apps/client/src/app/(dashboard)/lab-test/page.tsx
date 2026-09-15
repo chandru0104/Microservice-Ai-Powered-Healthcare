@@ -61,7 +61,7 @@ const LabTest = () => {
             setRow(mappingData)
 
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         } finally {
             setLoading(false)
         }
@@ -74,7 +74,6 @@ const LabTest = () => {
     const addData = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!categoryId) {
-            alert("Please select a Category from the dropdown");
             return;
         }
         try {
@@ -112,8 +111,7 @@ const LabTest = () => {
                 return addData
             }
         } catch (error: any) {
-            console.error("Error adding lab test:", error);
-            alert(error?.response?.data?.message || error.message);
+            console.error("Error adding lab test:", error?.response?.data?.message || error.message);
         }
     };
     const labCategoryList = async () => {
@@ -186,7 +184,7 @@ const LabTest = () => {
             await labCategoryList();
             return deleteData
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         } finally {
             setLoading(false)
         }

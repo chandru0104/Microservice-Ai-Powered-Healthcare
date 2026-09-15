@@ -49,7 +49,7 @@ const ProductChildCategoryPage = () => {
             return list
 
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         } finally {
             setLoading(false)
         }
@@ -76,7 +76,7 @@ const ProductChildCategoryPage = () => {
                 return add
             }
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         }
     }
 
@@ -92,7 +92,7 @@ const ProductChildCategoryPage = () => {
            await childCategoryDelete(data._id)
            list()
        }catch(error:any){
-        alert(error.message)
+        console.error(error.message)
        }
     }
 

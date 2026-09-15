@@ -50,7 +50,7 @@ const ProductCategoryPage = () => {
             return mapping
 
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         } finally {
             setLoading(false)
         }
@@ -78,7 +78,7 @@ const ProductCategoryPage = () => {
             }
 
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         }
     }
     const handleEdit = (data: any) => {
@@ -94,7 +94,7 @@ const ProductCategoryPage = () => {
             setName("")
             return det
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         } finally {
             setLoading(false)
         }

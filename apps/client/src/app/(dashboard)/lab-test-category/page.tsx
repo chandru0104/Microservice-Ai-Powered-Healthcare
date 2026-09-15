@@ -58,7 +58,7 @@ const LabTestCategory = () => {
             }
 
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         } finally {
             setLoading(false)
         }
@@ -79,7 +79,7 @@ const LabTestCategory = () => {
             console.log("mappingData : ", mappingData)
             return setRow(mappingData)
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         } finally {
             setLoading(false)
         }
@@ -98,13 +98,13 @@ const LabTestCategory = () => {
 
 
     }
-    const handleDelete = (data: any) => {
+    const handleDelete = async (data: any) => {
       try{
-       const deleteItem = deleteLabTestlabCategory(data._id)
+       const deleteItem = await deleteLabTestlabCategory(data._id)
         listTestCategory()
        return deleteItem
       }catch(error:any){
-        alert(error.message)
+        console.error(error.message)
       }
     }
 

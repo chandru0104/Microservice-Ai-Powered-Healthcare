@@ -1,4 +1,10 @@
 import mongoose from 'mongoose';
+import './category';
+import './subCategory';
+import './childCategory';
+import './origin';
+import './brand';
+import './ageGroup';
 
 const product = new mongoose.Schema(
   {
@@ -64,7 +70,7 @@ const product = new mongoose.Schema(
     },
     is_Like:{
       type:Boolean,
-      defalut:false
+      default:false
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
@@ -96,4 +102,4 @@ const product = new mongoose.Schema(
   },
 );
 
-export const Product = mongoose.model('Product', product);
+export const Product = mongoose.models.Product || mongoose.model('Product', product);

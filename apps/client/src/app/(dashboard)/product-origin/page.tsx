@@ -65,7 +65,6 @@ const ProductSubCategoryPage = () => {
     const submitOrigin = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!name.trim()) {
-            alert("Please provide name")
             return
         }
         try {
@@ -79,7 +78,7 @@ const ProductSubCategoryPage = () => {
             setName("")
             getData()
         } catch (error: any) {
-            alert(error.message)
+            console.error(error.message)
         }
     }
 
@@ -96,7 +95,7 @@ const ProductSubCategoryPage = () => {
                 await DeleteOrigin(id)
                 getData()
             } catch (error: any) {
-                alert(error.message)
+                console.error(error.message)
             }
         }
     }
