@@ -10,11 +10,14 @@ import * as React from 'react';
 import { FaRegEye } from "react-icons/fa";
 import { OrderHistory } from "../../../../services/orderHistory"
 import { useRouter } from 'next/navigation';
+import { IoTimeSharp } from 'react-icons/io5';
+import { Row } from 'antd';
+import row from 'antd/es/row';
 
 
 const OrderHistorys = () => {
     const [open, setOpen] = React.useState(false);
-  const router = useRouter()
+    const router = useRouter()
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
     };
@@ -41,30 +44,22 @@ const OrderHistorys = () => {
         list()
     }, [])
 
-    const view =(data:any)=>{
-       
-         router.push(`/admin/order-history/${data._id}`)
-    }
+
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 90 },
-        {
-            field: 'action',
-            headerName: 'Action',
-            width: 150,
-            editable: true,
-            renderCell: (params: any) => (
-
-                <button onClick={()=>view(params.row)}>  <div className='p-4'><FaRegEye /></div></button>
-
-
-            )
-        },
         {
             field: 'user',
             headerName: 'Name',
             width: 150,
             editable: true,
             valueGetter: (value: any) => value ? value.name : ""
+        },
+        {
+            field: 'email',
+            headerName: 'Email',
+            width: 150,
+            editable: true,
+            valueGetter: (value: any, row: any) => row?.user ? row.user.email : ""
         },
 
         {
@@ -77,11 +72,18 @@ const OrderHistorys = () => {
             valueGetter: (value, row) => row?.items.map((list: any) => list.product.name) || "",
         },
         {
-            field: 'price',
-            headerName: 'Price',
+            field: 'categoryId',
+            headerName: 'category',
             width: 150,
             editable: true,
-            valueGetter: (value: any, row: any) => row?.items.map((items: any) => items?.product.price) || ""
+            valueGetter: (value, row) => row?.items[0]?.product?.categoryId?.name || ""
+        },
+        {
+            field: 'subCategoryId',
+            headerName: 'Sub Category',
+            width: 150,
+            editable: true,
+            valueGetter: (value, row) => row?.items[0]?.product?.subcategoryId?.name || ""
         },
         {
             field: 'variant',
@@ -100,9 +102,47 @@ const OrderHistorys = () => {
             field: 'shippingAddress',
             headerName: 'Shipping Address',
             type: 'number',
-            width: 110,
+            width: 400,
             editable: true,
         },
+        {
+            field: 'childCategoryId',
+            headerName: 'Child Category',
+            width: 150,
+            valueGetter: (value, row) => row?.items[0]?.product.childCategoryId?.name || ""
+        },
+        {
+            field: 'origin',
+            headerName: 'Origin',
+            width: 150,
+            valueGetter: (value, row) => row?.items[0].product.originId.name || ""
+        },
+        {
+            field: 'brandId',
+            headerName: 'Brand',
+            width: 150,
+            valueGetter: (value, row) => row?.items[0].product.brandId.name || ""
+        },
+        {
+            field: 'ageGroupId',
+            headerName: 'Age Group',
+            width: 150,
+            valueGetter: (value, row) => row?.items[0].product.ageGroupId.name || ""
+        },
+        {
+            field: 'returnPolicy',
+            headerName: 'Return Policy',
+            width: 150,
+            valueGetter: (value, row) => row.items.map((item: any) => item.product.returnPolicy)
+        },
+        {
+            field: 'stock',
+            headerName: 'Stock',
+            width: 150,
+            valueGetter: (value, row) => row.items.map((item: any) => item.product.stock)
+        },
+
+
     ];
 
     return (
@@ -114,6 +154,7 @@ const OrderHistorys = () => {
             </div>
             {loading ? <Loading /> : <Box sx={{ height: 800, width: '100%' }}>
                 <DataGrid
+
                     rows={row}
                     columns={columns}
                     initialState={{

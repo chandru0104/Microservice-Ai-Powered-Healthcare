@@ -7,20 +7,23 @@ import sideBar from "./jsons/sideBar.json"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import DashboardNav from "../../../components/DashboardNav"
-    import { LuLogOut } from "react-icons/lu";
+import { LuLogOut } from "react-icons/lu";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter()
-    
-    const logout =()=>{
-        
+
+    const logout = () => {
+        localStorage.removeItem("adminAccessToken")
+        localStorage.removeItem("adminId")
+        localStorage.removeItem("adminName")
+        router.push("/")
     }
 
     return (
         <div>
             <Grid container spacing={0}>
                 <Grid size={2} className="h-screen flex flex-col">
-                    <div className="flex gap-2 items-center ml-3 py-4 ">
+                    <div className="flex gap-2 items-center ml-3 py-4 cursor-pointer" onClick={() => router.push("/")}>
                         <Image src={"/logo.png"} alt="logo" width={50} height={50} />
                         <div className="text-2xl ">Care Hub</div>
                     </div>
