@@ -11,6 +11,10 @@ import { LuLogOut } from "react-icons/lu";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter()
+    const adminAccessToken = localStorage.getItem("adminAccessToken")
+    if (!adminAccessToken) {
+        router.push("/admin-login")
+    }
 
     const logout = () => {
         localStorage.removeItem("adminAccessToken")
@@ -21,6 +25,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <div>
+
             <Grid container spacing={0}>
                 <Grid size={2} className="h-screen flex flex-col">
                     <div className="flex gap-2 items-center ml-3 py-4 cursor-pointer" onClick={() => router.push("/")}>
