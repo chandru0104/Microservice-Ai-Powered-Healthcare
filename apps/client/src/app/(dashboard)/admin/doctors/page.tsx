@@ -1,6 +1,5 @@
 "use client";
 
-
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { doctorList } from "../../../../services/authService"
@@ -8,7 +7,6 @@ import { Loading } from "../../../../components/Loading"
 import { useState } from 'react';
 import * as React from 'react';
 import { doctorVerifyData } from "../../../../services/authService"
-import Image from 'next/image';
 
 const DoctorPage = () => {
     const [DoctorData, setDoctorData] = useState<any>([]);
@@ -31,7 +29,7 @@ const DoctorPage = () => {
             }))
             setDoctorData(mappingData)
         } catch (error: any) {
-            throw new Error(error.message)
+            console.log(error.message)
         } finally {
             setLoading(false)
         }
@@ -47,7 +45,7 @@ const DoctorPage = () => {
                 DoctorListData()
             }
         } catch (error: any) {
-            throw new Error(error.message)
+            console.log(error.message)
         }
     }
 

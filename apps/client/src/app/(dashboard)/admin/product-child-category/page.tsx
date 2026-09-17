@@ -1,6 +1,5 @@
 "use client";
 
-
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
@@ -12,7 +11,6 @@ import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
 import { childCategoryAdd, childCategoryList, childCategoryUpdate, childCategoryDelete } from "../../../../services/productService"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
-import { asyncWrapProviders } from 'node:async_hooks';
 
 
 const ProductChildCategoryPage = () => {
@@ -46,7 +44,6 @@ const ProductChildCategoryPage = () => {
                 id: index + 1
             })) : []
             setRow(mapping)
-            return list
 
         } catch (error: any) {
             console.error(error.message)
@@ -65,15 +62,13 @@ const ProductChildCategoryPage = () => {
         e.preventDefault()
         try {
             if (editId) {
-                const edit = await childCategoryUpdate(editId, name)
+                await childCategoryUpdate(editId, name)
                 setOpen(false)
                 list()
-                return edit
             } else {
-                const add = await childCategoryAdd(name)
+                await childCategoryAdd(name)
                 setOpen(false)
                 list()
-                return add
             }
         } catch (error: any) {
             console.error(error.message)
@@ -86,14 +81,14 @@ const ProductChildCategoryPage = () => {
         setEditId(data._id)
         setName(data.name)
     }
-   
-    const handleDelete=async(data:any)=>{
-       try{
-           await childCategoryDelete(data._id)
-           list()
-       }catch(error:any){
-        console.error(error.message)
-       }
+
+    const handleDelete = async (data: any) => {
+        try {
+            await childCategoryDelete(data._id)
+            list()
+        } catch (error: any) {
+            console.error(error.message)
+        }
     }
 
 

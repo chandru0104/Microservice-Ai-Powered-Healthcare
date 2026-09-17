@@ -8,13 +8,17 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import DashboardNav from "../../../components/DashboardNav"
 import { LuLogOut } from "react-icons/lu";
+import { useEffect } from "react";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter()
-    const adminAccessToken = localStorage.getItem("adminAccessToken")
-    if (!adminAccessToken) {
-        router.push("/admin-login")
-    }
+
+    useEffect(() => {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        if (!adminAccessToken && typeof window === "object") {
+            router.push("/admin-login")
+        }
+    }, [router])
 
     const logout = () => {
         localStorage.removeItem("adminAccessToken")

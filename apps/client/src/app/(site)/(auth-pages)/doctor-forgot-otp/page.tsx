@@ -27,7 +27,6 @@ const DoctorForgot: React.FC = () => {
             if (verify) {
                 router.push("/doctor-reset-password")
             }
-            return verify
 
         } catch (error: any) {
             console.log(error.message)

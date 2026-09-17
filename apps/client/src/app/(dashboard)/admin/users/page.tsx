@@ -4,7 +4,7 @@
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Loading } from "../../../../components/Loading"
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import * as React from 'react';
 import { UserAllList } from "../../../../services/authService"
 
@@ -33,7 +33,7 @@ const UserPage = () => {
 
     const [loading, setLoading] = useState(false)
 
-    const getData = async() => {
+    const getData = async () => {
         try {
             setLoading(true)
 
@@ -41,24 +41,24 @@ const UserPage = () => {
 
             const { data } = list
 
-            const rowsData = Array.isArray(data?.data) ? data.data :[]
+            const rowsData = Array.isArray(data?.data) ? data.data : []
 
-            const mappingData = rowsData.map((row:any ,index:any)=>({
+            const mappingData = rowsData.map((row: any, index: any) => ({
                 ...row,
-                id:index+1
+                id: index + 1
             }))
             setrow(mappingData)
         } catch (error: any) {
-            throw new Error(error.message)
+            console.log(error.message)
         } finally {
             setLoading(false)
         }
     }
-   
-   useEffect(() => {
-    getData()
-   }, [])
-   
+
+    useEffect(() => {
+        getData()
+    }, [])
+
     return (
         <div className='w-full'>
             <div className='flex items-center justify-between py-3'>
@@ -77,7 +77,7 @@ const UserPage = () => {
                             },
                         },
                     }}
-                    pageSizeOptions={[20,50,100]}
+                    pageSizeOptions={[20, 50, 100]}
                 />
             </Box>
             }
