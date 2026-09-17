@@ -32,7 +32,10 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 const AiStudio = () => {
 
   const [openDailog, setOpenDailog] = useState<boolean>(false)
-  const [responseData , setResponseData] = useState("")
+  const [recommendedSpecialist, setRecommendedSpecialist] = useState<any>("")
+  const [triageLevel, setTriageLevel] = useState<any>("")
+  const [homeCare, setHomeCare] = useState<any>("")
+  console.log(triageLevel)
   const [options, setOption] = useState({ option1: "", option2: "", option3: "", option4: "" })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -40,7 +43,14 @@ const AiStudio = () => {
     try {
       const post = await aiSymptomsCheck(options)
       setOpenDailog(true)
-      setResponseData(post?.data)
+      const recommended_specialist = post?.data?.data?.recommended_specialist || "No possible conditions found"
+      setRecommendedSpecialist(recommended_specialist)
+      const triageLevel = post?.data?.data?.triage_level || ""
+      setTriageLevel(triageLevel)
+      const homeCare = Array.isArray(post?.data?.data?.home_care) ?  post?.data?.data?.home_care.map((mapping:any)=>{
+        mapping.value
+      }):""
+      setHomeCare(homeCare)
       return post
 
     } catch (error: any) {
@@ -57,43 +67,45 @@ const AiStudio = () => {
 
   return (
     <>{openDailog &&
-        <React.Fragment>
-      <Button variant="outlined" onClick={handleSubmit}>
-        Open dialog
-      </Button>
-      <BootstrapDialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={openDailog}
-      >
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Modal title
-        </DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={(theme) => ({
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: theme.palette.grey[500],
-          })}
+      <React.Fragment>
+        <Button variant="outlined" onClick={handleSubmit}>
+          Open dialog
+        </Button>
+        <BootstrapDialog
+          onClose={handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={openDailog}
         >
-          <CloseIcon />
-        </IconButton>
-         <div className="w-[600px] h-[800px] ">
+          <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+            Modal title
+          </DialogTitle>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={(theme) => ({
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: theme.palette.grey[500],
+            })}
+          >
+            <CloseIcon />
+          </IconButton>
+          <div className="w-[600px] h-[800px] ">
+            <h6>Recommended Specialist</h6>
+            <p>{recommendedSpecialist}</p>
+            <p>Triage Level / {triageLevel}</p>
+            <div>{homeCare}</div>
+          </div>
 
-          <div>{responseData?.possible_conditions?.}</div>
-         </div>
-        
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Close
-          </Button>
-        </DialogActions>
-      </BootstrapDialog>
-    </React.Fragment>
-}
+          <DialogActions>
+            <Button autoFocus onClick={handleClose}>
+              Close
+            </Button>
+          </DialogActions>
+        </BootstrapDialog>
+      </React.Fragment>
+    }
       <Navbar />
       <div className="max-w-6xl mx-auto p-3 ">
         <div className="mb-10">
