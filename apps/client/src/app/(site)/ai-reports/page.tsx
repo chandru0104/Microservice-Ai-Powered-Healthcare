@@ -34,8 +34,10 @@ const AiStudio = () => {
   const [openDailog, setOpenDailog] = useState<boolean>(false)
   const [recommendedSpecialist, setRecommendedSpecialist] = useState<any>("")
   const [triageLevel, setTriageLevel] = useState<any>("")
-  const [homeCare, setHomeCare] = useState<any>("")
-  console.log(triageLevel)
+  const [homeCare, setHomeCare] = useState<any[]>([])
+  const [disclaimer, setDisclaimer] = useState("")
+  const [possibleConditions, setPossibleConditions] = useState<any[]>([])
+  console.log(homeCare)
   const [options, setOption] = useState({ option1: "", option2: "", option3: "", option4: "" })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -45,12 +47,18 @@ const AiStudio = () => {
       setOpenDailog(true)
       const recommended_specialist = post?.data?.data?.recommended_specialist || "No possible conditions found"
       setRecommendedSpecialist(recommended_specialist)
+
       const triageLevel = post?.data?.data?.triage_level || ""
       setTriageLevel(triageLevel)
-      const homeCare = Array.isArray(post?.data?.data?.home_care) ?  post?.data?.data?.home_care.map((mapping:any)=>{
-        mapping.value
-      }):""
+
+      const homeCare = post?.data?.data?.home_care || ""
       setHomeCare(homeCare)
+
+      const disclaim = post?.data?.data.disclaimer || ""
+      setDisclaimer(disclaim)
+
+      const possibles = post?.data?.data.possible_conditions || ""
+      setPossibleConditions(possibles)
       return post
 
     } catch (error: any) {
@@ -77,7 +85,7 @@ const AiStudio = () => {
           open={openDailog}
         >
           <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-            Modal title
+            Symptoms Report
           </DialogTitle>
           <IconButton
             aria-label="close"
@@ -91,11 +99,31 @@ const AiStudio = () => {
           >
             <CloseIcon />
           </IconButton>
-          <div className="w-[600px] h-[800px] ">
-            <h6>Recommended Specialist</h6>
-            <p>{recommendedSpecialist}</p>
-            <p>Triage Level / {triageLevel}</p>
-            <div>{homeCare}</div>
+          <div className="w-[500px] h-[900px] px-2">
+            {possibleConditions && possibleConditions.map((items: any, index: any) => (
+              <div key={index} className="bg-blue-200 p-2 border border-gray-400 ">
+                <div>condition : {items.condition}</div>
+                <div>probability : {items.probability}</div>
+                <div>reason : {items.reason}</div>
+              </div>
+            ))
+            }
+            <p className="p-2 bg-orange-200 border border-gray-400">Recommended Specialist : {recommendedSpecialist}</p>
+            <p className="p-2 bg-orange-200 border border-gray-400">Triage Level : {triageLevel}</p>
+            <div className="p-2 bg-orange-200 border border-gray-400">{homeCare}</div>
+            <div className="p-2 bg-green-200 border border-gray-400">
+              <p>Home Care : </p>
+              {homeCare && homeCare.map((items: any, index: any) => (
+
+                <div key={index}>
+
+                  <div className=""> {items}</div>
+                </div>
+              ))
+
+              }
+            </div>
+            <div className="my-2 p-2 bg-red-200 border border-gray-400 font-semibold">Disclaimer : {disclaimer}</div>
           </div>
 
           <DialogActions>
