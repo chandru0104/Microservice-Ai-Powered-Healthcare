@@ -3,16 +3,20 @@ import React from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import { message, Upload } from 'antd';
-
 const { Dragger } = Upload;
 
-const FileUpload: React.FC = () => {
+const MedicalReport: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
-
+const userAccessToken = localStorage.getItem("userAccessToken")
   const props: UploadProps = {
     name: 'file',
     multiple: true,
-    action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
+    action: "http://localhost:5000/api/v1/ai/medicine",
+    headers:{
+        "Authorization":`Bearer ${userAccessToken}`,
+       
+    },
+    
     onChange(info) {
       const { status } = info.file;
       if (status !== 'uploading') {
@@ -47,4 +51,4 @@ const FileUpload: React.FC = () => {
   );
 };
 
-export default FileUpload;
+export default MedicalReport;

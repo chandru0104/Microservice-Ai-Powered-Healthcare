@@ -5,15 +5,15 @@ import Navbar from "apps/client/src/components/Navbar"
 import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import Image from "next/image";
-import FileUpload from "apps/client/src/components/FileUpload";
+import MedicalReport from "apps/client/src/components/MedicalReport";
+import MedicalImage from "apps/client/src/components/MedicalReport"
 import { useState } from "react";
 import { Box } from '@mui/material';
-import { aiSymptomsCheck } from "../../../services/aiService"
+import { aiSymptomsCheck, medicalReportAnalyzer } from "../../../services/aiService"
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -71,6 +71,14 @@ const AiStudio = () => {
   const handleClose = () => {
     setOpenDailog(false);
   };
+
+  const medicalReportAnalyzerSubmit = async (data: any) => {
+    try {
+      const post = await medicalReportAnalyzer(data)
+    } catch (error: any) {
+      console.log(error.message)
+    }
+  }
 
 
   return (
@@ -191,7 +199,8 @@ const AiStudio = () => {
           <div >
             <h2 className="text-center pb-4">Smart Medical Report Analyzer</h2>
             <p className="text-center pb-4">Upload your lab reports or medical prescriptions, and <br />let our AI translate complex medical jargon into clear, easy-to-understand insights.</p>
-            <div className="w-[400px] sm:w-[600px]"><FileUpload /></div>
+
+            <div className="w-[400px] sm:w-[600px]"><MedicalReport /></div>
           </div>
           <div className="hidden sm:block pt-6">
             <Image src={"/ai-report.jpg"} alt="ai-report" width={500} height={350} />
@@ -201,7 +210,7 @@ const AiStudio = () => {
           <div >
             <h2 className="text-center pb-4">AI-Powered Medical Image Analysis</h2>
             <p className="text-center pb-4">Upload your medical images and get simple, <br />AI-powered insights to better understand your results.</p>
-            <div className="w-[400px] sm:w-[600px]"><FileUpload /></div>
+            <div className="w-[400px] sm:w-[600px]"><MedicalImage /></div>
           </div>
           <div className="hidden sm:block pt-6">
             <Image src={"/ai-report2.jpg"} alt="ai-report" width={500} height={350} />
