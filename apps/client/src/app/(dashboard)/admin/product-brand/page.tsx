@@ -13,15 +13,10 @@ import { TextField } from '@mui/material';
 import { brandAdd, brandList, brandUpdate, brandDelete } from "../../../../services/productService"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 
-interface Origin {
-    id: string | number,
-    name: string,
-    _id?: string,
-}
 
-const Brand = () => {
+const BrandPage = () => {
     const [open, setOpen] = React.useState(false);
-    const [rows, setRow] = useState<Origin[]>([])
+    const [rows, setRow] = useState<any[]>([])
     const [loading, setLoading] = useState(false)
     const [name, setName] = useState("")
     const [editId, setEditId] = useState<string | null>(null)
@@ -61,21 +56,19 @@ const Brand = () => {
         list()
     }, [])
 
-    const submitOrigin = async (e: React.FormEvent) => {
+    const submitBrand = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
             if (editId) {
-                const edit = await brandUpdate(editId, name)
+                await brandUpdate(editId, name)
                 setOpen(false);
                 setName("")
                 list()
-                return edit
             } else {
-                const add = await brandAdd(name)
+                await brandAdd(name)
                 setOpen(false);
                 setName("")
                 list()
-                return add
             }
         } catch (error: any) {
             console.error(error.message)
@@ -91,12 +84,10 @@ const Brand = () => {
 
     const handleDelete = async (data: any) => {
         try {
-            const deleteData = await brandDelete(data._id)
+            await brandDelete(data._id)
             list()
-            return deleteData
-
         } catch (error: any) {
-
+            console.error(error.message)
         }
     }
 
@@ -136,7 +127,7 @@ const Brand = () => {
     const DrawerList = (
         <Box sx={{ width: 350 }} role="presentation" >
             <p className="p-4 font-semibold text-lg">{editId ? "Edit Product Brand" : "Add Product Brand"}</p>
-            <Box component="form" onSubmit={submitOrigin} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
+            <Box component="form" onSubmit={submitBrand} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
                 <TextField
                     label='Name'
                     name='name'
@@ -184,4 +175,4 @@ const Brand = () => {
     );
 };
 
-export default Brand;
+export default BrandPage;

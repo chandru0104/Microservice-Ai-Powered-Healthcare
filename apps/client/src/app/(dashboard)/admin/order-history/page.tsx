@@ -1,26 +1,14 @@
 "use client";
 
-
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-
 import { Loading } from "../../../../components/Loading"
 import { useState } from 'react';
 import * as React from 'react';
-import { FaRegEye } from "react-icons/fa";
 import { OrderHistory } from "../../../../services/orderHistory"
-import { useRouter } from 'next/navigation';
-import { IoTimeSharp } from 'react-icons/io5';
-import { Row } from 'antd';
-import row from 'antd/es/row';
 
+const OrderHistorysPage = () => {
 
-const OrderHistorys = () => {
-    const [open, setOpen] = React.useState(false);
-    const router = useRouter()
-    const toggleDrawer = (newOpen: boolean) => () => {
-        setOpen(newOpen);
-    };
     const [loading, setLoading] = useState(false)
 
     const [row, setRow] = useState<any[]>([])
@@ -172,4 +160,4 @@ const OrderHistorys = () => {
     );
 };
 
-export default OrderHistorys;
+export default OrderHistorysPage;

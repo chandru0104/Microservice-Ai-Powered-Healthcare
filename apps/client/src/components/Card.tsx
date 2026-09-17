@@ -17,7 +17,6 @@ export function DashboardCard() {
     const [productCount, setProductCount] = useState<any>("Loading...")
     const [doctorCount, setDoctorCount] = useState<any>("Loading...")
     const [orderCount, setOrderCount] = useState<any>("Loading...")
-    const [revenueCount, setRevenueCount] = useState<any>("Loading...")
 
     const user = async () => {
         try {

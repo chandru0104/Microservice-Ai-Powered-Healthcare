@@ -1,12 +1,11 @@
 "use client";
 
-
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import { Loading } from "../../../../components/Loading"
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
@@ -14,20 +13,8 @@ import { listLabTestlabCategory, addLabTests, UpdatelabTest, listLabTest, delete
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 import Autocomplete from '@mui/material/Autocomplete';
 
-interface AddLabTest {
-    name: string,
-    categoryId: string,
-    price: string,
-    sampleType: string,
-    gender: string,
-    ageGroup: string,
-    reportDelivery: string,
-    address: string,
-    description: string,
-    authorDetailsId: string
-}
 
-const LabTest = () => {
+const LabTestPage = () => {
     const [open, setOpen] = React.useState(false);
     const [rows, setRow] = useState<[]>([])
     const [loading, setLoading] = useState(false)
@@ -78,7 +65,7 @@ const LabTest = () => {
         }
         try {
             if (editId) {
-                const dataUpdate = await UpdatelabTest({
+                await UpdatelabTest({
                     name,
                     categoryId,
                     price,
@@ -92,9 +79,8 @@ const LabTest = () => {
                 }, editId);
                 listData()
                 setOpen(false);
-                return dataUpdate;
             } else {
-                const addData = await addLabTests({
+                await addLabTests({
                     name,
                     categoryId,
                     price,
@@ -108,7 +94,6 @@ const LabTest = () => {
                 })
                 listData()
                 setOpen(false)
-                return addData
             }
         } catch (error: any) {
             console.error("Error adding lab test:", error?.response?.data?.message || error.message);
@@ -179,16 +164,15 @@ const LabTest = () => {
     const handleDelete = async (data: any) => {
         try {
             setLoading(false)
-            const deleteData = await deletelabTest(data._id)
+            await deletelabTest(data._id)
             await listData();
             await labCategoryList();
-            return deleteData
         } catch (error: any) {
             console.error(error.message)
         } finally {
             setLoading(false)
         }
-    } 
+    }
 
     const columns: GridColDef<(typeof rows)[number]>[] = [
         { field: 'id', headerName: 'ID', width: 90 },
@@ -404,4 +388,4 @@ const LabTest = () => {
     );
 };
 
-export default LabTest;
+export default LabTestPage;

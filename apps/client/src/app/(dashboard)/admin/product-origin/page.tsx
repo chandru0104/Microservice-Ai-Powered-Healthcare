@@ -13,15 +13,10 @@ import { TextField } from '@mui/material';
 import { OriginList, AddOrgin, UpdateOrigin, DeleteOrigin } from "../../../../services/productService"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 
-interface Origin {
-    id: string | number,
-    name: string,
-    _id?: string,
-}
 
-const ProductSubCategoryPage = () => {
+const ProductOriginPage = () => {
     const [open, setOpen] = React.useState(false);
-    const [rows, setRow] = useState<Origin[]>([])
+    const [rows, setRow] = useState<any[]>([])
     const [loading, setLoading] = useState(false)
     const [name, setName] = useState("")
     const [editId, setEditId] = useState<string | null>(null)
@@ -30,7 +25,7 @@ const ProductSubCategoryPage = () => {
         setOpen(newOpen);
         if (!newOpen) {
             setEditId(null);
-            setName("");
+            setName("");      
         }
     };
 
@@ -183,4 +178,4 @@ const ProductSubCategoryPage = () => {
     );
 };
 
-export default ProductSubCategoryPage;
+export default ProductOriginPage;

@@ -14,7 +14,7 @@ import { subCategoryAdd, subCategoryList, subCategoryUpdate, subCategoryDelete }
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 
 
-const ProductsOrigin = () => {
+const ProductsSubCategoryPage = () => {
     const [open, setOpen] = React.useState(false);
     const [rows, setRow] = useState([])
     const [loading, setLoading] = useState(false)
@@ -56,17 +56,15 @@ const ProductsOrigin = () => {
         e.preventDefault()
         try {
             if (editId) {
-                const update = await subCategoryUpdate(editId, name)
+                await subCategoryUpdate(editId, name)
                 setOpen(false)
                 setName("");
                 listData()
-                return update
             } else {
-                const add = await subCategoryAdd(name)
+                await subCategoryAdd(name)
                 setOpen(false)
                 setName("");
                 listData()
-                return add
             }
         } catch (error: any) {
             console.error(error.message)
@@ -175,4 +173,4 @@ const ProductsOrigin = () => {
     );
 };
 
-export default ProductsOrigin;
+export default ProductsSubCategoryPage;

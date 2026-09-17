@@ -1,6 +1,5 @@
 "use client";
 
-
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
@@ -13,15 +12,10 @@ import { TextField } from '@mui/material';
 import { productCategoryAdd, productCategoryList, productCategoryUpdate, productCategoryDelete } from "../../../../services/productService"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 
-interface Origin {
-    id: string | number,
-    name: string,
-    _id?: string,
-}
 
 const ProductCategoryPage = () => {
     const [open, setOpen] = React.useState(false);
-    const [rows, setRow] = useState<Origin[]>([])
+    const [rows, setRow] = useState<any[]>([])
     const [loading, setLoading] = useState(false)
     const [editId, setEditId] = useState("")
     const [name, setName] = useState("")
@@ -47,7 +41,6 @@ const ProductCategoryPage = () => {
             })) : []
             setRow(mapping)
             setEditId("")
-            return mapping
 
         } catch (error: any) {
             console.error(error.message)
@@ -66,15 +59,13 @@ const ProductCategoryPage = () => {
         try {
 
             if (editId) {
-                const updateData = await productCategoryUpdate(editId, name)
+                await productCategoryUpdate(editId, name)
                 setOpen(false)
                 listData()
-                return updateData
             } else {
-                const addData = await productCategoryAdd(name)
+                await productCategoryAdd(name)
                 setOpen(false)
                 listData()
-                return addData
             }
 
         } catch (error: any) {
@@ -89,10 +80,9 @@ const ProductCategoryPage = () => {
     const handleDelete = async (data: any) => {
         try {
             setLoading(true)
-            const det = await productCategoryDelete(data._id)
+            await productCategoryDelete(data._id)
             listData()
             setName("")
-            return det
         } catch (error: any) {
             console.error(error.message)
         } finally {

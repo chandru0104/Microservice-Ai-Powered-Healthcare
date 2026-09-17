@@ -27,7 +27,6 @@ const UserForgot: React.FC = () => {
             if (verify) {
                 router.push("/user-reset-password")
             }
-            return verify
 
         } catch (error: any) {
             console.log(error.message)

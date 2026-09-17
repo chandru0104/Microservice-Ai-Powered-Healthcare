@@ -6,7 +6,7 @@ import { Grid } from "@mui/material"
 import AxisSubdomain from "../../../../components/AxisSubdomain"
 import { DashboardCard } from "../../../../components/Card"
 
-const Dashboard = () => {
+const DashboardPage = () => {
     return (
         <>
             <h3 className="text-xl font-bold py-4">Dashboard</h3>
@@ -39,4 +39,4 @@ const Dashboard = () => {
         </>
     )
 }
-export default Dashboard
+export default DashboardPage

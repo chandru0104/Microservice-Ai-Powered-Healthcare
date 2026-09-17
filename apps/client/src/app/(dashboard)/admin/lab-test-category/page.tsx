@@ -10,12 +10,12 @@ import { useState, useEffect } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
-import { addLabTestlabCategory, updateLabTestlabCategory, listLabTestlabCategory,deleteLabTestlabCategory } from "../../../../services/labtest"
+import { addLabTestlabCategory, updateLabTestlabCategory, listLabTestlabCategory, deleteLabTestlabCategory } from "../../../../services/labtest"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 
 
 
-const LabTestCategory = () => {
+const LabTestCategoryPage = () => {
     const [open, setOpen] = React.useState(false);
     const [rows, setRow] = useState<any>([])
     const [loading, setLoading] = useState(false)
@@ -44,17 +44,14 @@ const LabTestCategory = () => {
         try {
             if (editId) {
                 let payload = { name, description }
-                const edit = await updateLabTestlabCategory(editId, payload)
+                await updateLabTestlabCategory(editId, payload)
                 setOpen(false)
                 listTestCategory()
-                return edit
-
             } else {
                 let payload = { name, description }
-                const add = await addLabTestlabCategory(payload)
+                await addLabTestlabCategory(payload)
                 setOpen(false)
                 listTestCategory()
-                return add
             }
 
         } catch (error: any) {
@@ -77,7 +74,7 @@ const LabTestCategory = () => {
 
             }))
             console.log("mappingData : ", mappingData)
-            return setRow(mappingData)
+            setRow(mappingData)
         } catch (error: any) {
             console.error(error.message)
         } finally {
@@ -99,13 +96,13 @@ const LabTestCategory = () => {
 
     }
     const handleDelete = async (data: any) => {
-      try{
-       const deleteItem = await deleteLabTestlabCategory(data._id)
-        listTestCategory()
-       return deleteItem
-      }catch(error:any){
-        console.error(error.message)
-      }
+        try {
+             await deleteLabTestlabCategory(data._id)
+            listTestCategory()
+            
+        } catch (error: any) {
+            console.error(error.message)
+        }
     }
 
 
@@ -206,4 +203,4 @@ const LabTestCategory = () => {
     );
 };
 
-export default LabTestCategory;
+export default LabTestCategoryPage;

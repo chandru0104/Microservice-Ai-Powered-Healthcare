@@ -1,6 +1,5 @@
 "use client";
 
-
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
@@ -10,12 +9,11 @@ import { useState, useEffect } from 'react';
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
-import { OriginList, childCategoryList, subCategoryList, productCategoryList, brandList, ageGroupList, productAdds, productList, productView, productUpdate, productDelete } from "../../../../services/productService"
+import { OriginList, childCategoryList, subCategoryList, productCategoryList, brandList, ageGroupList, productAdds, productList, productUpdate, productDelete } from "../../../../services/productService"
 import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 import Autocomplete from '@mui/material/Autocomplete';
 import Grid from "@mui/material/Grid"
 import Image from 'next/image';
-import { dataIndexSerializer } from '@mui/x-charts/internals';
 
 
 const ProductsPage = () => {
@@ -191,7 +189,7 @@ const ProductsPage = () => {
             })) : []
             setRow(mapping)
         } catch (error: any) {
-            throw new Error(error.message)
+            console.log(error.message)
         } finally {
             setLoading(false)
         }
@@ -224,7 +222,7 @@ const ProductsPage = () => {
                     ageGroupId: selectedAgeGroup,
                     file
                 }
-                const update = await productUpdate(editId, payload)
+                await productUpdate(editId, payload)
                 setOpen(false)
                 setName("")
                 setDescription("")
@@ -242,7 +240,6 @@ const ProductsPage = () => {
                 setSelectedAgeGroup("")
                 setFile(null)
                 list()
-                return update
             } else {
 
                 const payload = {
@@ -262,7 +259,7 @@ const ProductsPage = () => {
                     ageGroupId: selectedAgeGroup,
                     file
                 }
-                const add = await productAdds(payload)
+                await productAdds(payload)
                 setOpen(false)
                 list()
                 setName("")
@@ -280,7 +277,6 @@ const ProductsPage = () => {
                 setSelectedOrigin("")
                 setSelectedAgeGroup("")
                 setFile(null)
-                return add
             }
 
         } catch (error: any) {
@@ -298,7 +294,7 @@ const ProductsPage = () => {
             list()
 
         } catch (error: any) {
-            throw new Error(error.message)
+            console.log(error.message)
         }
     }
 
@@ -313,7 +309,6 @@ const ProductsPage = () => {
         setReturnPolicy(data.returnPolicy || "")
         setVariant(data.variant || "")
         setStock(data.stock ?? "")
-
         setSelectedCategory(data.categoryId?._id || "")
         setSelectedSubCategory(data.subcategoryId?._id || "")
         setSelectedChildCategory(data.childCategoryId?._id || "")
