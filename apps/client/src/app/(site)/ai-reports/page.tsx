@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import Image from "next/image";
 import MedicalReport from "apps/client/src/components/MedicalReport";
-import MedicalImage from "apps/client/src/components/MedicalReport"
+import MedicalImage from "apps/client/src/components/MedicalImage";
 import { useState } from "react";
 import { Box } from '@mui/material';
 import { aiSymptomsCheck, medicalReportAnalyzer } from "../../../services/aiService"
@@ -107,7 +107,7 @@ const AiStudio = () => {
           >
             <CloseIcon />
           </IconButton>
-          <div className="w-[500px] h-[900px] px-2">
+          <div className="w-[600px] h-[900px] px-2">
             {possibleConditions && possibleConditions.map((items: any, index: any) => (
               <div key={index} className="bg-blue-200 p-2 border border-gray-400 ">
                 <div>condition : {items.condition}</div>

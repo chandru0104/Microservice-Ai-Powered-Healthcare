@@ -11,18 +11,20 @@ const UserProfile = () => {
                     <Grid size={4}>
                         <form action="">
                             <table>
-                                <tr>
-                                    <td><label htmlFor="">Name</label></td><td><input type="text" /></td>
+                                <tbody>
+                                    <tr>
+                                        <td><label htmlFor="">Name</label></td><td><input type="text" /></td>
 
-                                </tr>
-                                                                <tr>
-                                    <td><label htmlFor="">Namddde</label></td><td><input type="text" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label htmlFor="">Namddde</label></td><td><input type="text" /></td>
 
-                                </tr>
-                                                                <tr>
-                                    <td><label htmlFor="">Ndddame</label></td><td><input type="text" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label htmlFor="">Ndddame</label></td><td><input type="text" /></td>
 
-                                </tr>
+                                    </tr>
+                                </tbody>
                             </table>
                         </form>
                           
