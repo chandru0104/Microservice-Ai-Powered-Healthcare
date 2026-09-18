@@ -81,10 +81,6 @@ const MedicalReport: React.FC = () => {
     setOpenDailog(false);
   };
 
-  const handleSubmit = () => {
-    setOpenDailog(true);
-  };
-
 
   return (
     <>
@@ -93,7 +89,7 @@ const MedicalReport: React.FC = () => {
         aria-labelledby="customized-dialog-title"
         open={openDailog}
       >
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+        <DialogTitle sx={{ m: 0, p: 2}} id="customized-dialog-title">
           Symptoms Report
         </DialogTitle>
         <IconButton
@@ -108,27 +104,27 @@ const MedicalReport: React.FC = () => {
         >
           <CloseIcon />
         </IconButton>
-        <div className="w-[900px] h-[900px] p-4">
-          <p>medicineName:{medicineName}</p>
-          <p>precautions :</p>
-          {precautions && precautions.map((items: any) => (
-            <div>{items}</div>
+        <div className="w-[500px] h-[900px] px-4">
+          <p className="my-2 font-semibold bg-yellow-100 border border-gray-400 p-2">Medicine Name:{medicineName}</p>
+          <p className="p-2 bg-green-200 border border-gray-400 font-semibold my-2">Precautions : </p>
+          {precautions && precautions.map((items: any, index: any) => (
+            <div className="p-2 bg-green-200 border border-gray-400" key={index}>{items}</div>
           ))
           }
-          <p>Uses:</p>
-          {uses && uses.map((items: any) => (
-            <div>{items}</div>
-          ))
-
-          }
-          <p>sideEffects : </p>
-          {sideEffects && sideEffects.map((items: any) => (
-            <div>{items}</div>
+          <p className="p-2 bg-blue-200 border border-gray-400 font-semibold my-2">Uses : </p>
+          {uses && uses.map((items: any, index: any) => (
+            <div className="p-2 bg-blue-200 border border-gray-400" key={index}>{items}</div>
           ))
 
           }
-          <p> summary: {summary}</p>
-          <p> disclaimer:{disclaimer}</p>
+          <p className="p-2 bg-red-200 border border-gray-400 font-semibold my-2">SideEffects : </p>
+          {sideEffects && sideEffects.map((items: any, index: any) => (
+            <div className="p-2 bg-red-200 border border-gray-400" key={index}>{items}</div>
+          ))
+
+          }
+          <p className='p-2 bg-blue-200 border border-gray-400 font-semibold my-2'> Summary : {summary}</p>
+          <p className="my-2 p-2 bg-red-200 border border-gray-400 font-semibold"> Disclaimer : {disclaimer}</p>
         </div>
 
         <DialogActions>
@@ -142,7 +138,7 @@ const MedicalReport: React.FC = () => {
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
         </p>
-        <p className="ant-upload-text">Click or drag file to this area to upload</p>
+        <p className="ant-upload-text">Click or drag file to this area to upload (JPG,PNG,WEBP)</p>
         <p className="ant-upload-hint">
           Support for a single or bulk upload. Strictly prohibited from uploading company data or
           other banned files.

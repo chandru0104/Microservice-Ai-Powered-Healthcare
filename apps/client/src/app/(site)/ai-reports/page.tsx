@@ -197,8 +197,8 @@ const AiStudio = () => {
 
         <div className="flex pt-8 gap-10 max-w-7xl mx-auto item-center justify-center mb-10">
           <div >
-            <h2 className="text-center pb-4">Smart Medical Report Analyzer</h2>
-            <p className="text-center pb-4">Upload your lab reports or medical prescriptions, and <br />let our AI translate complex medical jargon into clear, easy-to-understand insights.</p>
+            <h2 className="text-center pb-4">Smart Medicine Analyzer</h2>
+            <p className="text-center pb-4">Upload your Medicine or medical prescriptions, and <br />let our AI translate complex medical jargon into clear, easy-to-understand insights.</p>
 
             <div className="w-[400px] sm:w-[600px]"><MedicalReport /></div>
           </div>

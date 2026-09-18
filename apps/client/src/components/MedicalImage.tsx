@@ -24,6 +24,12 @@ const MedicalImage: React.FC = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const [userAccessToken, setUserAccessToken] = useState<string | null>(null);
     const [openDailog, setOpenDailog] = useState<boolean>(false)
+    const [documentType, setDocumentType] = useState<string>("")
+    const [keyFindings, setkeyFindings] = useState<any>([])
+    const [summary, setSummary] = useState<string>("")
+    const [action, setAction] = useState<any>([])
+    const [disclaimer, setDisclaimer] = useState("")
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             setUserAccessToken(localStorage.getItem("userAccessToken"));
@@ -46,6 +52,17 @@ const MedicalImage: React.FC = () => {
             }
             if (status === 'done') {
                 messageApi.success(`${info.file.name} file uploaded successfully.`);
+                const documentType = info?.file.response?.data.report_summary.document_type
+                const keyFindings = info?.file?.response.data.report_summary.key_findings
+                const actions = info?.file?.response?.data?.report_summary.actionable_next_steps
+                const summary = info?.file?.response?.data?.report_summary?.summary
+                const disclaimer = info?.file?.response?.data?.disclaimer
+
+                setDocumentType(documentType)
+                setkeyFindings(keyFindings)
+                setAction(actions)
+                setSummary(summary)
+                setDisclaimer(disclaimer)
                 setOpenDailog(true);
             }
             if (status === 'error') {
@@ -60,9 +77,6 @@ const MedicalImage: React.FC = () => {
         setOpenDailog(false);
     };
 
-    const handleSubmit = () => {
-        setOpenDailog(true);
-    };
 
     return (
         <>
@@ -86,8 +100,22 @@ const MedicalImage: React.FC = () => {
                 >
                     <CloseIcon />
                 </IconButton>
-                <div className="w-[600px] h-[500px] p-4">
-                    <p>Image report content...</p>
+                <div className="w-[500px] h-[900px] px-4">
+                    <p className='my-2 font-semibold bg-yellow-100 border border-gray-400 p-2'> Document Type : {documentType}</p>
+
+                    <p className='p-2 bg-green-200 border border-gray-400 font-semibold my-2'>Key Findings : </p>
+                    {keyFindings && keyFindings.map((items: any, index: any) => (
+                        <div className='p-2 bg-green-200 border border-gray-400' key={index}>{items}</div>
+                    ))}
+
+                    <p className='my-2 font-semibold bg-blue-200 border border-gray-400 p-2'> Actions : </p>
+                    {action && action.map((items: any, index: any) => (
+                        <div className='p-2 bg-blue-200 border border-gray-400' key={index}>{items}</div>
+                    ))}
+
+                    <p className='my-2 bg-blue-200 border border-gray-400 p-2'> <p className="font-semibold">Summary :</p>{summary}</p>
+                    <p className='my-2 font-semibold bg-red-200 border border-gray-400 p-2'>Disclaimer : {disclaimer}</p>
+
                 </div>
 
                 <DialogActions>
@@ -101,7 +129,7 @@ const MedicalImage: React.FC = () => {
                 <p className="ant-upload-drag-icon">
                     <InboxOutlined />
                 </p>
-                <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                <p className="ant-upload-text">Click or drag file to this area to upload (PDF)</p>
                 <p className="ant-upload-hint">
                     Support for a single or bulk upload. Strictly prohibited from uploading company data or
                     other banned files.
