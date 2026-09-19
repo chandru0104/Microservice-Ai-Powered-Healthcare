@@ -328,3 +328,16 @@ export const googleLoginUser =async(auth: any)=>{
        return console.log(error.message)
     }
 }
+
+export const googleLoginDoctor = async(auth:any)=>{
+    try{
+      const doctor = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/google/doctor/login`,auth,{
+        headers:{
+            "Content-Type":"application/json"
+        },withCredentials:true
+      })
+      return doctor
+    }catch(error:any){
+       return console.log(error.message)
+    }
+}

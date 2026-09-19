@@ -52,7 +52,9 @@ const UserLogin: React.FC = () => {
         const name = post?.data?.data?.user?.name
         const role = post?.data?.data?.user?.role
         const accessToken = post?.data?.data?.accessToken
+        const id = post?.data?.data?.user?._id
         localStorage.setItem("userName", name)
+        localStorage.setItem("userId", id)
         localStorage.setItem("userRole", role)
         localStorage.setItem("userAccessToken", accessToken)
         router.push("/")

@@ -39,23 +39,19 @@ const doctorSchema = new mongoose.Schema({
     },
     specialties: {
         type: String,
-        required: true
     },
-    role:{
-      type:String,
-      required:true
+    role: {
+        type: String,
+        default: "doctor"
     },
     experience: {
         type: String,
-        required: true
     },
     place: {
         type: String,
-        required: true,
     },
     price: {
         type: Number,
-        required: true
     },
     email: {
         type: String,
@@ -63,47 +59,40 @@ const doctorSchema = new mongoose.Schema({
     },
     register: {
         type: String,
-        required: true
     },
     is_approved: {
         type: Boolean,
-        required: true,
-        default:false
+        default: false
     },
     profile: {
         type: String,
-        required: true
     },
     is_active: {
-        type:Boolean,
+        type: Boolean,
         default: true
-
     },
-    is_verify:{
-        type:Boolean,
-        default:false
+    is_verify: {
+        type: Boolean,
+        default: false
     },
     active: {
-        type:Boolean,
+        type: Boolean,
         default: true
     },
-    password:{
-        type:String,
-        required:true
+    password: {
+        type: String,
     },
-    status:{
-        type:Number,
-        default:1
+    status: {
+        type: Number,
+        default: 1
     },
-    is_google_login:{
-      type:Boolean,
-      required:true,
-      default:false
+    is_google_login: {
+        type: Boolean,
+        default: false
     },
-      google_id:{
-    type:String,
-  },
-
+    google_id: {
+        type: String,
+    },
 }, { timestamps: true, versionKey: false })
 
 
