@@ -314,3 +314,30 @@ export const doctorVerifyData = async (id: any) => {
         throw new Error(error.message)
     }
 }
+
+
+export const googleLoginUser =async(auth: any)=>{
+    try{
+      const user= await axios.post(`${API_GATEWAY_URL}/api/v1/auth/google/login`,auth ,{
+        headers:{
+            "Content-Type":"application/json"
+        },withCredentials:true
+      })
+      return user
+    }catch(error:any){
+       return console.log(error.message)
+    }
+}
+
+export const googleLoginDoctor = async(auth:any)=>{
+    try{
+      const doctor = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/google/doctor/login`,auth,{
+        headers:{
+            "Content-Type":"application/json"
+        },withCredentials:true
+      })
+      return doctor
+    }catch(error:any){
+       return console.log(error.message)
+    }
+}

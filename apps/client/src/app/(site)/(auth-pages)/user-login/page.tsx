@@ -6,9 +6,14 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Flex, Form, Input } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AuthUserLogin } from 'apps/client/src/services/authService';
+import { AuthUserLogin, googleLoginUser } from 'apps/client/src/services/authService';
 import { Login } from "apps/client/src/models/authModel"
 import { useRouter } from "next/navigation"
+import { useGoogleLogin } from "@react-oauth/google"
+
+
+
+
 
 const UserLogin: React.FC = () => {
 
@@ -38,6 +43,26 @@ const UserLogin: React.FC = () => {
     }
 
   };
+
+  const handleGoogleLogin = useGoogleLogin({
+    flow: "auth-code",
+    onSuccess: async (coderesponse) => {
+      try {
+        const post = await googleLoginUser({ code: coderesponse.code, role: "user" })
+        const name = post?.data?.data?.user?.name
+        const role = post?.data?.data?.user?.role
+        const accessToken = post?.data?.data?.accessToken
+        const id = post?.data?.data?.user?._id
+        localStorage.setItem("userName", name)
+        localStorage.setItem("userId", id)
+        localStorage.setItem("userRole", role)
+        localStorage.setItem("userAccessToken", accessToken)
+        router.push("/")
+      } catch (error: any) {
+        console.log(error.message)
+      }
+    }
+  })
 
   return (
     <div className='min-h-screen flex items-center justify-center'>
@@ -80,9 +105,11 @@ const UserLogin: React.FC = () => {
             Log in
           </Button>
           <p className='flex item-center justify-center pt-2'>or</p>
-          <p className='flex items-center justify-center gap-2 p-1 border-2 rounded-md'><Image src="/google-logo.jpg" alt="logo" height={20} width={20} /> Google Login</p >
-          <div className='flex item-center justify-center p-1'>
-            <Link href="/user-register" className='text-center'>Register now!</Link>
+          <div className='flex flex-col items-center justify-center'>
+            <button type="button" className='flex items-center justify-center gap-2 p-1 border-2 rounded-md' onClick={() => handleGoogleLogin()}><Image src="/google-logo.jpg" alt="logo" height={20} width={20} />Continue With Google</button >
+            <div className='flex item-center justify-center p-1'>
+              <Link href="/user-register" className='text-center'>Register now!</Link>
+            </div>
           </div>
         </Form.Item>
       </Form>

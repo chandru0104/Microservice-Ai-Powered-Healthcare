@@ -50,15 +50,19 @@ export const doctorGoogleLoginDoctor = async (data: googleUser) => {
         if (!user) {
             user = await Doctor.create({
                 name: name,
-                profile: picture, // Mapping Google's 'picture' property
+                profile: picture,
                 email: email,
                 google_id: sub,
-                role: role // Assigning the role passed from the frontend
+                role: role || "doctor",
+                is_google_login: true,
             })
         } else {
-            // Optional: Update their profile picture or name if it changed on Google
+            // Update doctor details if needed
             user.name = name || user.name
             user.profile = picture || user.profile
+            user.role = user.role || role || "doctor"
+            user.google_id = user.google_id || sub
+            user.is_google_login = true
             await user.save()
         }
 

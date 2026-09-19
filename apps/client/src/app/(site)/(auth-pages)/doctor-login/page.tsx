@@ -6,8 +6,10 @@ import { Button, Flex, Form, Input } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Login } from "../../../../models/authModel"
-import { DoctorLogin } from "../../../../services/authService"
+import { DoctorLogin,googleLoginDoctor } from "../../../../services/authService"
 import { useRouter } from 'next/navigation';
+import {useGoogleLogin} from "@react-oauth/google"
+
 const DoctorLogins: React.FC = () => {
 
   const [loading, setLoading] = useState(false)
@@ -38,7 +40,31 @@ const DoctorLogins: React.FC = () => {
     }
   }
 
+  const handleGoogleLogin = useGoogleLogin({
+    flow: "auth-code",
+    onSuccess: async (codeResponse) => {
+      try {
+        const post = await googleLoginDoctor({ code: codeResponse.code, role: "doctor" })
+        const user = post?.data?.data?.user
+        const accessToken = post?.data?.data?.accessToken
 
+        if (user) {
+          localStorage.setItem("doctorId", user._id || user.id)
+          localStorage.setItem("doctorName", user.name)
+          localStorage.setItem("doctorRole", user.role)
+        }
+        if (accessToken) {
+          localStorage.setItem("doctorAccessToken", accessToken)
+        }
+       if(post){
+        router.push("/")
+       }
+
+      } catch (error: any) {
+        console.log(error.message)
+      }
+    }
+  })
 
   return (
     <div className='min-h-screen flex items-center justify-center'>
@@ -80,13 +106,14 @@ const DoctorLogins: React.FC = () => {
           <Button block type="primary" htmlType="submit" loading={loading}>
             Log in
           </Button>
-
+          <p className='flex item-center justify-center pt-2'>or</p>
+          <div className='flex flex-col items-center justify-center'>
+            <button type="button" className='flex items-center justify-center gap-2 p-1 border-2 rounded-md' onClick={() => handleGoogleLogin()}><Image src="/google-logo.jpg" alt="logo" height={20} width={20} />Continue With Google</button>
+            <div className='flex item-center justify-center p-1'>
+              <Link href="/doctor-register" className='text-center'>Register now!</Link>
+            </div>
+          </div>
         </Form.Item>
-        <p className='flex item-center justify-center pb-2'>or</p>
-        <p className='flex items-center justify-center gap-2 p-1 border-2 rounded-md'><Image src="/google-logo.jpg" alt="logo" height={20} width={20} /> Google Login</p >
-        <div className='flex item-center justify-center p-2'>
-          <Link href="/doctor-register" className='text-center'>Register now!</Link>
-        </div>
       </Form>
 
     </div>
