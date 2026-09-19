@@ -12,9 +12,6 @@ import { useRouter } from "next/navigation"
 import { useGoogleLogin } from "@react-oauth/google"
 
 
-
-
-
 const UserLogin: React.FC = () => {
 
   const [loading, setLoading] = useState(false)
