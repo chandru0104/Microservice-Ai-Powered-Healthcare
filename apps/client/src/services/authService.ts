@@ -316,28 +316,54 @@ export const doctorVerifyData = async (id: any) => {
 }
 
 
-export const googleLoginUser =async(auth: any)=>{
-    try{
-      const user= await axios.post(`${API_GATEWAY_URL}/api/v1/auth/google/login`,auth ,{
-        headers:{
-            "Content-Type":"application/json"
-        },withCredentials:true
-      })
-      return user
-    }catch(error:any){
-       return console.log(error.message)
+export const googleLoginUser = async (auth: any) => {
+    try {
+        const user = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/google/login`, auth, {
+            headers: {
+                "Content-Type": "application/json"
+            }, withCredentials: true
+        })
+        return user
+    } catch (error: any) {
+        return console.log(error.message)
     }
 }
 
-export const googleLoginDoctor = async(auth:any)=>{
-    try{
-      const doctor = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/google/doctor/login`,auth,{
-        headers:{
-            "Content-Type":"application/json"
-        },withCredentials:true
-      })
-      return doctor
-    }catch(error:any){
-       return console.log(error.message)
+export const googleLoginDoctor = async (auth: any) => {
+    try {
+        const doctor = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/google/doctor/login`, auth, {
+            headers: {
+                "Content-Type": "application/json"
+            }, withCredentials: true
+        })
+        return doctor
+    } catch (error: any) {
+        return console.log(error.message)
+    }
+}
+
+export const userRefreshToken = async () => {
+    try {
+        const refreshToken = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/refresh-token`, {}, {
+            headers: {
+                "Content-Type": "application/json"
+            }, withCredentials: true
+        })
+        return refreshToken
+    } catch (error: any) {
+        return console.log(error.message)
+    }
+}
+
+export const doctorRefreshToken = async () => {
+    try {
+        const refreshDoctorToken = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/doctor-refresh/token`, {}, {
+            headers: {
+                "Content-Type": "application/json"
+            }, withCredentials: true
+        })
+        return refreshDoctorToken
+    } catch (error: any) {
+        return console.log(error.message)
     }
 }
