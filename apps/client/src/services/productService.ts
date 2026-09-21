@@ -408,7 +408,8 @@ export const productAdds = async (data: any) => {
             ageGroupId,
             variant,
             stock,
-            file } = data
+            file,
+            files } = data
         const formData = new FormData()
 
         formData.append("name", name)
@@ -425,7 +426,11 @@ export const productAdds = async (data: any) => {
         formData.append("childCategoryId", childCategoryId)
         formData.append("originId", originId)
         formData.append("ageGroupId", ageGroupId)
-        if (file) formData.append("file", file)
+        if (files && Array.isArray(files) && files.length > 0) {
+            files.forEach((f: File) => formData.append("files", f))
+        } else if (file) {
+            formData.append("file", file)
+        }
 
 
         const add = await axios.post(`${API_GATEWAY_URL}/api/v1/product/add`, formData, {
@@ -474,7 +479,7 @@ export const productView = async (id: string) => {
 export const productUpdate = async (id: string, data: any) => {
     try {
 
-         const { name,
+        const { name,
             description, price,
             returnPolicy,
             benefit,
@@ -487,7 +492,8 @@ export const productUpdate = async (id: string, data: any) => {
             ageGroupId,
             variant,
             stock,
-            file } = data
+            file,
+            files } = data
         const formData = new FormData()
 
         formData.append("name", name)
@@ -504,7 +510,11 @@ export const productUpdate = async (id: string, data: any) => {
         formData.append("childCategoryId", childCategoryId)
         formData.append("originId", originId)
         formData.append("ageGroupId", ageGroupId)
-        if (file) formData.append("file", file)
+        if (files && Array.isArray(files) && files.length > 0) {
+            files.forEach((f: File) => formData.append("files", f))
+        } else if (file) {
+            formData.append("file", file)
+        }
 
 
         const adminAccessToken = localStorage.getItem("adminAccessToken")
@@ -522,7 +532,7 @@ export const productUpdate = async (id: string, data: any) => {
 export const productDelete = async (id: string) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
-        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/delete/${id}`,{}, {
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/product/delete/${id}`, {}, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${adminAccessToken}`
