@@ -56,7 +56,7 @@ const recentTest = [
 function LabTestsPage() {
 
     const [labCategoryList, setLabCategoryList] = useState<any[]>([])
-      
+
     const router = useRouter()
     const list = async () => {
         try {
@@ -72,9 +72,9 @@ function LabTestsPage() {
     useEffect(() => {
         list()
     }, [])
-    
-    function viewAll(){
-       router.push("/test-list")
+
+    function viewAll() {
+        router.push("/lab-tests/test-list")
     }
 
     return (
@@ -90,11 +90,10 @@ function LabTestsPage() {
                         <h2 className="font-bold">Lab Tests List</h2>
                     </div>
                     <div className="flex flex-wrap items-center justify-start gap-4">
-                        {labCategoryList && labCategoryList.slice(0, 32).map((items: any, index: any) => (
+                        {labCategoryList && labCategoryList.slice(0, 20).map((items: any, index: any) => (
                             <div key={index} >
 
-                                <Link href={`/lab-test-details/${items._id}`} className="flex bg-blue-100 mt-3 p-3 rounded-md w-[250px] gap-3">
-
+                                <Link href={`/lab-tests/lab-test-details/${items._id}`} className="flex bg-blue-100 mt-3 p-3 rounded-md w-[250px] gap-3">
                                     <div className="text-blue-900 flex justify-center items-center "><GrTestDesktop size={30} /></div><div > {items.name} <br />  <div>{items.categoryId.name}</div> </div>
                                 </Link>
                             </div>
@@ -104,7 +103,7 @@ function LabTestsPage() {
 
                     </div>
                     <div className="flex justify-center items-center mt-4">
-                    <Button variant="contained" onClick={()=>viewAll()}>View All</Button>
+                        <Button variant="contained" onClick={() => viewAll()}>View All</Button>
                     </div>
                 </div>
 
