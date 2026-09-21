@@ -10,7 +10,7 @@ import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
 import { OriginList, childCategoryList, subCategoryList, productCategoryList, brandList, ageGroupList, productAdds, productList, productUpdate, productDelete } from "../../../../services/productService"
-import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
+import { FiEdit3, FiTrash2 as RiDeleteBin5Line, FiUploadCloud, FiX, FiImage } from "react-icons/fi";
 import Autocomplete from '@mui/material/Autocomplete';
 import Grid from "@mui/material/Grid"
 import Image from 'next/image';
@@ -38,7 +38,7 @@ const ProductsPage = () => {
     const [expiryDate, setExpiryDate] = useState("")
     const [variant, setVariant] = useState("")
     const [stock, setStock] = useState("")
-    const [file, setFile] = useState<File | null>(null)
+    const [files, setFiles] = useState<File[]>([])
     const [editId, setEditId] = useState<string | null>(null)
 
     const [selectedBrand, setSelectedBrand] = useState<string>("")
@@ -48,8 +48,23 @@ const ProductsPage = () => {
     const [selectedSubCategory, setSelectedSubCategory] = useState<string>("")
     const [selectedAgeGroup, setSelectedAgeGroup] = useState<string>("")
 
-    const [existingImage, setExistingImage] = useState<string>("");
+    const [existingImages, setExistingImages] = useState<string[]>([]);
 
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const newFiles = Array.from(e.target.files);
+            setFiles((prev) => [...prev, ...newFiles]);
+        }
+    };
+
+    const handleRemoveFile = (index: number) => {
+        setFiles((prev) => prev.filter((_, i) => i !== index));
+    };
+
+    const handleRemoveExistingImage = (index: number) => {
+        setExistingImages((prev) => prev.filter((_, i) => i !== index));
+    };
 
     const resetForm = () => {
         setEditId(null);
@@ -67,7 +82,8 @@ const ProductsPage = () => {
         setSelectedBrand("");
         setSelectedOrigin("");
         setSelectedAgeGroup("");
-
+        setFiles([]);
+        setExistingImages([]);
     };
 
     const toggleDrawer = (newOpen: boolean) => () => {
@@ -204,80 +220,33 @@ const ProductsPage = () => {
         try {
             setLoading(true)
 
-            if (editId) {
-                const payload = {
-                    name,
-                    description,
-                    price: Number(price),
-                    expiryDate,
-                    benefit,
-                    returnPolicy,
-                    variant,
-                    stock: Number(stock),
-                    categoryId: selectedCategory,
-                    subcategoryId: selectedSubCategory,
-                    childCategoryId: selectedChildCategory,
-                    brandId: selectedBrand,
-                    originId: selectedOrigin,
-                    ageGroupId: selectedAgeGroup,
-                    file
-                }
-                await productUpdate(editId, payload)
-                setOpen(false)
-                setName("")
-                setDescription("")
-                setPrice("")
-                setExpiryDate("")
-                setBenefit("")
-                setReturnPolicy("")
-                setVariant("")
-                setStock("")
-                setSelectedCategory("")
-                setSelectedSubCategory("")
-                setSelectedChildCategory("")
-                setSelectedBrand("")
-                setSelectedOrigin("")
-                setSelectedAgeGroup("")
-                setFile(null)
-                list()
-            } else {
-
-                const payload = {
-                    name,
-                    description,
-                    price: Number(price),
-                    expiryDate,
-                    benefit,
-                    returnPolicy,
-                    variant,
-                    stock: Number(stock),
-                    categoryId: selectedCategory,
-                    subcategoryId: selectedSubCategory,
-                    childCategoryId: selectedChildCategory,
-                    brandId: selectedBrand,
-                    originId: selectedOrigin,
-                    ageGroupId: selectedAgeGroup,
-                    file
-                }
-                await productAdds(payload)
-                setOpen(false)
-                list()
-                setName("")
-                setDescription("")
-                setPrice("")
-                setExpiryDate("")
-                setBenefit("")
-                setReturnPolicy("")
-                setVariant("")
-                setStock("")
-                setSelectedCategory("")
-                setSelectedSubCategory("")
-                setSelectedChildCategory("")
-                setSelectedBrand("")
-                setSelectedOrigin("")
-                setSelectedAgeGroup("")
-                setFile(null)
+            const payload: any = {
+                name,
+                description,
+                price: Number(price),
+                expiryDate,
+                benefit,
+                returnPolicy,
+                variant,
+                stock: Number(stock),
+                categoryId: selectedCategory,
+                subcategoryId: selectedSubCategory,
+                childCategoryId: selectedChildCategory,
+                brandId: selectedBrand,
+                originId: selectedOrigin,
+                ageGroupId: selectedAgeGroup,
+                files: files.length > 0 ? files : undefined,
             }
+
+            if (editId) {
+                await productUpdate(editId, payload)
+            } else {
+                await productAdds(payload)
+            }
+
+            setOpen(false)
+            resetForm()
+            list()
 
         } catch (error: any) {
             console.error(error.message)
@@ -315,7 +284,9 @@ const ProductsPage = () => {
         setSelectedBrand(data.brandId?._id || "")
         setSelectedOrigin(data.originId?._id || "")
         setSelectedAgeGroup(data.ageGroupId?._id || "")
-        setExistingImage(data.image?.[0] || "")
+        setFiles([])
+        const currentImgs = Array.isArray(data.image) ? data.image : (data.image ? [data.image] : [])
+        setExistingImages(currentImgs)
     }
 
 
@@ -353,14 +324,27 @@ const ProductsPage = () => {
         {
             field: 'image',
             headerName: 'Image',
-            width: 150,
+            width: 170,
             renderCell: (params: any) => {
-                const images: string[] = params.row?.image || [];
+                const images: string[] = Array.isArray(params.row?.image)
+                    ? params.row.image
+                    : (params.row?.image ? [params.row.image] : []);
+
+                if (!images.length) {
+                    return <span className="text-xs text-slate-400 italic">No image</span>;
+                }
 
                 return (
                     <div className="flex gap-2 items-center h-full overflow-x-auto py-1">
                         {images.map((im: any, index: number) => (
-                            <Image key={index} src={im} alt="Product" width={55} height={55} className="w-[55px] h-[55px] rounded object-cover shadow-sm shrink-0" />
+                            <Image
+                                key={index}
+                                src={im}
+                                alt="Product"
+                                width={50}
+                                height={50}
+                                className="w-[50px] h-[50px] rounded-lg object-cover shadow-sm shrink-0 border border-slate-200"
+                            />
                         ))}
                     </div>
                 );
@@ -399,226 +383,282 @@ const ProductsPage = () => {
 
 
     const DrawerList = (
-        <Box sx={{ width: 700 }} role="presentation" >
-            <p className="p-4 font-semibold text-lg">{editId ? "Edit Products" : "Add Products"}</p>
-            <Box component="form" onSubmit={submitOrigin} sx={{ display: "flex", flexDirection: "column", gap: "16px", padding: "16px" }}>
-                <p>Select Product Require Options</p>
-                <Grid container spacing={0}>
-                    <Grid size={6} >
-                        <div >
-                            <div className='p-2'>
-                                <Autocomplete
-                                    disablePortal
-                                    options={categoryOptions}
-                                    value={categoryOptions.find((option: any) => option.value === selectedCategory) || null}
-                                    getOptionKey={(option: any) => option.value}
-                                    getOptionLabel={(option: any) => option.label || ""}
-                                    onChange={(_, newValue: any) => {
-                                        setSelectedCategory(newValue ? newValue.value : "")
-                                    }}
-                                    sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} label="Category" required={!selectedCategory} />}
-                                />
+        <Box sx={{ width: 700, p: 3, height: '100%', overflowY: 'auto' }} role="presentation" >
+            <p className="pb-3 font-semibold text-xl text-slate-800 border-b border-slate-100">{editId ? "Edit Product" : "Add Product"}</p>
+            <Box component="form" onSubmit={submitOrigin} sx={{ display: "flex", flexDirection: "column", gap: "20px", paddingTop: "16px" }}>
+                <div>
+                    <p className="text-sm font-semibold text-slate-700 mb-2">Select Product Options</p>
+                    <Grid container spacing={2}>
+                        <Grid size={6} >
+                            <div className="flex flex-col gap-3">
+                                <div>
+                                    <Autocomplete
+                                        disablePortal
+                                        options={categoryOptions}
+                                        value={categoryOptions.find((option: any) => option.value === selectedCategory) || null}
+                                        getOptionKey={(option: any) => option.value}
+                                        getOptionLabel={(option: any) => option.label || ""}
+                                        onChange={(_, newValue: any) => {
+                                            setSelectedCategory(newValue ? newValue.value : "")
+                                        }}
+                                        fullWidth
+                                        renderInput={(params) => <TextField {...params} label="Category" required={!selectedCategory} />}
+                                    />
+                                </div>
+                                <div>
+                                    <Autocomplete
+                                        disablePortal
+                                        options={childCategoryOptions}
+                                        value={childCategoryOptions.find((option: any) => option.value === selectedChildCategory) || null}
+                                        getOptionKey={(option: any) => option.value}
+                                        getOptionLabel={(option: any) => option.label || ""}
+                                        onChange={(_, newValue: any) => {
+                                            setSelectedChildCategory(newValue ? newValue.value : "")
+                                        }}
+                                        fullWidth
+                                        renderInput={(params) => <TextField {...params} label="Childcategory" required={!selectedChildCategory} />}
+                                    />
+                                </div>
+                                <div>
+                                    <Autocomplete
+                                        disablePortal
+                                        options={subCategoryOptions}
+                                        value={subCategoryOptions.find((option: any) => option.value === selectedSubCategory) || null}
+                                        fullWidth
+                                        getOptionKey={(option: any) => option.value}
+                                        getOptionLabel={(option: any) => option.label || ""}
+                                        onChange={(_, newValue: any) => {
+                                            setSelectedSubCategory(newValue ? newValue.value : "")
+                                        }}
+                                        renderInput={(params) => <TextField {...params} label="Subcategory" required={!selectedSubCategory} />}
+                                    />
+                                </div>
                             </div>
-                            <div className='p-2'>
-                                <Autocomplete
-                                    disablePortal
-                                    options={childCategoryOptions}
-                                    value={childCategoryOptions.find((option: any) => option.value === selectedChildCategory) || null}
-                                    getOptionKey={(option: any) => option.value}
-                                    getOptionLabel={(option: any) => option.label || ""}
-                                    onChange={(_, newValue: any) => {
-                                        setSelectedChildCategory(newValue ? newValue.value : "")
-                                    }}
-                                    sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} label="Childcategory" required={!selectedChildCategory} />}
-                                />
+                        </Grid>
+                        <Grid size={6}>
+                            <div className="flex flex-col gap-3">
+                                <div>
+                                    <Autocomplete
+                                        disablePortal
+                                        options={brandOptions}
+                                        value={brandOptions.find((option: any) => option.value === selectedBrand) || null}
+                                        getOptionKey={(option: any) => option.value}
+                                        getOptionLabel={(option: any) => option.label || ""}
+                                        onChange={(_, newValue: any) => {
+                                            setSelectedBrand(newValue ? newValue.value : "")
+                                        }}
+                                        fullWidth
+                                        renderInput={(params) => <TextField {...params} label="Brand" required={!selectedBrand} />}
+                                    />
+                                </div>
+                                <div>
+                                    <Autocomplete
+                                        disablePortal
+                                        options={ageGroupOptions}
+                                        value={ageGroupOptions.find((option: any) => option.value === selectedAgeGroup) || null}
+                                        getOptionKey={(option: any) => option.value}
+                                        getOptionLabel={(option: any) => option.label || ""}
+                                        onChange={(_, newValue: any) => {
+                                            setSelectedAgeGroup(newValue ? newValue.value : "")
+                                        }}
+                                        fullWidth
+                                        renderInput={(params) => <TextField {...params} label="Age Group" required={!selectedAgeGroup} />}
+                                    />
+                                </div>
+                                <div>
+                                    <Autocomplete
+                                        disablePortal
+                                        options={originOptions}
+                                        value={originOptions.find((option: any) => option.value === selectedOrigin) || null}
+                                        fullWidth
+                                        getOptionKey={(option: any) => option.value}
+                                        getOptionLabel={(option: any) => option.label || ""}
+                                        onChange={(_, newValue: any) => {
+                                            setSelectedOrigin(newValue ? newValue.value : "")
+                                        }}
+                                        renderInput={(params) => <TextField {...params} label="Origin" required={!selectedOrigin} />}
+                                    />
+                                </div>
                             </div>
-                        </div>
+                        </Grid>
                     </Grid>
-                    <Grid size={6}>
-                        <div>
-                            <div className='p-2'>
-                                <Autocomplete
-                                    disablePortal
-                                    options={brandOptions}
-                                    value={brandOptions.find((option: any) => option.value === selectedBrand) || null}
-                                    getOptionKey={(option: any) => option.value}
-                                    getOptionLabel={(option: any) => option.label || ""}
-                                    onChange={(_, newValue: any) => {
-                                        setSelectedBrand(newValue ? newValue.value : "")
-                                    }}
-                                    sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} label="Brand" required={!selectedBrand} />}
-                                />
-                            </div>
-                            <div className='p-2'>
-                                <Autocomplete
-                                    disablePortal
-                                    options={ageGroupOptions}
-                                    value={ageGroupOptions.find((option: any) => option.value === selectedAgeGroup) || null}
-                                    getOptionKey={(option: any) => option.value}
-                                    getOptionLabel={(option: any) => option.label || ""}
-                                    onChange={(_, newValue: any) => {
-                                        setSelectedAgeGroup(newValue ? newValue.value : "")
-                                    }}
-                                    sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} label="Age Group" required={!selectedAgeGroup} />}
-                                />
-                            </div>
-                        </div>
-                    </Grid>
-                    <Grid size={6}>
-                        <div>
-                            <div className='p-2'>
-                                <Autocomplete
-                                    disablePortal
-                                    options={subCategoryOptions}
-                                    value={subCategoryOptions.find((option: any) => option.value === selectedSubCategory) || null}
-                                    sx={{ width: 300 }}
-                                    getOptionKey={(option: any) => option.value}
-                                    getOptionLabel={(option: any) => option.label || ""}
-                                    onChange={(_, newValue: any) => {
-                                        setSelectedSubCategory(newValue ? newValue.value : "")
-                                    }}
-                                    renderInput={(params) => <TextField {...params} label="Subcategory" required={!selectedSubCategory} />}
-                                />
-                            </div>
-                            <div className='p-2'>
-                                <Autocomplete
-                                    disablePortal
-                                    options={originOptions}
-                                    value={originOptions.find((option: any) => option.value === selectedOrigin) || null}
-                                    sx={{ width: 300 }}
-                                    getOptionKey={(option: any) => option.value}
-                                    getOptionLabel={(option: any) => option.label || ""}
-                                    onChange={(_, newValue: any) => {
-                                        setSelectedOrigin(newValue ? newValue.value : "")
-                                    }}
-                                    renderInput={(params) => <TextField {...params} label="Origin" required={!selectedOrigin} />}
-                                />
-                            </div>
-                        </div>
-                    </Grid>
-                </Grid>
-                <p>Fill Product Require Details</p>
-                <Grid container >
-                    <Grid size={6}>
-                        <div>
-                            <div className='p-2'>
+                </div>
+
+                <div>
+                    <p className="text-sm font-semibold text-slate-700 mb-2">Fill Product Details</p>
+                    <Grid container spacing={2}>
+                        <Grid size={6}>
+                            <div className="flex flex-col gap-3">
                                 <TextField
                                     label='Name'
                                     name='name'
                                     placeholder='Enter name'
                                     value={name}
-                                    sx={{ width: 300 }}
                                     onChange={(e) => setName(e.target.value)}
                                     required
                                     fullWidth
                                 />
-                            </div>
-                            <div className='p-2'>
                                 <TextField
                                     label='Description'
                                     name='description'
                                     placeholder='Description'
                                     value={description}
-                                    sx={{ width: 300 }}
                                     onChange={(e) => setDescription(e.target.value)}
                                     required
                                     fullWidth
                                 />
-                            </div>
-                            <div className='p-2'>
-
                                 <TextField
                                     label='Price'
                                     name='price'
                                     placeholder='Price'
                                     type='number'
                                     value={price}
-                                    sx={{ width: 300 }}
                                     onChange={(e) => setPrice(e.target.value)}
                                     required
                                     fullWidth
                                 />
-                            </div>
-                            <div className='p-2'>
                                 <TextField
                                     label='Variant'
                                     name='variant'
                                     placeholder='e.g., 500mg, 100ml'
                                     value={variant}
-                                    sx={{ width: 300 }}
                                     onChange={(e) => setVariant(e.target.value)}
                                     required
                                     fullWidth
                                 />
                             </div>
-                        </div>
+                        </Grid>
 
+                        <Grid size={6}>
+                            <div className="flex flex-col gap-3">
+                                <TextField
+                                    label='Expiry Date'
+                                    name='expiryDate'
+                                    placeholder='Expiry Date'
+                                    value={expiryDate}
+                                    onChange={(e) => setExpiryDate(e.target.value)}
+                                    required
+                                    fullWidth
+                                />
+                                <TextField
+                                    label='Benefit'
+                                    name='benefit'
+                                    placeholder='Benefit'
+                                    value={benefit}
+                                    onChange={(e) => setBenefit(e.target.value)}
+                                    required
+                                    fullWidth
+                                />
+                                <TextField
+                                    label='Return Policy'
+                                    name='returnPolicy'
+                                    placeholder='Return Policy'
+                                    value={returnPolicy}
+                                    onChange={(e) => setReturnPolicy(e.target.value)}
+                                    required
+                                    fullWidth
+                                />
+                                <TextField
+                                    label='Stock'
+                                    name='stock'
+                                    placeholder='Stock count'
+                                    type='number'
+                                    value={stock}
+                                    onChange={(e) => setStock(e.target.value)}
+                                    required
+                                    fullWidth
+                                />
+                            </div>
+                        </Grid>
                     </Grid>
+                </div>
 
-                    <Grid size={6}>
-                        <div className='p-2'>
-                            <TextField
-                                label='Expiry Date'
-                                name='expiryDate'
-                                placeholder='Expiry Date'
-                                value={expiryDate}
-                                sx={{ width: 300 }}
-                                onChange={(e) => setExpiryDate(e.target.value)}
-                                required
-                                fullWidth
-                            />
+                {/* Multiple Images Upload Section */}
+                <div className="flex flex-col gap-3 p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <p className="font-semibold text-sm text-slate-800">Product Images</p>
+                            <p className="text-xs text-slate-500">Upload multiple high-quality product images</p>
                         </div>
-                        <div className='p-2'>
-                            <TextField
-                                label='Benefit'
-                                name='benefit'
-                                placeholder='Benefit'
-                                value={benefit}
-                                sx={{ width: 300 }}
-                                onChange={(e) => setBenefit(e.target.value)}
-                                required
-                                fullWidth
-                            />
+                        <span className="text-xs font-semibold px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-200">
+                            {files.length + existingImages.length} image(s) total
+                        </span>
+                    </div>
+
+                    {/* Dropzone Upload Button */}
+                    <label
+                        htmlFor="product-multiple-images"
+                        className="flex flex-col items-center justify-center p-5 border-2 border-dashed border-blue-300 hover:border-blue-500 bg-white hover:bg-blue-50/50 rounded-xl cursor-pointer transition duration-150 ease-in-out group"
+                    >
+                        <div className="flex flex-col items-center justify-center text-center">
+                            <div className="p-2.5 bg-blue-50 group-hover:bg-blue-100 rounded-full text-blue-600 transition mb-2">
+                                <FiUploadCloud size={24} />
+                            </div>
+                            <p className="text-sm font-medium text-slate-700">
+                                <span className="text-blue-600 font-semibold underline">Click to choose images</span> or drag and drop
+                            </p>
+                            <p className="text-xs text-slate-400 mt-1">PNG, JPG, JPEG, WEBP (Select multiple files)</p>
                         </div>
-                        <div className='p-2'>
-                            <TextField
-                                label='Return Policy'
-                                name='returnPolicy'
-                                placeholder='Return Policy'
-                                value={returnPolicy}
-                                sx={{ width: 300 }}
-                                onChange={(e) => setReturnPolicy(e.target.value)}
-                                required
-                                fullWidth
-                            />
+                        <input
+                            id="product-multiple-images"
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={handleFileChange}
+                            className="hidden"
+                        />
+                    </label>
+
+                    {/* Previews of newly selected files */}
+                    {files.length > 0 && (
+                        <div className="flex flex-col gap-2 mt-1">
+                            <p className="text-xs font-semibold text-slate-600 uppercase tracking-wider">New Images to Upload ({files.length})</p>
+                            <div className="grid grid-cols-4 gap-2.5 max-h-[200px] overflow-y-auto p-1">
+                                {files.map((f, idx) => (
+                                    <div key={idx} className="relative group rounded-lg overflow-hidden border border-slate-200 bg-white shadow-sm aspect-square">
+                                        <img
+                                            src={URL.createObjectURL(f)}
+                                            alt={f.name}
+                                            className="w-full h-full object-cover"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => handleRemoveFile(idx)}
+                                            className="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white rounded-full p-1 shadow-md transition"
+                                            title="Remove image"
+                                        >
+                                            <FiX size={12} />
+                                        </button>
+                                        <div className="absolute bottom-0 inset-x-0 bg-black/60 px-1 py-0.5 text-[10px] text-white truncate text-center">
+                                            {f.name}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                        <div className='p-2'>
-                            <TextField
-                                label='Stock'
-                                name='stock'
-                                placeholder='Stock count'
-                                type='number'
-                                value={stock}
-                                sx={{ width: 300 }}
-                                onChange={(e) => setStock(e.target.value)}
-                                required
-                                fullWidth
-                            />
+                    )}
+
+                    {/* Existing images when editing */}
+                    {editId && existingImages.length > 0 && (
+                        <div className="flex flex-col gap-2 mt-1">
+                            <p className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Current Images ({existingImages.length})</p>
+                            <div className="grid grid-cols-4 gap-2.5 max-h-[200px] overflow-y-auto p-1">
+                                {existingImages.map((imgUrl, idx) => (
+                                    <div key={idx} className="relative group rounded-lg overflow-hidden border border-slate-200 bg-white shadow-sm aspect-square">
+                                        <Image
+                                            src={imgUrl}
+                                            alt={`Current product ${idx + 1}`}
+                                            fill
+                                            className="object-cover"
+                                        />
+                                        <span className="absolute bottom-1 left-1 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded">
+                                            Image {idx + 1}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    </Grid>
-                </Grid>
-                <div className='h-[130px]  m-2'>
-                    <p className='pt-2'>Porduct image </p>
-                    <input type="file" name='files' onChange={(e) => setFile(e.target.files?.[0] || null)} multiple />
-                    {editId && <div>
-                        <div className='py-3'>
-                            <Image alt="" src={existingImage} height={100} width={100} />
-                        </div>
-                    </div>}
+                    )}
                 </div>
 
                 <Button variant="contained" type='submit' disabled={loading}>
