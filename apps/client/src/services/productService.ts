@@ -451,7 +451,7 @@ export const productList = async () => {
         const list = await axios.get(`${API_GATEWAY_URL}/api/v1/product/list`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${adminAccessToken}`
+
             }
         })
         return list
