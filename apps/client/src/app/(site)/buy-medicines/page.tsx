@@ -36,7 +36,11 @@ export default function Productlist() {
                     </Grid>
                     <Grid size={8}>
                         <div>
-                             
+                             {productLists && productLists.map((items:any,index:number)=>{
+                                <></>
+                             })
+
+                             }
 
                         </div>
                     </Grid>

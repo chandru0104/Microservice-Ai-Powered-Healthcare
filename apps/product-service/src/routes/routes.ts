@@ -211,7 +211,7 @@ router.post(
  *       200:
  *         description: Product list fetched successfully
  */
-router.get('/list', authMiddleware, productListController);
+router.get('/list', productListController);
 
 
 /**
@@ -317,7 +317,7 @@ router.put("/delete/:id", authMiddleware, deleteProductController)
  *       200:
  *         description: Product details fetched successfully
  */
-router.get("/view/:id", authMiddleware, viewProductController)
+router.get("/view/:id", viewProductController)
 
 //Cart api
 
