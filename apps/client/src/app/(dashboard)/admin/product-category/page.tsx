@@ -66,6 +66,7 @@ const ProductCategoryPage = () => {
                 await productCategoryAdd(name)
                 setOpen(false)
                 listData()
+                setName("")
             }
 
         } catch (error: any) {

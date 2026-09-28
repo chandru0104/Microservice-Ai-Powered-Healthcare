@@ -25,7 +25,7 @@ const ProductOriginPage = () => {
         setOpen(newOpen);
         if (!newOpen) {
             setEditId(null);
-            setName("");      
+            setName("");
         }
     };
 
@@ -85,14 +85,14 @@ const ProductOriginPage = () => {
 
     const handleDelete = async (row: any) => {
         const id = row._id || row.id
-        if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
-            try {
-                await DeleteOrigin(id)
-                getData()
-            } catch (error: any) {
-                console.error(error.message)
-            }
+
+        try {
+            await DeleteOrigin(id)
+            getData()
+        } catch (error: any) {
+            console.error(error.message)
         }
+
     }
 
     const columns: GridColDef<(typeof rows)[number]>[] = [

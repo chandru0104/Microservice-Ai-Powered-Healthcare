@@ -8,7 +8,6 @@ const apiClient = axios.create({
     withCredentials: true,
 })
 
-
 apiClient.interceptors.response.use(
     (response) => response,
 
@@ -18,17 +17,22 @@ apiClient.interceptors.response.use(
         if (error.response.status === 401 && !requrl._retry) {
             requrl._retry = true
 
-            const pathName = typeof window == "object" ? window.location.pathname :""
+            const pathName = typeof window == "object" ? window.location.pathname : ""
 
             try {
                 if (pathName.startsWith("/user")) {
                     await userRefreshToken()
-                }else if (pathName.startsWith("/doctor")) {
+                } else if (pathName.startsWith("/doctor")) {
                     await doctorRefreshToken()
                 }
                 return apiClient(requrl)
             } catch (error) {
 
+                if (pathName.startsWith("/user")) {
+                    window.location.href = "/user-login"
+                } else {
+                    window.location.href = "/doctor-login"
+                }
                 return Promise.reject(error)
             }
 
