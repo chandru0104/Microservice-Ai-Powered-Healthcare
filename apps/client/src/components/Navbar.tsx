@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import Image from "next/image";
 import NavMenu from "./NavMenu";
 import { useRouter } from "next/navigation";
-
+import { LuShoppingCart } from "react-icons/lu";
 const Navbar = () => {
     const [openMenu, setOpenMenu] = useState(false);
     const [userName, setUserName] = useState<string | null>(null)
@@ -48,7 +48,7 @@ const Navbar = () => {
     }
     return (
         <>
-            <nav className=" bg-white text-black flex gap-10 p-4 items-center justify-center border-b-2 sticky top-0 z-50">
+            <nav className=" bg-white text-black flex gap-8 p-4 items-center justify-center border-b-2 sticky top-0 z-50">
                 <div className="block sm:hidden mr-auto">
                     <Menu size={30} onClick={toggleDrawer} className="cursor-pointer" />
                 </div>
@@ -86,6 +86,9 @@ const Navbar = () => {
                 </div>
                 <div className="hidden sm:block">
                     <Button onClick={() => { doctorNavigation("user") }}><User /> &nbsp; {userName ? userName : "User Login"}</Button>
+                </div>
+                <div className="hidden sm:block">
+                    <Button onClick={() => { doctorNavigation("user") }} className="cartBtn"><LuShoppingCart /> &nbsp;Cart</Button>
                 </div>
             </nav>
             {

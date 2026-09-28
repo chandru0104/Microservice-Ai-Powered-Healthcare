@@ -5,22 +5,31 @@ import { useState } from "react"
 import { useParams } from "next/navigation"
 import { useEffect } from "react"
 import { productView } from "apps/client/src/services/productService"
-import { Grid } from "@mui/material"
+import { Button, Grid } from "@mui/material"
 import Image from "next/image"
+import { GrSecure } from "react-icons/gr";
+import { BsCalendarDate } from "react-icons/bs";
+import { RiSecurePaymentLine } from "react-icons/ri";
+import { Loading } from "apps/client/src/components/Loading"
+
 
 const productDetails = () => {
 
-    const [detailsData, setDetailsData] = useState()
+    const [detailsData, setDetailsData] = useState<any>()
+    const [loading, setLoading] = useState<boolean>(true)
 
     const params: any = useParams()
     const { id } = params
 
     const details = async () => {
         try {
+            setLoading(true)
             const view = await productView(id)
-            console.log(view)
+            setDetailsData(view?.data?.data)
         } catch (error: any) {
             console.log(error.message)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -30,59 +39,127 @@ const productDetails = () => {
     return (
         <>
             <Navbar />
-            <div className="max-w-7xl mx-auto">
+
+            {loading ? <Loading /> : <div className="max-w-7xl mx-auto flex pt-4 gap-6">
                 <Grid>
                     <div className="flex">
-                        <div>
-                            <Image src={""} alt="pics" height={40} width={40} />
-                            <Image src={""} alt="pics" height={40} width={40} />
-                            <Image src={""} alt="pics" height={40} width={40} />
-                            <Image src={""} alt="pics" height={40} width={40} />
+                        <div className="flex flex-col gap-3">
+                            <Image src={"/user.png"} alt="pics" height={50} width={50} className="border border-gray-400 rounded-md" />
+                            <Image src={"/user.png"} alt="pics" height={50} width={50} className="border border-gray-400 rounded-md" />
+                            <Image src={"/user.png"} alt="pics" height={50} width={50} className="border border-gray-400 rounded-md" />
+                            <Image src={"/user.png"} alt="pics" height={50} width={50} className="border border-gray-400 rounded-md" />
                         </div>
-                        <div> <Image src={""} alt="pics" height={500} width={300} /></div>
-                        <div>
-                            <h2>product name</h2>
-                            <p>stock</p>
-                            <p>expiryOn</p>
-                            <p>variant</p>
+                        <div> <Image src={"/user.png"} alt="pics" height={450} width={250} /></div>
+                        <div className="flex flex-col gap-2">
+                            <h2>{detailsData?.name}</h2>
+                            <p >Stock : {detailsData?.stock.toString()}</p>
+                            <p >Expiry : {detailsData?.expiryOn}</p>
+                            <p >Variant : {detailsData?.variant}</p>
 
                             <div>
-                                <table>
-                                    <td>
-                                        <tr>subcategoryId</tr> <tr>data</tr>
-                                    </td>
+                                <table className="mt-8 w-[600px] border-collapse bg-blue-100">
+                                    <tbody>
+                                        <tr>
+                                            <td className="border border-gray-300 p-3">
+                                                <div className="text-sm font-semibold">
+                                                    Product Type
+                                                </div>
+                                                <div className="mt-1 text-sm text-gray-600">
+                                                    {detailsData?.subcategoryId?.name || "-"}
+                                                </div>
+                                            </td>
 
-                                    <td>
-                                        <tr>categoryId</tr> <tr>data</tr>
-                                    </td>
+                                            <td className="border border-gray-300 p-3">
+                                                <div className="text-sm font-semibold">
+                                                    Category
+                                                </div>
+                                                <div className="mt-1 text-sm text-gray-600">
+                                                    {detailsData?.categoryId?.name || "-"}
+                                                </div>
+                                            </td>
 
-                                    <td>
-                                        <tr>childCategoryId</tr> <tr>data</tr>
-                                    </td>
+                                            <td className="border border-gray-300 p-3">
+                                                <div className="text-sm font-semibold">
+                                                    Product Variant
+                                                </div>
+                                                <div className="mt-1 text-sm text-gray-600">
+                                                    {detailsData?.childCategoryId?.name || "-"}
+                                                </div>
+                                            </td>
+                                        </tr>
 
-                                    <td>
-                                        <tr>brandId</tr> <tr>data</tr>
-                                    </td>
+                                        <tr>
+                                            <td className="border border-gray-300 p-3">
+                                                <div className="text-sm font-semibold">
+                                                    Brand
+                                                </div>
+                                                <div className="mt-1 text-sm text-gray-600">
+                                                    {detailsData?.brandId?.name || "-"}
+                                                </div>
+                                            </td>
 
-                                    <td>
-                                        <tr>ageGroupId</tr> <tr>data</tr>
-                                    </td>
+                                            <td className="border border-gray-300 p-3">
+                                                <div className="text-sm font-semibold">
+                                                    Age Group
+                                                </div>
+                                                <div className="mt-1 text-sm text-gray-600">
+                                                    {detailsData?.ageGroupId?.name || "-"}
+                                                </div>
+                                            </td>
 
-                                    <td>
-                                        <tr>originId</tr> <tr>data</tr>
-                                    </td>
-                                    <p>returnPolicy</p>
+                                            <td className="border border-gray-300 p-3">
+                                                <div className="text-sm font-semibold">
+                                                    Origin
+                                                </div>
+                                                <div className="mt-1 text-sm text-gray-600">
+                                                    {detailsData?.originId?.name || "-"}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                             </div>
+
+                            <p>Return: {detailsData?.returnPolicy} </p>
+                            <p>Description: {detailsData?.description}</p>
                         </div>
                     </div>
                 </Grid>
                 <Grid>
-                    <div>
+                    <div className="flex gap-6">
+                        <div className="flex flex-col items-center justify-center ">
+                            <div className="flex flex-row gap-1">
+                                <GrSecure size={15} />
+                                <p className="text-[12px]">100% Genuine</p>
+                            </div>
+                            <p className="text-[12px]">Products</p>
 
+                        </div>
+                        <div className="flex flex-col items-center justify-center ">
+                            <div className="flex flex-row gap-1">
+                                <BsCalendarDate size={15} />
+                                <p className="text-[12px]">Expiry After</p>
+                            </div>
+                            <p className="text-[12px]">{detailsData?.expiryOn}</p>
+                        </div>
+                        <div className="flex flex-col items-center justify-center ">
+                            <div className="flex flex-row gap-1">
+                                <RiSecurePaymentLine size={15} />
+                                <p className="text-[12px]">Safe & Secure</p>
+                            </div>
+                            <p className="text-[12px]">Payments</p>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-3 pt-2">
+                        <p className="font-semibold text-[20px]">Price : ₹ {detailsData?.price}.00</p>
+                    </div>
+                    <div className="flex items-center justify-between gap-3 pt-2">
+                        <Button className="cartBtn">Add to cart</Button>
+                        <Button >Buy now</Button>
                     </div>
                 </Grid>
-            </div>
+            </div>}
+
             <Footer />
         </>
     )
