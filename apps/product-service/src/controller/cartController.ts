@@ -47,11 +47,13 @@ export const cartListController = async (req: any, res: Response) => {
                 message: "User not authenticated"
             })
         }
-        const listCart = await cartListService(userId)
+        const { items, totalCartPrice, totalCartQuantity } = await cartListService(userId)
         return res.status(200).json({
             success: true,
             message: "Cart listed successfully",
-            data: listCart
+            totalCartPrice,
+            totalCartQuantity,
+            data: items
         })
     }
     catch (error: any) {

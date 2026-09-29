@@ -7,7 +7,7 @@
   --primary-btn-text: #ffffff;
 }
 
-body{
+body {
   font-family: 'Google sans';
 }
 
@@ -18,24 +18,28 @@ body{
 }
 
 
-h1{
-  font-size:40px;
+h1 {
+  font-size: 40px;
   text-transform: capitalize;
-  color:var(--primary-bg)
+  color: var(--primary-bg)
 }
-h2{
-  
+
+h2 {
+
   font-size: 20px;
-    color:var(--primary-bg)
+  color: var(--primary-bg)
 }
-h3{
-    font-size: 30px;
-    color:var(--primary-bg)
+
+h3 {
+  font-size: 30px;
+  color: var(--primary-bg)
 }
-.testIocn{
+
+.testIocn {
   background-color: var(--primary-bg);
 }
-.cartBtn{
+
+.cartBtn {
   background-color: #008000 !important;
   color: white !important;
   text-transform: capitalize !important;

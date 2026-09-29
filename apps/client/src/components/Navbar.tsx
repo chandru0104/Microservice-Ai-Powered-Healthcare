@@ -88,7 +88,7 @@ const Navbar = () => {
                     <Button onClick={() => { doctorNavigation("user") }}><User /> &nbsp; {userName ? userName : "User Login"}</Button>
                 </div>
                 <div className="hidden sm:block">
-                    <Button onClick={() => { doctorNavigation("user") }} className="cartBtn"><LuShoppingCart /> &nbsp;Cart</Button>
+                    <Button onClick={() => { router.push("/cart") }} className="cartBtn"><LuShoppingCart /> &nbsp;Cart</Button>
                 </div>
             </nav>
             {

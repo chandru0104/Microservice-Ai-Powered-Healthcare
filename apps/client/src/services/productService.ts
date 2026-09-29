@@ -543,3 +543,79 @@ export const productDelete = async (id: string) => {
         throw new Error(error.message)
     }
 }
+
+export const cartAdd = async (productId: any, quantity: any) => {
+    const userAccessToken = localStorage.getItem("userAccessToken")
+    try {
+
+
+        const formData = new FormData()
+
+        formData.append("productId", productId)
+        formData.append("quantity", quantity)
+
+        const cartPost = await axios.post(`${API_GATEWAY_URL}/api/v1/product/cart`, formData, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${userAccessToken}`
+            }
+        })
+        return cartPost
+
+    } catch (error: any) {
+        return console.log(error.message)
+    }
+}
+
+
+export const cartList = async () => {
+    const userAccessToken = localStorage.getItem("userAccessToken")
+    try {
+
+        const list = await axios.get(`${API_GATEWAY_URL}/api/v1/product/cart`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${userAccessToken}`
+            }
+        })
+        return list
+
+    } catch (error: any) {
+        return console.log(error.message)
+    }
+}
+
+export const cartDelete = async (id: string) => {
+    const userAccessToken = localStorage.getItem("userAccessToken")
+    try {
+        const cartDelete = await axios.delete(`${API_GATEWAY_URL}/api/v1/product/cart/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${userAccessToken}`
+            }
+        })
+        return cartDelete
+    } catch (error: any) {
+        return console.log(error.message)
+    }
+}
+
+
+export const cartUpdate = async (id: string, quantity: any) => {
+    const userAccessToken = localStorage.getItem("userAccessToken")
+    try {
+        const formData = new FormData()
+        formData.append("quantity", quantity)
+
+        const cartUpdate = await axios.put(`${API_GATEWAY_URL}/api/v1/product/cart/${id}`, formData, {
+            headers: {
+                "Authorization": `Bearer ${userAccessToken}`,
+                "Content-Type": "application/json"
+            }
+        })
+        return cartUpdate
+
+    } catch (error: any) {
+        return console.log(error.message)
+    }
+}
