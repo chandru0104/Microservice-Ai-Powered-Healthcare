@@ -4,7 +4,7 @@ import Navbar from "apps/client/src/components/Navbar"
 import { useState } from "react"
 import { useParams } from "next/navigation"
 import { useEffect } from "react"
-import { productView } from "apps/client/src/services/productService"
+import { productView, cartAdd } from "apps/client/src/services/productService"
 import { Button, Grid } from "@mui/material"
 import Image from "next/image"
 import { GrSecure } from "react-icons/gr";
@@ -17,6 +17,10 @@ const productDetails = () => {
 
     const [detailsData, setDetailsData] = useState<any>()
     const [loading, setLoading] = useState<boolean>(true)
+    const [increment, setIncrement] = useState<number>(1)
+    if (increment === -1 || increment === 0) {
+        setIncrement(1)
+    }
 
     const params: any = useParams()
     const { id } = params
@@ -36,6 +40,17 @@ const productDetails = () => {
     useEffect(() => {
         details()
     }, [])
+
+    const cartAdds = async (id: any, quantity: any) => {
+
+        try {
+            await cartAdd(id, quantity)
+            alert("Cart Added successfully...")
+        } catch (error: any) {
+            console.log(error.message)
+        }
+    }
+
     return (
         <>
             <Navbar />
@@ -153,8 +168,14 @@ const productDetails = () => {
                     <div className="flex items-center gap-3 pt-2">
                         <p className="font-semibold text-[20px]">Price : ₹ {detailsData?.price}.00</p>
                     </div>
+                    <div className="flex items-start justify-start">
+
+                        <p>Quantity : <button onClick={() => setIncrement(increment - 1)} className="bg-blue-300 px-6 py-0.5 font-semibold text-[20px] m-3 cursor-pointer">-</button>
+                            {increment}
+                            <button onClick={() => setIncrement(increment + 1)} className="bg-blue-300 px-6 py-0.5 font-semibold text-[20px] m-3 cursor-pointer">+</button></p>
+                    </div>
                     <div className="flex items-center justify-between gap-3 pt-2">
-                        <Button className="cartBtn">Add to cart</Button>
+                        <Button className="cartBtn" onClick={() => cartAdds(detailsData?._id, increment)}>Add to cart</Button>
                         <Button >Buy now</Button>
                     </div>
                 </Grid>
