@@ -1,9 +1,11 @@
 import axios from "axios";
 import { userRefreshToken, doctorRefreshToken } from "./authService"
+export { getErrorMessage } from "../models/errorHandler"
 
 const apiClient = axios.create({
     baseURL:
         process.env.NEXT_PUBLIC_API_GATEWAY_URL ||
+        process.env.API_GATEWAY_URL ||
         "http://localhost:5000",
     withCredentials: true,
 })
@@ -14,7 +16,7 @@ apiClient.interceptors.response.use(
     async (error) => {
         const requrl = error.config
 
-        if (error.response.status === 401 && !requrl._retry) {
+        if (error.response?.status === 401 && !requrl._retry) {
             requrl._retry = true
 
             const pathName = typeof window == "object" ? window.location.pathname : ""
@@ -41,6 +43,5 @@ apiClient.interceptors.response.use(
 
     }
 )
-
 
 export default apiClient

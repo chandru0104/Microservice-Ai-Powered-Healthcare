@@ -1,33 +1,52 @@
 export interface Login {
-    email:string,
-    password:string,
+    email: string;
+    password: string;
 }
 
-export interface UserRegister{
-    name:string,
-    email:string,
-    password:string
+export interface UserRegister {
+    name: string;
+    email: string;
+    password: string;
 }
 
-export interface DoctorRegister{
-    name:string
-    password:string
-    specialties:string
-    email:string
-    experience:string
-    price:string
-    register:string
-    profile:File
+export interface DoctorRegister {
+    name: string;
+    password: string;
+    specialties: string;
+    email: string;
+    experience: string;
+    price: string;
+    register: string;
+    profile: File;
 }
-export interface ResetPassword{
-    email:string
-    token:string
-    newPassword:string
-    confirmPassword:string
+
+export interface ResetPassword {
+    email: string;
+    token: string;
+    newPassword: string;
+    confirmPassword: string;
 }
-export interface ResetPasswordDoctor{
-    email:string
-    resetToken:string
-    newPassword:string
-    confirmPassword:string
+
+export interface ResetPasswordDoctor {
+    email: string;
+    resetToken: string;
+    newPassword: string;
+    confirmPassword: string;
+}
+
+export interface ForgotEmail {
+    email: string;
+}
+
+export interface ForgotOtp {
+    email: string;
+    otp: number | string;
+}
+
+export interface GoogleAuthPayload {
+    code?: string;
+    token?: string;
+    credential?: string;
+    role?: string;
+    [key: string]: unknown;
 }

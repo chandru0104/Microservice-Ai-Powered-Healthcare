@@ -1,35 +1,42 @@
 import axios from "axios"
+import { 
+    IProductPayload, 
+    IProductUpdatePayload, 
+} from "../models/productModel"
 
+export * from "../models/productModel"
+
+import { getErrorMessage } from "../models/errorHandler"
 
 const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
 
 export const OriginList = async () => {
     try {
-        const adminAccessToekn = localStorage.getItem("adminAccessToken")
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
         const list = await axios.get(`${API_GATEWAY_URL}/api/v1/product/origin`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${adminAccessToekn}`
+                "Authorization": `Bearer ${adminAccessToken}`
             }
         })
         return list
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
 export const AddOrgin = async (name: string) => {
     try {
-        const adminAccessToekn = localStorage.getItem("adminAccessToken")
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
         const add = await axios.post(`${API_GATEWAY_URL}/api/v1/product/origin`, { name }, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${adminAccessToekn}`
+                "Authorization": `Bearer ${adminAccessToken}`
             }
         })
         return add
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -43,8 +50,8 @@ export const UpdateOrigin = async (id: string, name: string) => {
             }
         })
         return update
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -58,12 +65,10 @@ export const DeleteOrigin = async (id: string) => {
             }
         })
         return del
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
-
-
 
 export const childCategoryAdd = async (name: string) => {
     try {
@@ -75,11 +80,10 @@ export const childCategoryAdd = async (name: string) => {
             }
         })
         return add
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
-
 
 export const childCategoryList = async () => {
     try {
@@ -91,8 +95,8 @@ export const childCategoryList = async () => {
             }
         })
         return list
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -106,8 +110,8 @@ export const childCategoryUpdate = async (id: string, name: string) => {
             }
         })
         return update
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -121,12 +125,10 @@ export const childCategoryDelete = async (id: string) => {
             }
         })
         return del
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
-
-
 
 export const subCategoryAdd = async (name: string) => {
     try {
@@ -138,11 +140,10 @@ export const subCategoryAdd = async (name: string) => {
             }
         })
         return add
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
-
 
 export const subCategoryList = async () => {
     try {
@@ -154,8 +155,8 @@ export const subCategoryList = async () => {
             }
         })
         return list
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -169,8 +170,8 @@ export const subCategoryUpdate = async (id: string, name: string) => {
             }
         })
         return update
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -184,14 +185,10 @@ export const subCategoryDelete = async (id: string) => {
             }
         })
         return del
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
-
-
-
-
 
 export const productCategoryAdd = async (name: string) => {
     try {
@@ -203,11 +200,10 @@ export const productCategoryAdd = async (name: string) => {
             }
         })
         return add
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
-
 
 export const productCategoryList = async () => {
     try {
@@ -219,8 +215,8 @@ export const productCategoryList = async () => {
             }
         })
         return list
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -234,8 +230,8 @@ export const productCategoryUpdate = async (id: string, name: string) => {
             }
         })
         return update
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -249,8 +245,8 @@ export const productCategoryDelete = async (id: string) => {
             }
         })
         return del
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -259,9 +255,6 @@ export const categoryAdd = productCategoryAdd
 export const categoryList = productCategoryList
 export const categoryUpdate = productCategoryUpdate
 export const categoryDelete = productCategoryDelete
-
-
-
 
 export const brandAdd = async (name: string) => {
     try {
@@ -273,11 +266,10 @@ export const brandAdd = async (name: string) => {
             }
         })
         return add
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
-
 
 export const brandList = async () => {
     try {
@@ -289,8 +281,8 @@ export const brandList = async () => {
             }
         })
         return list
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -304,8 +296,8 @@ export const brandUpdate = async (id: string, name: string) => {
             }
         })
         return update
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -319,14 +311,10 @@ export const brandDelete = async (id: string) => {
             }
         })
         return del
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
-
-
-
-
 
 export const ageGroupAdd = async (name: string) => {
     try {
@@ -338,11 +326,10 @@ export const ageGroupAdd = async (name: string) => {
             }
         })
         return add
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
-
 
 export const ageGroupList = async () => {
     try {
@@ -354,8 +341,8 @@ export const ageGroupList = async () => {
             }
         })
         return list
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -369,8 +356,8 @@ export const ageGroupUpdate = async (id: string, name: string) => {
             }
         })
         return update
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -384,19 +371,19 @@ export const ageGroupDelete = async (id: string) => {
             }
         })
         return del
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-
-
-export const productAdds = async (data: any) => {
+export const productAdds = async (data: IProductPayload) => {
     try {
         const adminAccessToken = localStorage.getItem("adminAccessToken")
 
-        const { name,
-            description, price,
+        const {
+            name,
+            description,
+            price,
             returnPolicy,
             benefit,
             expiryDate,
@@ -409,29 +396,31 @@ export const productAdds = async (data: any) => {
             variant,
             stock,
             file,
-            files } = data
+            files
+        } = data
+
         const formData = new FormData()
 
-        formData.append("name", name)
-        formData.append("description", description)
-        formData.append("price", String(price))
-        formData.append("returnPolicy", returnPolicy)
-        formData.append("benefit", benefit)
+        if (name) formData.append("name", name)
+        if (description) formData.append("description", description)
+        if (price !== undefined) formData.append("price", String(price))
+        if (returnPolicy) formData.append("returnPolicy", returnPolicy)
+        if (benefit) formData.append("benefit", benefit)
         if (expiryDate) formData.append("expiryOn", expiryDate)
-        formData.append("variant", variant)
-        formData.append("stock", String(stock))
-        formData.append("brandId", brandId)
-        formData.append("categoryId", categoryId)
-        formData.append("subcategoryId", subcategoryId)
-        formData.append("childCategoryId", childCategoryId)
-        formData.append("originId", originId)
-        formData.append("ageGroupId", ageGroupId)
-        if (files && Array.isArray(files) && files.length > 0) {
-            files.forEach((f: File) => formData.append("files", f))
-        } else if (file) {
-            formData.append("file", file)
-        }
+        if (variant) formData.append("variant", variant)
+        if (stock !== undefined) formData.append("stock", String(stock))
+        if (brandId) formData.append("brandId", brandId)
+        if (categoryId) formData.append("categoryId", categoryId)
+        if (subcategoryId) formData.append("subcategoryId", subcategoryId)
+        if (childCategoryId) formData.append("childCategoryId", childCategoryId)
+        if (originId) formData.append("originId", originId)
+        if (ageGroupId) formData.append("ageGroupId", ageGroupId)
 
+        if (files && Array.isArray(files) && files.length > 0) {
+            files.forEach((f: File | Blob) => formData.append("files", f))
+        } else if (file) {
+            formData.append("file", file as Blob | string)
+        }
 
         const add = await axios.post(`${API_GATEWAY_URL}/api/v1/product/add`, formData, {
             headers: {
@@ -439,24 +428,21 @@ export const productAdds = async (data: any) => {
             }
         })
         return add
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-
 export const productList = async () => {
     try {
-        const adminAccessToken = localStorage.getItem("adminAccessToken")
         const list = await axios.get(`${API_GATEWAY_URL}/api/v1/product/list`, {
             headers: {
                 "Content-Type": "application/json",
-
             }
         })
         return list
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -470,17 +456,17 @@ export const productView = async (id: string) => {
             }
         })
         return view
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-
-export const productUpdate = async (id: string, data: any) => {
+export const productUpdate = async (id: string, data: IProductUpdatePayload | IProductPayload) => {
     try {
-
-        const { name,
-            description, price,
+        const {
+            name,
+            description,
+            price,
             returnPolicy,
             benefit,
             expiryDate,
@@ -493,29 +479,31 @@ export const productUpdate = async (id: string, data: any) => {
             variant,
             stock,
             file,
-            files } = data
+            files
+        } = data
+
         const formData = new FormData()
 
-        formData.append("name", name)
-        formData.append("description", description)
-        formData.append("price", String(price))
-        formData.append("returnPolicy", returnPolicy)
-        formData.append("benefit", benefit)
+        if (name) formData.append("name", name)
+        if (description) formData.append("description", description)
+        if (price !== undefined) formData.append("price", String(price))
+        if (returnPolicy) formData.append("returnPolicy", returnPolicy)
+        if (benefit) formData.append("benefit", benefit)
         if (expiryDate) formData.append("expiryOn", expiryDate)
-        formData.append("variant", variant)
-        formData.append("stock", String(stock))
-        formData.append("brandId", brandId)
-        formData.append("categoryId", categoryId)
-        formData.append("subcategoryId", subcategoryId)
-        formData.append("childCategoryId", childCategoryId)
-        formData.append("originId", originId)
-        formData.append("ageGroupId", ageGroupId)
-        if (files && Array.isArray(files) && files.length > 0) {
-            files.forEach((f: File) => formData.append("files", f))
-        } else if (file) {
-            formData.append("file", file)
-        }
+        if (variant) formData.append("variant", variant)
+        if (stock !== undefined) formData.append("stock", String(stock))
+        if (brandId) formData.append("brandId", brandId)
+        if (categoryId) formData.append("categoryId", categoryId)
+        if (subcategoryId) formData.append("subcategoryId", subcategoryId)
+        if (childCategoryId) formData.append("childCategoryId", childCategoryId)
+        if (originId) formData.append("originId", originId)
+        if (ageGroupId) formData.append("ageGroupId", ageGroupId)
 
+        if (files && Array.isArray(files) && files.length > 0) {
+            files.forEach((f: File | Blob) => formData.append("files", f))
+        } else if (file) {
+            formData.append("file", file as Blob | string)
+        }
 
         const adminAccessToken = localStorage.getItem("adminAccessToken")
         const update = await axios.put(`${API_GATEWAY_URL}/api/v1/product/update/${id}`, formData, {
@@ -524,8 +512,8 @@ export const productUpdate = async (id: string, data: any) => {
             }
         })
         return update
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -539,20 +527,17 @@ export const productDelete = async (id: string) => {
             }
         })
         return del
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-export const cartAdd = async (productId: any, quantity: any) => {
+export const cartAdd = async (productId: string | number, quantity: number | string) => {
     const userAccessToken = localStorage.getItem("userAccessToken")
     try {
-
-
         const formData = new FormData()
-
-        formData.append("productId", productId)
-        formData.append("quantity", quantity)
+        formData.append("productId", String(productId))
+        formData.append("quantity", String(quantity))
 
         const cartPost = await axios.post(`${API_GATEWAY_URL}/api/v1/product/cart`, formData, {
             headers: {
@@ -561,17 +546,14 @@ export const cartAdd = async (productId: any, quantity: any) => {
             }
         })
         return cartPost
-
-    } catch (error: any) {
-        return console.log(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
-
 
 export const cartList = async () => {
     const userAccessToken = localStorage.getItem("userAccessToken")
     try {
-
         const list = await axios.get(`${API_GATEWAY_URL}/api/v1/product/cart`, {
             headers: {
                 "Content-Type": "application/json",
@@ -579,9 +561,8 @@ export const cartList = async () => {
             }
         })
         return list
-
-    } catch (error: any) {
-        return console.log(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -595,17 +576,16 @@ export const cartDelete = async (id: string) => {
             }
         })
         return cartDelete
-    } catch (error: any) {
-        return console.log(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-
-export const cartUpdate = async (id: string, quantity: any) => {
+export const cartUpdate = async (id: string, quantity: number | string) => {
     const userAccessToken = localStorage.getItem("userAccessToken")
     try {
         const formData = new FormData()
-        formData.append("quantity", quantity)
+        formData.append("quantity", String(quantity))
 
         const cartUpdate = await axios.put(`${API_GATEWAY_URL}/api/v1/product/cart/${id}`, formData, {
             headers: {
@@ -614,8 +594,7 @@ export const cartUpdate = async (id: string, quantity: any) => {
             }
         })
         return cartUpdate
-
-    } catch (error: any) {
-        return console.log(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
