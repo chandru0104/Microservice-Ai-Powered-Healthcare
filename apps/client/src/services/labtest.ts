@@ -1,153 +1,146 @@
 import axios from "axios"
-import { addLabTestCategory } from "../models/lab"
-import { addLabTest } from "../models/lab"
+import { addLabTestCategory, addLabTest } from "../models/lab"
+import { getErrorMessage } from "../models/errorHandler"
 
 const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
 
-
-export const addLabTestlabCategory = (data: addLabTestCategory) => {
+export const addLabTestlabCategory = async (data: addLabTestCategory) => {
     try {
-        const adminAccessToekn = localStorage.getItem("adminAccessToken")
-        const add = axios.post(`${API_GATEWAY_URL}/api/v1/lab/category`, data, {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/lab/category`, data, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${adminAccessToekn}`
+                "Authorization": `Bearer ${adminAccessToken}`
             }
         })
         return add
-
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-export const listLabTestlabCategory = () => {
+export const listLabTestlabCategory = async () => {
     try {
-        const adminAccessToekn = localStorage.getItem("adminAccessToken")
-        const list = axios.get(`${API_GATEWAY_URL}/api/v1/lab/category`, {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const list = await axios.get(`${API_GATEWAY_URL}/api/v1/lab/category`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${adminAccessToekn}`
+                "Authorization": `Bearer ${adminAccessToken}`
             }
         })
         return list
-
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-export const updateLabTestlabCategory = (id: string, data: addLabTestCategory) => {
+export const updateLabTestlabCategory = async (id: string, data: addLabTestCategory) => {
     try {
-        const adminAccessToekn = localStorage.getItem("adminAccessToken")
-        const update = axios.put(`${API_GATEWAY_URL}/api/v1/lab/update/category/${id}`, data, {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const update = await axios.put(`${API_GATEWAY_URL}/api/v1/lab/update/category/${id}`, data, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${adminAccessToekn}`
+                "Authorization": `Bearer ${adminAccessToken}`
             }
         })
         return update
-
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-export const deleteLabTestlabCategory = (id: string) => {
+export const deleteLabTestlabCategory = async (id: string) => {
     try {
-        const adminAccessToekn = localStorage.getItem("adminAccessToken")
-        const deleteItem = axios.delete(`${API_GATEWAY_URL}/api/v1/lab/category/delete/${id}`, {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const deleteItem = await axios.delete(`${API_GATEWAY_URL}/api/v1/lab/category/delete/${id}`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${adminAccessToekn}`
+                "Authorization": `Bearer ${adminAccessToken}`
             }
         })
         return deleteItem
-
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-
-
-export const addLabTests = (data: addLabTest) => {
+export const addLabTests = async (data: addLabTest) => {
     try {
-
         const { name, categoryId, price, sampleType, gender, ageGroup, reportDelivery, address, description, authorDetailsId } = data
         const prices = Number(price)
         const payload = { name, categoryId, price: prices, sampleType, gender, ageGroup, reportDelivery, address, description, authorDetailsId }
-        const adminAccessToekn = localStorage.getItem("adminAccessToken")
-        const add = axios.post(`${API_GATEWAY_URL}/api/v1/lab/tests`, payload, {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/lab/tests`, payload, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${adminAccessToekn}`
+                "Authorization": `Bearer ${adminAccessToken}`
             }
         })
         return add
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-export const listLabTest = () => {
+export const listLabTest = async () => {
     try {
-        const adminAccessToekn = localStorage.getItem("adminAccessToken")
-        const list = axios.get(`${API_GATEWAY_URL}/api/v1/lab/tests`, {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const list = await axios.get(`${API_GATEWAY_URL}/api/v1/lab/tests`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${adminAccessToekn}`
+                "Authorization": `Bearer ${adminAccessToken}`
             }
         })
         return list
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-export const deletelabTest = (id: string) => {
+export const deletelabTest = async (id: string) => {
     try {
-        const adminAccessToekn = localStorage.getItem("adminAccessToken")
-        const deleteItem = axios.put(`${API_GATEWAY_URL}/api/v1/lab/tests/delete/${id}`,{}, {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const deleteItem = await axios.put(`${API_GATEWAY_URL}/api/v1/lab/tests/delete/${id}`, {}, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${adminAccessToekn}`
-            },withCredentials:true
+                "Authorization": `Bearer ${adminAccessToken}`
+            },
+            withCredentials: true
         })
         return deleteItem
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-export const UpdatelabTest = (data: addLabTest, id: any) => {
+export const UpdatelabTest = async (data: addLabTest, id: string | number) => {
     try {
-        const adminAccessToekn = localStorage.getItem("adminAccessToken")
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
         const { name, categoryId, price, sampleType, gender, ageGroup, reportDelivery, address, description, authorDetailsId } = data
         const prices = Number(price)
-        const update = axios.put(`${API_GATEWAY_URL}/api/v1/lab/tests/${id}`, { name, categoryId, price: prices, sampleType, gender, ageGroup, reportDelivery, address, description, authorDetailsId }, {
+        const update = await axios.put(`${API_GATEWAY_URL}/api/v1/lab/tests/${id}`, { name, categoryId, price: prices, sampleType, gender, ageGroup, reportDelivery, address, description, authorDetailsId }, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${adminAccessToekn}`
+                "Authorization": `Bearer ${adminAccessToken}`
             }
         })
         return update
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-export const viewlabTest = (id: string) => {
+export const viewlabTest = async (id: string) => {
     try {
-        const adminAccessToekn = localStorage.getItem("adminAccessToken")
-        const view = axios.get(`${API_GATEWAY_URL}/api/v1/lab/tests/${id}`, {
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
+        const view = await axios.get(`${API_GATEWAY_URL}/api/v1/lab/tests/${id}`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${adminAccessToekn}`
+                "Authorization": `Bearer ${adminAccessToken}`
             }
         })
         return view
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }

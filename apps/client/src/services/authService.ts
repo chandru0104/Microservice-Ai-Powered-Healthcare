@@ -1,6 +1,17 @@
-import { Login, UserRegister } from "../models/authModel"
-import { ResetPassword, ResetPasswordDoctor } from "../models/authModel"
+import { 
+    Login, 
+    UserRegister, 
+    DoctorRegister, 
+    ResetPassword, 
+    ResetPasswordDoctor, 
+    ForgotEmail, 
+    ForgotOtp, 
+    GoogleAuthPayload 
+} from "../models/authModel"
+import { getErrorMessage } from "../models/errorHandler"
 import axios from "axios"
+
+export * from "../models/authModel"
 
 const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
 
@@ -18,10 +29,11 @@ export const AuthUserLogin = async (data: Login) => {
         })
         return userLogin.data
 
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
+
 export const UserRegisters = async (data: UserRegister) => {
     try {
         if (!data.name || !data.email || !data.password) {
@@ -36,15 +48,13 @@ export const UserRegisters = async (data: UserRegister) => {
 
         localStorage.setItem("tempEmailUser", data.email)
         return Register.data
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-export const OtpUser = async (otp: number) => {
+export const OtpUser = async (otp: number | string) => {
     try {
-
-
         const email = localStorage.getItem("tempEmailUser")
         const stringOtp = otp.toString()
         const payload = { otp: stringOtp, email }
@@ -60,12 +70,12 @@ export const OtpUser = async (otp: number) => {
 
         return verfiy
 
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-export const OtpDoctor = async (otp: number) => {
+export const OtpDoctor = async (otp: number | string) => {
     try {
         const email = localStorage.getItem("tempDoctorEmail")
         const payload = { otp: otp.toString(), email }
@@ -76,8 +86,8 @@ export const OtpDoctor = async (otp: number) => {
         })
         localStorage.removeItem("tempDoctorEmail")
         return verfiy
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -93,14 +103,13 @@ export const DoctorLogin = async (data: Login) => {
             withCredentials: true
         })
         return loginData.data
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-export const DoctorRegisters = async (data: any) => {
+export const DoctorRegisters = async (data: FormData | DoctorRegister) => {
     try {
-
         const Register = await axios.post(`${API_GATEWAY_URL}/api/v1/doctors/doctor-register`, data, {
             headers: {
                 "Content-Type": "multipart/form-data"
@@ -110,19 +119,17 @@ export const DoctorRegisters = async (data: any) => {
         if (!userEmail) {
             throw new Error("Email not found in request")
         }
-        if (typeof window == 'object') {
+        if (typeof window === 'object') {
             localStorage.setItem("tempDoctorEmail", String(userEmail))
         }
         return Register.data
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-
-export const UserForgotEmail = async (data: { email: string }) => {
+export const UserForgotEmail = async (data: ForgotEmail | { email: string }) => {
     try {
-
         const enterEmail = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/forgot/password`, data, {
             headers: {
                 "Content-Type": "application/json"
@@ -131,17 +138,14 @@ export const UserForgotEmail = async (data: { email: string }) => {
 
         return enterEmail
 
-    } catch (error: any) {
-        console.log(error.message)
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-export const UserForgotOtp = async (data: any) => {
+export const UserForgotOtp = async (data: ForgotOtp) => {
     try {
-
         const { email, otp } = data
-
         const payload = { email, userOtp: otp }
 
         const verfiy = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/verfiy/otp`, payload, {
@@ -155,9 +159,8 @@ export const UserForgotOtp = async (data: any) => {
             localStorage.setItem("resetToken", resetToken)
         }
         return verfiy.data
-    } catch (error: any) {
-        console.log(error.message)
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -178,16 +181,13 @@ export const UserResetPassword = async (data: ResetPassword) => {
         })
         return resetPassword
 
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
-
 }
 
-
-export const DoctorForgotEmail = async (data: { email: string }) => {
+export const DoctorForgotEmail = async (data: ForgotEmail | { email: string }) => {
     try {
-
         const enterEmail = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/forgot-doctor/password`, data, {
             headers: {
                 "Content-Type": "application/json"
@@ -196,18 +196,14 @@ export const DoctorForgotEmail = async (data: { email: string }) => {
 
         return enterEmail
 
-    } catch (error: any) {
-        console.log(error.message)
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-
-export const DoctorForgotOtp = async (data: any) => {
+export const DoctorForgotOtp = async (data: ForgotOtp) => {
     try {
-
         const { email, otp } = data
-
         const payload = { email, userOtp: otp }
 
         const verfiy = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/verify-doctor/otp`, payload, {
@@ -221,9 +217,8 @@ export const DoctorForgotOtp = async (data: any) => {
             localStorage.setItem("resetTokenDoctor", resetToken)
         }
         return verfiy.data
-    } catch (error: any) {
-        console.log(error.message)
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -244,101 +239,98 @@ export const DoctorResetPassword = async (data: ResetPasswordDoctor) => {
         })
         return resetPassword
 
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
-
 }
 
 export const AdminLogin = async (data: Login) => {
     try {
-        const adminAccessToekn = localStorage.getItem("adminAccessToken")
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
         if (!data.email || !data.password) {
             throw new Error("Please fill all values")
         }
         const loginData = await axios.post(`${API_GATEWAY_URL}/api/v1/admin/admin-login`, data, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${adminAccessToekn}`
+                "Authorization": `Bearer ${adminAccessToken}`
             },
             withCredentials: true
         })
         return loginData.data
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-
-
 export const UserAllList = async () => {
-
     try {
         const users = await axios.get(`${API_GATEWAY_URL}/api/v1/user/users`, {
             headers: {
                 "Content-Type": "application/json",
-            }, withCredentials: true
+            }, 
+            withCredentials: true
         })
         return users
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
-
 
 export const doctorList = async () => {
     try {
         const list = await axios.get(`${API_GATEWAY_URL}/api/v1/doctors/list`, {
             headers: {
                 "Content-Type": "application/json",
-            }, withCredentials: true
+            }, 
+            withCredentials: true
         })
         return list
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-
-export const doctorVerifyData = async (id: any) => {
+export const doctorVerifyData = async (id: string | number) => {
     try {
-        const adminAccessToekn = localStorage.getItem("adminAccessToken")
+        const adminAccessToken = localStorage.getItem("adminAccessToken")
         const verify = await axios.put(`${API_GATEWAY_URL}/api/v1/doctors/doctor-update/${id}`, { is_approved: 1 }, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${adminAccessToekn}`
+                "Authorization": `Bearer ${adminAccessToken}`
             }
         })
         return verify
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-
-export const googleLoginUser = async (auth: any) => {
+export const googleLoginUser = async (auth: GoogleAuthPayload) => {
     try {
         const user = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/google/login`, auth, {
             headers: {
                 "Content-Type": "application/json"
-            }, withCredentials: true
+            }, 
+            withCredentials: true
         })
         return user
-    } catch (error: any) {
-        return console.log(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
-export const googleLoginDoctor = async (auth: any) => {
+export const googleLoginDoctor = async (auth: GoogleAuthPayload) => {
     try {
         const doctor = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/google/doctor/login`, auth, {
             headers: {
                 "Content-Type": "application/json"
-            }, withCredentials: true
+            }, 
+            withCredentials: true
         })
         return doctor
-    } catch (error: any) {
-        return console.log(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -347,11 +339,12 @@ export const userRefreshToken = async () => {
         const refreshToken = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/refresh-token`, {}, {
             headers: {
                 "Content-Type": "application/json"
-            }, withCredentials: true
+            }, 
+            withCredentials: true
         })
         return refreshToken
-    } catch (error: any) {
-        return console.log(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
 
@@ -360,10 +353,11 @@ export const doctorRefreshToken = async () => {
         const refreshDoctorToken = await axios.post(`${API_GATEWAY_URL}/api/v1/auth/doctor-refresh/token`, {}, {
             headers: {
                 "Content-Type": "application/json"
-            }, withCredentials: true
+            }, 
+            withCredentials: true
         })
         return refreshDoctorToken
-    } catch (error: any) {
-        return console.log(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
     }
 }
