@@ -7,6 +7,12 @@ import { Loading } from "apps/client/src/components/Loading"
 import { FaSearch } from "react-icons/fa";
 import Link from "next/link"
 import Image from "next/image"
+import { Grid } from "@mui/material"
+import { Button } from "@mui/material"
+import { FaUserDoctor } from "react-icons/fa6";
+import { GoStar } from "react-icons/go";
+import { SlCalender } from "react-icons/sl";
+import { GoLocation } from "react-icons/go";
 export default function DoctorList() {
 
     const [doctorLists, setdoctorLists] = useState<any>([])
@@ -53,16 +59,34 @@ export default function DoctorList() {
                     />
                 </div>
                 <div>
-                    {loading ? <Loading /> : doctorSearch && doctorSearch.length === 0 ? <div><h1>Doctors not found</h1></div> :
-                        <div className="">
+                    {loading ? <Loading /> : doctorSearch && doctorSearch.length === 0 ? <div className="mx-auto"><h1>Doctors not found</h1></div> :
+                        <div >
                             {
-                                doctorSearch.map((items:any)=>(
-                                     <Link href={`/doctor/details/${items._id}`} key={items._id}>
-                                        <div className="">
-                                          <Image src={items?.profile} height={40} width={40} alt="profile"/>
-                                        <p>{items.name}</p>
+                                doctorSearch.map((items: any) => (
+                                    <Link href={`/doctor/details/${items._id}`} key={items._id}>
+                                        <div className=" gap-3 items-start border border-gray-200 m-4 p-4 shadow-sm rounded-md">
+                                            <Grid container spacing={2}>
+                                                <Grid size={6}>
+                                                    <div className="flex">
+                                                        <Image src={items?.profile} height={100} width={120} alt="profile" />
+                                                        <div className="m-3">
+                                                            <p className="font-semibold flex gap-2 items-center"><FaUserDoctor color="blue" />{items.name}</p>
+                                                            <p className="flex items-center gap-2"><GoStar color="gold" />{items.specialties}</p>
+                                                            <p className="flex items-center gap-2 text-green-900"><SlCalender color="gray" />{items.experience}</p>
+                                                            <p className="flex items-center gap-2 text-sm text-gray-500"><GoLocation color="gray" />{items.place}</p>
+                                                        </div>
+
+                                                    </div>
+                                                </Grid>
+                                                <Grid size={6}>
+                                                    <div className="flex flex-col items-end justify-end mt-14">
+                                                        <p className="font-semibold">Fees : ₹{items.price}.00</p>
+                                                        <Button variant="contained">View Details</Button>
+                                                    </div>
+                                                </Grid>
+                                            </Grid>
                                         </div>
-                                        </Link>
+                                    </Link>
                                 ))
                             }
                         </div>

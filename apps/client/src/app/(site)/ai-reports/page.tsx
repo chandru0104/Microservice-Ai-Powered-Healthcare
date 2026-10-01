@@ -9,7 +9,7 @@ import MedicalReport from "apps/client/src/components/MedicalReport";
 import MedicalImage from "apps/client/src/components/MedicalImage";
 import { useState } from "react";
 import { Box } from '@mui/material';
-import { aiSymptomsCheck, medicalReportAnalyzer } from "../../../services/aiService"
+import { aiSymptomsCheck } from "../../../services/aiService"
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -72,13 +72,7 @@ const AiStudio = () => {
     setOpenDailog(false);
   };
 
-  const medicalReportAnalyzerSubmit = async (data: any) => {
-    try {
-      const post = await medicalReportAnalyzer(data)
-    } catch (error: any) {
-      console.log(error.message)
-    }
-  }
+
 
 
   return (

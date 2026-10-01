@@ -17,7 +17,7 @@ export interface IProductPayload {
     files?: File[] | Blob[];
 }
 
-export interface IProductUpdatePayload extends Partial<IProductPayload> {}
+export interface IProductUpdatePayload extends Partial<IProductPayload> { }
 
 export interface ICartAdd {
     productId: string | number;
