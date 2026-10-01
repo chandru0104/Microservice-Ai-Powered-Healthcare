@@ -80,7 +80,11 @@ function LabTestsPage() {
     return (
         <>
             <Navbar />
-            <div className="max-w-6xl mx-auto p-4">
+            <div className="max-w-6xl mx-auto p-3">
+                <div className="mb-10">
+                    <h1 className="text-2xl text-center sm:text-4xl">Accurate Diagnostics, Hassle-Free at Home</h1>
+                    <p className="text-1xl text-center sm:text-1xl ">Book trusted health checkups and lab tests with certified sample collection at home and quick online reports</p>
+                </div>
                 <div>
                     <Image src={"/test-banner1.webp"} alt={"image"} height={1200} width={1400} />
 
