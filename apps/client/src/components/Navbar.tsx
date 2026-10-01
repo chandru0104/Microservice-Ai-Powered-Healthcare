@@ -66,10 +66,13 @@ const Navbar = () => {
                 </div>
                 <ul className="hidden sm:flex gap-10">
                     <li>
+                        <Link href="/">Home</Link>
+                    </li>
+                    <li>
                         <Link href="/buy-medicines">Buy Medicines</Link>
                     </li>
                     <li>
-                        <Link href="/doctors">Find Doctors</Link>
+                        <Link href="/doctor">Find Doctors</Link>
                     </li>
                     <li>
                         <Link href="/lab-tests">Lab Tests</Link>
