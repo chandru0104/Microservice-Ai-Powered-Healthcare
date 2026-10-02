@@ -7,7 +7,7 @@ import { Loading } from "apps/client/src/components/Loading"
 import { FaSearch } from "react-icons/fa";
 import Link from "next/link"
 import Image from "next/image"
-export default function DoctorList() {
+export  default function DoctorList() {
 
     const [doctorLists, setdoctorLists] = useState<any>([])
     const [loading, setLoading] = useState<boolean>(false)
