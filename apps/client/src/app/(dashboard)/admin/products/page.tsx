@@ -10,7 +10,7 @@ import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { TextField } from '@mui/material';
 import { OriginList, childCategoryList, subCategoryList, productCategoryList, brandList, ageGroupList, productAdds, productList, productUpdate, productDelete } from "../../../../services/productService"
-import { FiEdit3, FiTrash2 as RiDeleteBin5Line, FiUploadCloud, FiX, FiImage } from "react-icons/fi";
+import { FiEdit3, FiTrash2 as RiDeleteBin5Line, FiUploadCloud, FiX } from "react-icons/fi";
 import Autocomplete from '@mui/material/Autocomplete';
 import Grid from "@mui/material/Grid"
 import Image from 'next/image';
@@ -651,6 +651,14 @@ const ProductsPage = () => {
                                             fill
                                             className="object-cover"
                                         />
+                                        <button
+                                            type="button"
+                                            onClick={() => handleRemoveExistingImage(idx)}
+                                            className="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white rounded-full p-1 shadow-md transition z-10"
+                                            title="Remove image"
+                                        >
+                                            <FiX size={12} />
+                                        </button>
                                         <span className="absolute bottom-1 left-1 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded">
                                             Image {idx + 1}
                                         </span>

@@ -34,7 +34,7 @@ export default function Cart() {
     const removeItems = async (id: any) => {
         try {
 
-            const del = await cartDelete(id)
+            await cartDelete(id)
             list()
         } catch (error: any) {
             console.log(error.message)

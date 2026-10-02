@@ -1,7 +1,7 @@
 import axios from "axios"
-import { 
-    IProductPayload, 
-    IProductUpdatePayload, 
+import {
+    IProductPayload,
+    IProductUpdatePayload,
 } from "../models/productModel"
 
 export * from "../models/productModel"

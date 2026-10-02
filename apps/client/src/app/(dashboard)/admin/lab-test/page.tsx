@@ -18,7 +18,7 @@ const LabTestPage = () => {
     const [open, setOpen] = React.useState(false);
     const [rows, setRow] = useState<[]>([])
     const [loading, setLoading] = useState(false)
-    const [editId, setEditId] = useState<string | boolean>(false)
+    const [editId, setEditId] = useState<string | null>(null)
     const [labCategory, setLabCategory] = useState([])
     const [categoryId, setCategoryId] = useState("")
     const [name, setName] = useState("")
@@ -130,7 +130,7 @@ const LabTestPage = () => {
     }, [])
 
     const handleOpenAdd = () => {
-        setEditId(false)
+        setEditId(null)
         setCategoryId("")
         setName("")
         setPrice("")
