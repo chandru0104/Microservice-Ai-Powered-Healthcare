@@ -193,5 +193,5 @@ routerDoctor.put("/doctor-delete/:id", doctorDeleteController)
  *         description: Doctor profile successfully
  */
 
-routerDoctor.get("/profile/:id", doctorProfileController)
+routerDoctor.get("/doctor-profile/:id", doctorProfileController)
 
