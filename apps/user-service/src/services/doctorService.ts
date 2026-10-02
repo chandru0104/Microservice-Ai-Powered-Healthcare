@@ -116,7 +116,7 @@ export const doctorDeleteService = async (id: string) => {
 
 export const doctorProfileService = async (id: string) => {
     try {
-        const doctorProfile = await Doctor.findById(id)
+        const doctorProfile = await Doctor.findById(id).select("-password")
 
         return doctorProfile
     } catch (error: any) {

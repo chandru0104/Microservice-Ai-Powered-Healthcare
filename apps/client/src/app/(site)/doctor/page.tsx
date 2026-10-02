@@ -13,6 +13,7 @@ import { FaUserDoctor } from "react-icons/fa6";
 import { GoStar } from "react-icons/go";
 import { SlCalender } from "react-icons/sl";
 import { GoLocation } from "react-icons/go";
+
 export default function DoctorList() {
 
     const [doctorLists, setdoctorLists] = useState<any>([])
@@ -59,7 +60,7 @@ export default function DoctorList() {
                     />
                 </div>
                 <div>
-                    {loading ? <Loading /> : doctorSearch && doctorSearch.length === 0 ? <div className="mx-auto"><h1>Doctors not found</h1></div> :
+                    {loading ? <Loading /> : doctorSearch && doctorSearch.length === 0 ? <div className="flex items-center justify-center "><h1>Doctors not found</h1></div> :
                         <div >
                             {
                                 doctorSearch.map((items: any) => (
@@ -71,7 +72,7 @@ export default function DoctorList() {
                                                         <Image src={items?.profile} height={100} width={120} alt="profile" />
                                                         <div className="m-3">
                                                             <p className="font-semibold flex gap-2 items-center"><FaUserDoctor color="blue" />{items.name}</p>
-                                                            <p className="flex items-center gap-2"><GoStar color="gold" />{items.specialties}</p>
+                                                            <p className="flex items-center gap-2"><GoStar color="blue" />{items.specialties}</p>
                                                             <p className="flex items-center gap-2 text-green-900"><SlCalender color="gray" />{items.experience}</p>
                                                             <p className="flex items-center gap-2 text-sm text-gray-500"><GoLocation color="gray" />{items.place}</p>
                                                         </div>
