@@ -77,15 +77,7 @@ export const userAddService = async (data: any) => {
     }),
   );
   sendMail(email, otp);
-  // OTP verify - separate try-catch
-  // const getOpt: any = await redis.get(`email:${email}`);
 
-  // if (!getOpt) {
-  //   throw new validationError('OTP expired. Please request a new OTP.');
-  // }
-
-
-  // Check if user already exists
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     throw new validationError('User already exists with this email.');

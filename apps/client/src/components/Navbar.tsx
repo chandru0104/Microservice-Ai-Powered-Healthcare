@@ -40,7 +40,7 @@ const Navbar = () => {
             }
         } else if (data === "doctor") {
             if (doctorName) {
-                router.push("/admin/dashboard")
+                router.push("/doctor/profile")
             } else {
                 router.push("/doctor-login")
             }

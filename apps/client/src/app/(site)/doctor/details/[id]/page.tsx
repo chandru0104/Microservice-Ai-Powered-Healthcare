@@ -16,7 +16,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs, { Dayjs } from 'dayjs';
-
+import {Button} from "@mui/material"
 export default function DoctorDetails() {
 
     const params = useParams()
@@ -103,6 +103,9 @@ export default function DoctorDetails() {
                                         value={time}
                                         onChange={(newValue) => setTime(newValue)}
                                     />
+                                </div>
+                                <div className="mt-3 flex items-center justify-center">
+                                    <Button variant="contained">Book Appointment</Button>
                                 </div>
                             </LocalizationProvider>
                         </div>
