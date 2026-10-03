@@ -72,10 +72,15 @@ export const doctorAddService = async (data: docter, file: Express.Multer.File) 
 
 export const doctorListService = async (page: any, limit: any) => {
     try {
+        const query = { status: 1, is_active: true }
+        if (page && limit) {
+            const pageNum = parseInt(page) || 1
+            const limitNum = parseInt(limit) || 10
+            const skip = (pageNum - 1) * limitNum
+            return await Doctor.find(query).select("-password").skip(skip).limit(limitNum)
+        }
 
-        const skip = (page - 1) * limit
-        const listData = await Doctor.find({ status: 1 }).select("-password").skip(skip).limit(limit)
-
+        const listData = await Doctor.find(query).select("-password")
         return listData
 
     } catch (error: any) {
@@ -97,10 +102,10 @@ export const doctorUpdateService = async (id: String, data: docter, file: Expres
             // Do not overwrite profile with empty string if no new file was uploaded
             delete updatePayload.profile;
         }
-        const updateData = await Doctor.findByIdAndUpdate(id, updatePayload, { runValidators: true, new: true })
-           if(!updateData){
-             throw new validationError("Doctor not found")
-           }
+        const updateData = await Doctor.findOneAndUpdate({ _id: id, status: 1, is_active: true }, updatePayload, { runValidators: true, new: true })
+        if (!updateData) {
+            throw new validationError("Doctor not found or account has been deleted")
+        }
         return updateData
     } catch (error: any) {
         throw new Error(error.message)
@@ -110,7 +115,7 @@ export const doctorUpdateService = async (id: String, data: docter, file: Expres
 
 export const doctorDeleteService = async (id: string) => {
     try {
-        const doctorDelete = await Doctor.findByIdAndUpdate(id, { status: 0 })
+        const doctorDelete = await Doctor.findByIdAndUpdate(id, { status: 0, is_active: false }, { new: true })
         return doctorDelete
     } catch (error: any) {
         throw new Error(error.message)
@@ -120,6 +125,10 @@ export const doctorDeleteService = async (id: string) => {
 export const doctorProfileService = async (id: string) => {
     try {
         const doctorProfile = await Doctor.findById(id).select("-password")
+
+        if (!doctorProfile || doctorProfile.status === 0 || !doctorProfile.is_active) {
+            throw new validationError("Doctor not found or account has been deleted")
+        }
 
         return doctorProfile
     } catch (error: any) {

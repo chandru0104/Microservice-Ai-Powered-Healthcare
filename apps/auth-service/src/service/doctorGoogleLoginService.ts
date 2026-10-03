@@ -46,8 +46,26 @@ export const doctorGoogleLoginDoctor = async (data: googleUser) => {
             $or: [{ google_id: sub }, { email: email }] 
         })
 
-        // 2. If they don't exist, create a new record (Sign Up)
-        if (!user) {
+        if (user) {
+            if (user.status === 0) {
+                throw new validationError("Your account has been deleted")
+            }
+            if (!user.is_approved) {
+                throw new validationError("Your account is pending admin approval")
+            }
+            if (!user.is_active) {
+                throw new validationError("Your account has been deactivated")
+            }
+
+            // Update doctor details if needed
+            user.name = name || user.name
+            user.profile = picture || user.profile
+            user.role = user.role || role || "doctor"
+            user.google_id = user.google_id || sub
+            user.is_google_login = true
+            await user.save()
+        } else {
+            // 2. If they don't exist, create a new record (Sign Up)
             user = await Doctor.create({
                 name: name,
                 profile: picture,
@@ -56,14 +74,6 @@ export const doctorGoogleLoginDoctor = async (data: googleUser) => {
                 role: role || "doctor",
                 is_google_login: true,
             })
-        } else {
-            // Update doctor details if needed
-            user.name = name || user.name
-            user.profile = picture || user.profile
-            user.role = user.role || role || "doctor"
-            user.google_id = user.google_id || sub
-            user.is_google_login = true
-            await user.save()
         }
 
         // 3. Generate JWTs using the fetched or newly created user's data

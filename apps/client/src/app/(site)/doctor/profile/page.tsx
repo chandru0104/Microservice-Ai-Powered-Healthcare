@@ -25,7 +25,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { FormControl, TextField } from "@mui/material"
+import { TextField } from "@mui/material"
+import DialogContentText from '@mui/material/DialogContentText';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -44,7 +45,7 @@ export default function DoctorProfile() {
     const [openDailog, setOpenDailog] = useState<boolean>(false)
     const [open, setOpen] = React.useState(false);
     const id: any = typeof window === "object" ? localStorage.getItem("doctorId") : ""
-    
+
     const [name, setName] = useState<any>("")
     const [email, setEmail] = useState<string>("")
     const [profile, setProfile] = useState<File | null>(null)
@@ -52,8 +53,9 @@ export default function DoctorProfile() {
     const [price, setPrice] = useState<string>("")
     const [experience, setExperience] = useState<string>("")
     const [specialties, setSpecialties] = useState<string>("")
-    const [btnLoading ,setBtnloading] = useState<boolean>(false)
-
+    const [btnLoading, setBtnloading] = useState<boolean>(false)
+    const [deleteOpen, setDeleteOpen] = React.useState(false);
+    const [delEmail, setDelEmail] = useState<string>("")
     const handleLogout = () => {
         localStorage.removeItem("doctorAccessToken")
         localStorage.removeItem("doctorId")
@@ -64,11 +66,20 @@ export default function DoctorProfile() {
 
     const dooctorDetails = async () => {
         try {
+            if (!id) {
+                router.push("/doctor-login")
+                return
+            }
             setLoading(true)
             const list = await doctorProfile(id as string)
-            setDetails(list?.data?.data)
+            if (list?.data?.data) {
+                setDetails(list.data.data)
+            }
         } catch (error: any) {
-            throw new Error(error.message)
+            localStorage.removeItem("doctorAccessToken")
+            localStorage.removeItem("doctorId")
+            localStorage.removeItem("doctorName")
+            router.push("/doctor-login")
         } finally {
             setLoading(false)
         }
@@ -117,9 +128,70 @@ export default function DoctorProfile() {
         }
     }
 
+    const handleDeleteClickOpen = () => {
+        setDeleteOpen(true);
+    };
+
+    const handleDeleteClose = () => {
+        setDeleteOpen(false);
+    };
+
+
+    const handleDeleteProfile = async (email: any) => {
+        try {
+            if (email.trim()?.toLowerCase() != details?.email?.trim()?.toLowerCase()) {
+                console.log("Email is incorrect")
+                return
+            }
+            const del = await doctorDelete(id as string)
+            setDeleteOpen(false)
+            localStorage.removeItem("doctorAccessToken")
+            localStorage.removeItem("doctorId")
+            localStorage.removeItem("doctorName")
+            router.push("/doctor-login")
+            return del
+        } catch (error: any) {
+            console.error(error)
+        }
+    }
+
     return (
         <>
             <Navbar />
+            <React.Fragment>
+
+                <Dialog
+                    open={deleteOpen}
+                    onClose={handleDeleteClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    role="alertdialog"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        <p className=" text-red-600 font-semibold text-md">Delete your profile?</p>
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            <span className="text-md text-red-600 ">
+                                Are you sure you want to delete your profile? Your account information and associated data may be permanently deleted, and this action cannot be undone.
+                            </span>
+                        </DialogContentText>
+
+                    </DialogContent>
+                    <TextField
+                        label="Enter Your Email"
+                        sx={{ mt: 1, mx: 3 }}
+                        onChange={(e) => setDelEmail(e.target.value)}
+                        placeholder="Please enter your email to confirm account deletion..."
+                    />
+                    <DialogActions>
+
+                        <button onClick={handleDeleteClose} className="text-blue-600 border border-blue-600 px-4 py-2 rounded-md hover:bg-blue-600 hover:text-white">Cancel</button>
+                        <button onClick={() => handleDeleteProfile(delEmail)} className="text-white px-4 py-2 rounded-md hover:bg-red-800 bg-red-700">Delete Account Permanently</button>
+
+                    </DialogActions>
+                </Dialog>
+            </React.Fragment>
             <React.Fragment>
                 <BootstrapDialog
                     onClose={handleClose}
@@ -190,9 +262,9 @@ export default function DoctorProfile() {
                                     onChange={(e) => setPrice(e.target.value)}
                                     placeholder="Price"
                                 />
-                              
-                                <Image src={details?.profile || "/images/doc"} alt="profile" width={200} height={200} className="rouned-full"/>
-                             
+
+                                <Image src={details?.profile || "/images/doc"} alt="profile" width={200} height={200} className="rouned-full" />
+
                                 <div className="flex flex-col gap-3 mt-3">
                                     <p>Uplaod new profile</p>
                                     <input type="file" name="profile" onChange={(e) => setProfile(e.target.files?.[0] || null)} className="bg-gray-200 text-gray-600" />
@@ -202,7 +274,7 @@ export default function DoctorProfile() {
                                 <Button autoFocus onClick={handleClose} >
                                     Cancel
                                 </Button>
-                                <Button type="submit" variant="contained" className="w-[150px]" disabled={btnLoading}>{btnLoading? "Updating...":"Update"}</Button>
+                                <Button type="submit" variant="contained" className="w-[150px]" disabled={btnLoading}>{btnLoading ? "Updating..." : "Update"}</Button>
                             </DialogActions>
 
                         </Box>
@@ -235,7 +307,7 @@ export default function DoctorProfile() {
 
                                         <div className="flex items-center gap-2">
                                             <button onClick={handleClickOpen}><CiEdit size={20} color="blue" style={{ courser: "poniter" }} /></button>
-                                            <button><AiOutlineDelete size={20} color="red" /></button>
+                                            <button onClick={handleDeleteClickOpen}><AiOutlineDelete size={20} color="red" /></button>
 
                                         </div>
                                     </div>
