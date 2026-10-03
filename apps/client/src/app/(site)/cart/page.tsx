@@ -54,7 +54,7 @@ export default function Cart() {
                                     <div className="mt-8 border border-gray-300 p-2  flex justify-between items-center rounded-md" key={index}>
                                         <div className="flex gap-2 ">
                                             <div className="flex gap-2   ">
-                                                <Image src={items?.productId?.image[0]} alt={"pics"} height={100} width={100} />
+                                                <Image src={items?.productId?.image?.[0] || "/medicineicon.webp"} alt={"pics"} height={100} width={100} />
                                                 <div><h2>{items?.productId?.name} </h2> <p>{items?.productId?.variant}</p>  <p>Price : {items?.productId?.price}</p></div>
                                             </div>
                                         </div>
