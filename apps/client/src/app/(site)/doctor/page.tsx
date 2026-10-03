@@ -69,7 +69,7 @@ export default function DoctorList() {
                                             <Grid container spacing={2}>
                                                 <Grid size={6}>
                                                     <div className="flex">
-                                                        <Image src={items?.profile || "/doctoroppoinment.svg"} height={100} width={120} alt="profile" />
+                                                        <Image src={items?.profile || "/doctoroppoinment.svg"} height={100} width={120} alt="profile"  className="rounded-md"/>
                                                         <div className="m-3">
                                                             <p className="font-semibold flex gap-2 items-center"><FaUserDoctor color="blue" />{items.name}</p>
                                                             <p className="flex items-center gap-2"><GoStar color="blue" />{items.specialties}</p>

@@ -32,10 +32,22 @@ export const doctorProfile = async (id: string) => {
 export const doctorUpdate = async (id: string, data: any) => {
     try {
         const token = localStorage.getItem("doctorAccessToken")
-        const update = await axios.put(`${API_GATEWAY_URL}/api/v1/doctors/doctor-update/${id}`, data, {
+
+        const formData = new FormData()
+
+        formData.append("name", data.name)
+        formData.append("email", data.email)
+        formData.append("specialties", data.specialties)
+        formData.append("experience", data.experience)
+        formData.append("price", data.price)
+        formData.append("place", data.place)
+        if (data.profile instanceof File) {
+            formData.append("profile", data.profile)
+        }
+        
+        const update = await axios.put(`${API_GATEWAY_URL}/api/v1/doctors/doctor-update/${id}`, formData, {
             headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
+                "Authorization": `Bearer ${token}`
             }
         })
         return update
