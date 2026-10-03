@@ -30,7 +30,7 @@ const DoctorLogins: React.FC = () => {
       localStorage.setItem("doctorAccessToken", accessToken)
 
       if (doctorData) {
-        router.push("/admin/dashboard")
+        router.push("/doctor/profile")
       }
 
     } catch (error: any) {

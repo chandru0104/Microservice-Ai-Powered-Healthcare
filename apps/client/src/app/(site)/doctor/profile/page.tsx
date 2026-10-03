@@ -10,17 +10,26 @@ import { GoStar } from "react-icons/go";
 import { SlCalender } from "react-icons/sl";
 import { GoLocation } from "react-icons/go";
 import Image from "next/image"
-import { MdVerified } from "react-icons/md";
+import { MdVerified, MdLogout } from "react-icons/md";
 import { HiOutlineMailOpen } from "react-icons/hi";
-import { MdLogout } from "react-icons/md";
-import 
+import { useRouter } from "next/navigation";
+import AlertDailog from "apps/client/src/components/AlertDailog"
 
 export default function DoctorProfile() {
-
+    const router = useRouter()
     const [loading, setLoading] = useState<boolean>(false)
     const [details, setDetails] = useState<any>([])
+    const [openDailog, setOpenDailog] = useState<boolean>(false)
 
     const id = typeof window === "object" ? localStorage.getItem("doctorId") : ""
+
+    const handleLogout = () => {
+        localStorage.removeItem("doctorAccessToken")
+        localStorage.removeItem("doctorId")
+        localStorage.removeItem("doctorName")
+        setOpenDailog(false)
+        router.push("/doctor-login")
+    }
 
     const dooctorDetails = async () => {
         try {
@@ -37,13 +46,22 @@ export default function DoctorProfile() {
         dooctorDetails()
     }, [])
 
-
     return (
         <>
             <Navbar />
             {loading ? <Loading /> : <div className="max-w-6xl mx-auto">
                 <div className="flex items-center justify-end">
-                    <button className="flex items-center border border-red-700 text-red-700 p-1 my-3 rounded-md" ><MdLogout />Logout</button>
+                    <button 
+                        onClick={() => setOpenDailog(true)} 
+                        className="flex items-center gap-1 border border-red-700 text-red-700 px-3 py-1.5 my-3 rounded-md hover:bg-red-50 cursor-pointer font-medium"
+                    >
+                        <MdLogout size={18} /> Logout
+                    </button>
+                    <AlertDailog 
+                        open={openDailog} 
+                        onClose={() => setOpenDailog(false)} 
+                        onConfirm={handleLogout} 
+                    />
                 </div>
                 <Grid container spacing={4}>
 
@@ -61,7 +79,7 @@ export default function DoctorProfile() {
 
                             </div>
                             <div className="text-semibold flex p-4 flex-col">
-                                <p className="text-lg text-green-700 rounded-md  text-white font-semibold">Register No : {details.register}</p>
+                                <p className="text-lg text-green-700 rounded-md  text-green-700 font-semibold">Register No : {details.register}</p>
                                 <p className="flex items-center" ><HiOutlineMailOpen size={18} color="gray" /> &nbsp; {details.email}</p>
                                 <p className="font-semibold">Base pay Amount : ₹ {details.price}.00</p>
                                 <button className="bg-orange-500 rounded-lg p-1 text-white m-1 shadow-md">View Appointment</button>
