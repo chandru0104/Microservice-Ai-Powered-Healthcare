@@ -60,13 +60,13 @@ export const doctorUpdate = async (id: string, data: any) => {
 export const doctorDelete = async (id: string) => {
     try {
         const token = localStorage.getItem("doctorAccessToken")
-        const del = axios.put(`${API_GATEWAY_URL}/api/v1/doctors/doctor-delete/${id}`, {}, {
+        const del = await axios.put(`${API_GATEWAY_URL}/api/v1/doctors/doctor-delete/${id}`, {}, {
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             }
         })
-        return del
+        return del.data
     } catch (error: any) {
         throw new Error(getErrorMessage(error))
     }

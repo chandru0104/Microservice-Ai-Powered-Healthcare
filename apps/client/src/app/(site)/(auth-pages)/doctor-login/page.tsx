@@ -6,9 +6,9 @@ import { Button, Flex, Form, Input } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Login } from "../../../../models/authModel"
-import { DoctorLogin,googleLoginDoctor } from "../../../../services/authService"
+import { DoctorLogin, googleLoginDoctor } from "../../../../services/authService"
 import { useRouter } from 'next/navigation';
-import {useGoogleLogin} from "@react-oauth/google"
+import { useGoogleLogin } from "@react-oauth/google"
 
 const DoctorLogins: React.FC = () => {
 
@@ -56,9 +56,9 @@ const DoctorLogins: React.FC = () => {
         if (accessToken) {
           localStorage.setItem("doctorAccessToken", accessToken)
         }
-       if(post){
-        router.push("/")
-       }
+        if (post) {
+          router.push("/")
+        }
 
       } catch (error: any) {
         console.log(error.message)

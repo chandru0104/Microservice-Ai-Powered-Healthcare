@@ -2,7 +2,7 @@ import { Doctor } from "../model/loginModel"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 
-import {validationError} from "../utils/errorHaddler"
+import { validationError } from "../utils/errorHaddler"
 
 
 interface doctorAuth {
@@ -19,6 +19,9 @@ export const doctorLoginService = async (data: doctorAuth) => {
 
         if (!doctor) {
             throw new validationError("Email not found")
+        }
+        if (doctor.status === 0) {
+            throw new validationError("Your account has been deleted")
         }
 
         if (!doctor.is_approved) {
