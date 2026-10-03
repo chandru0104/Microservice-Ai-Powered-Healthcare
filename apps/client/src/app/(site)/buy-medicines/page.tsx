@@ -71,7 +71,7 @@ export default function Productlist() {
                     {loading ? <Loading/> : filterProduct && filterProduct.length == 0 ? <div className="mx-auto"><h3 className="text-center ">No Product found </h3></div> : filterProduct.map((items: Product) => {
                         return (
                             <div className="border boder-gray-500 h-[300px] w-[200px] p-3" key={items._id} >
-                                <Image src={items?.image?.[0]?.toString() || ""} height={130} width={130} alt={items.name} />
+                                <Image src={items?.image?.[0]?.toString() || "/medicineicon.webp"} height={130} width={130} alt={items.name} />
                                 <div>{items.name}</div>
                                 <div className="flex gap-2">
                                     <p className="bg-orange-100 inline p-1 rounded-md text-[12px]">{items.brandId?.name}</p>

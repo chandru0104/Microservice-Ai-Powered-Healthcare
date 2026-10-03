@@ -20,8 +20,8 @@ import {Button} from "@mui/material"
 export default function DoctorDetails() {
 
     const params = useParams()
-    const [loading, setLoading] = useState<boolean>(false)
-    const [details, setDetails] = useState<any>([])
+    const [loading, setLoading] = useState<boolean>(true)
+    const [details, setDetails] = useState<any>({})
     const [dates, setDates] = useState<any>([])
     const [time, setTime] = useState<Dayjs | null>(dayjs('2022-04-17T15:30'));
 
@@ -54,7 +54,7 @@ export default function DoctorDetails() {
                             loading ? <Loading /> :
                                 <div className="border border-gray-200 rounded-md m-6 flex items-start justify-between">
                                     <div className="p-4 flex items-start gap-3 ">
-                                        <Image src={details.profile} alt="profile" width={100} height={100} />
+                                        <Image src={details?.profile || "/doctoroppoinment.svg"} alt="profile" width={100} height={100} className="w-[100px] h-[100px] object-cover rounded-md" />
                                         <div className="text-gray-500 text-sm">
                                             <p className="text-gray-700 font-semibold text-lg">{details.name}</p>
                                             <p className="flex items-center gap-1 font-semibold"><FaUserDoctor color="blue" />{details.specialties}</p>

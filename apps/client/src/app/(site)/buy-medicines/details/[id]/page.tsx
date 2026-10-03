@@ -59,12 +59,17 @@ const productDetails = () => {
                 <Grid>
                     <div className="flex">
                         <div className="flex flex-col gap-3">
-                            <Image src={detailsData?.image?.[0]} alt="pics" height={50} width={50} className="border border-gray-400 rounded-md" />
-                            <Image src={detailsData?.image?.[1]} alt="pics" height={50} width={50} className="border border-gray-400 rounded-md" />
-                            <Image src={detailsData?.image?.[2]} alt="pics" height={50} width={50} className="border border-gray-400 rounded-md" />
-                            <Image src={detailsData?.image?.[3]} alt="pics" height={50} width={50} className="border border-gray-400 rounded-md" />
+                            {detailsData?.image?.length > 0 ? (
+                                detailsData.image.slice(0, 4).map((imgUrl: string, idx: number) => (
+                                    <Image key={idx} src={imgUrl || "/medicineicon.webp"} alt="pics" height={50} width={50} className="border border-gray-400 rounded-md" />
+                                ))
+                            ) : (
+                                <Image src="/medicineicon.webp" alt="pics" height={50} width={50} className="border border-gray-400 rounded-md" />
+                            )}
                         </div>
-                        <div className="flex items-center justify-center mx-4"> <Image src={detailsData?.image?.[0]} alt="pics" height={400} width={200} /></div>
+                        <div className="flex items-center justify-center mx-4"> 
+                            <Image src={detailsData?.image?.[0] || "/medicineicon.webp"} alt="pics" height={400} width={200} />
+                        </div>
                         <div className="flex flex-col gap-2">
                             <h2>{detailsData?.name}</h2>
                             <p >Stock : {detailsData?.stock.toString()}</p>
