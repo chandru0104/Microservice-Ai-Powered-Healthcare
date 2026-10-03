@@ -87,14 +87,17 @@ export const doctorListService = async (page: any, limit: any) => {
 export const doctorUpdateService = async (id: String, data: docter, file: Express.Multer.File) => {
 
     try {
-        let updatedFile = ""
+        const updatePayload: any = { ...data };
         if (file && file.path) {
             const filedata = await cloudinary.uploader.upload(file.path, {
                 folder: "doctor-profile"
             })
-            updatedFile = filedata.secure_url
+            updatePayload.profile = filedata.secure_url
+        } else {
+            // Do not overwrite profile with empty string if no new file was uploaded
+            delete updatePayload.profile;
         }
-        const updateData = await Doctor.findByIdAndUpdate(id, { ...data, profile: updatedFile }, { runValidators: true, new: true })
+        const updateData = await Doctor.findByIdAndUpdate(id, updatePayload, { runValidators: true, new: true })
            if(!updateData){
              throw new validationError("Doctor not found")
            }
