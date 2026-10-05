@@ -21,7 +21,7 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-
+import { IoSettingsSharp } from "react-icons/io5";
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -155,7 +155,7 @@ const Navbar = () => {
                             <p>{userInfo.name}</p>
                             <p>{userInfo.email}</p>
                             <p>{userInfo.phone}</p>
-                            <button className="bg-white text-primary-bg p-2 rounded-md flex items-center justify-center gap-2" onClick={() => { handleClickOpen() }}><MdEdit color="blue" />Edit Profile</button>
+                            <button className="bg-white text-primary-bg p-2 rounded-md flex items-center justify-center gap-2" onClick={() => { handleClickOpen() }}><IoSettingsSharp color=""/>settings</button>
                             <button className="bg-red-500 text-white p-2 rounded-md flex items-center justify-center gap-2" onClick={() => {handleClickLogout() }}><RiLogoutBoxFill color="white" />Logout</button>
                         </div>
                     }
