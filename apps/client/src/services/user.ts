@@ -24,10 +24,10 @@ export const userProfile = async () => {
 export const userUpdate = async (id: string, data: any) => {
     try {
         const token = localStorage.getItem("userAccessToken")
-        const update = await axios.put(`{${API_GATEWAY_URL}/api/v1/user/update/${id}`, { data }, {
+        const update = await axios.put(`${API_GATEWAY_URL}/api/v1/user/update/${id}`, data, {
             headers: {
                 "Authorization": `Bearer ${token}`,
-                "Content-Type": "multipart/form-data"
+                "Content-Type": "application/json"
             }
         })
         return update
