@@ -74,7 +74,7 @@ export default function Cart() {
                         }
                     </div>
 
-                    <div className="p-2 border border-gray-300 mt-8 w-[300px] rounded-md relative left-[980px] bg-[var(--primary-bg)]  flex flex-col items-end">
+                    <div className="p-2 border border-gray-300 mt-8 w-[300px] rounded-md relative left-[980px] bg-primary-bg  flex flex-col items-end">
                         <p className="text-white text-[15px]">Total Quantity : {dirData?.totalCartQuantity}</p>
                         <p className="text-white text-[20px]">Total Price : ₹ {dirData?.totalCartPrice}.00</p>
                         <button className="border border-gray-900 px-3 py-1.5 rounded-md bg-green-600 text-white mt-2">Proceed to Checkout</button>

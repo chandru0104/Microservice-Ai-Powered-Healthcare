@@ -63,7 +63,7 @@ export default function Productlist() {
                 </div>
 
                 <div className="flex items-center justify-center">
-                    <FaSearch size={40} color="white" className="bg-[var(--primary-bg)] p-2 rounded-md " /><input type="text" name="" id="" placeholder="Search" className="w-[500px] p-2 border border-gray-400 rounded-md m-4 "
+                    <FaSearch size={40} color="white" className="bg-primary-bg p-2 rounded-md " /><input type="text" name="" id="" placeholder="Search" className="w-[500px] p-2 border border-gray-400 rounded-md m-4 "
                         value={search}
                         onChange={(e) => setSearch(e.target.value)} />
                 </div>

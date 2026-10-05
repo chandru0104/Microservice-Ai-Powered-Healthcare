@@ -21,18 +21,18 @@ body {
 h1 {
   font-size: 40px;
   text-transform: capitalize;
-  color: var(--primary-bg)
+  color: var(--primary-bg);
 }
 
 h2 {
 
   font-size: 20px;
-  color: var(--primary-bg)
+  color: var(--primary-bg);
 }
 
 h3 {
   font-size: 30px;
-  color: var(--primary-bg)
+  color: var(--primary-bg);
 }
 
 .testIocn {
