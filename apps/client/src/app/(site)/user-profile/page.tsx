@@ -1,8 +1,19 @@
+"use client"
+
 import Navbar from "../../../components/Navbar"
 import Footer from "../../../components/Footer"
 import Grid from '@mui/material/Grid';
-
+import { userProfile } from "../../../services/user"
+import { useEffect } from "react";
 const UserProfile = () => {
+
+
+
+    useEffect(() => {
+        const user = async () => await userProfile()
+        user()
+    }, [])
+
     return (
         <>
             <Navbar />
