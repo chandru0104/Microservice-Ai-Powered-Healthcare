@@ -17,3 +17,19 @@ export const OrderHistory = async () => {
         throw new Error(getErrorMessage(error))
     }
 }
+
+export const userOrderList = async () => {
+    try {
+        const userAccessToken = localStorage.getItem("userAccessToken")
+        const list = await axios.get(`${API_GATEWAY_URL}/api/v1/order/user`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${userAccessToken}`
+            }
+        })
+        return list
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
+    }
+}
+
