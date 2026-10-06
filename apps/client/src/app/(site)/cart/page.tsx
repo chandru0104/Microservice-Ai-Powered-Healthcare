@@ -3,6 +3,7 @@ import Footer from "apps/client/src/components/Footer"
 import Navbar from "apps/client/src/components/Navbar"
 import { useEffect, useState } from "react"
 import { cartList, cartDelete } from "apps/client/src/services/productService"
+import { orderAdd, orderAddMultiple } from "apps/client/src/services/order"
 import { Loading } from "apps/client/src/components/Loading"
 import Image from "next/image"
 import { Button } from "@mui/material"
@@ -41,6 +42,46 @@ export default function Cart() {
         }
     }
 
+    const orderSingleItem = async (item: any) => {
+        try {
+            const prodId = item?.productId?._id || item?.productId
+            const qty = item?.quantity || 1
+            await orderAdd(prodId, qty)
+            alert("Order placed successfully")
+            if (item?._id) {
+                await cartDelete(item._id)
+            }
+            list()
+        } catch (error: any) {
+            alert(error.message || "Failed to place order")
+            console.log(error.message)
+        }
+    }
+
+    const orderCheckoutAll = async () => {
+        try {
+            if (!cartData || cartData.length === 0) {
+                alert("No items found in cart")
+                return
+            }
+            const items = cartData.map((item: any) => ({
+                product: item?.productId?._id || item?.productId,
+                quantity: item?.quantity || 1
+            }))
+            await orderAddMultiple(items)
+            alert("Order placed successfully for all items")
+            for (const item of cartData) {
+                if (item?._id) {
+                    await cartDelete(item._id)
+                }
+            }
+            list()
+        } catch (error: any) {
+            alert(error.message || "Failed to place order")
+            console.log(error.message)
+        }
+    }
+
     return (
         <>
             <Navbar />
@@ -64,7 +105,7 @@ export default function Cart() {
                                                 <p>Total Price : ₹ {items?.itemTotalPrice}.00</p>
                                             </div>
                                             <div className="flex gap-2 justify-between flex-col">
-                                                <Button variant="contained">Buy Now</Button>
+                                                <Button variant="contained" onClick={() => orderSingleItem(items)}>Buy Now</Button>
                                                 <button className="border border-gray-900 px-3 py-1.5 rounded-md" onClick={() => removeItems(items?._id)}>Remove Cart</button>
                                             </div>
                                         </div>
@@ -77,7 +118,7 @@ export default function Cart() {
                     <div className="p-2 border border-gray-300 mt-8 w-[300px] rounded-md relative left-[980px] bg-primary-bg  flex flex-col items-end">
                         <p className="text-white text-[15px]">Total Quantity : {dirData?.totalCartQuantity}</p>
                         <p className="text-white text-[20px]">Total Price : ₹ {dirData?.totalCartPrice}.00</p>
-                        <button className="border border-gray-900 px-3 py-1.5 rounded-md bg-green-600 text-white mt-2">Proceed to Checkout</button>
+                        <button className="border border-gray-900 px-3 py-1.5 rounded-md bg-green-600 text-white mt-2" onClick={orderCheckoutAll}>Proceed to Checkout</button>
                     </div>
 
                 </div>

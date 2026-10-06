@@ -50,6 +50,55 @@ export const orderAdd = async (id: any, qunt: any) => {
     }
 }
 
+export const orderAddMultiple = async (items: Array<{ product?: string; productId?: string; quantity: number }>) => {
+    try {
+        const userAccessToken = localStorage.getItem("userAccessToken")
+        const userId = localStorage.getItem("userId")
+
+        let userAddress = "No address provided"
+        if (userId) {
+            try {
+                const profileRes = await axios.get(`${API_GATEWAY_URL}/api/v1/user/profile/${userId}`, {
+                    headers: {
+                        "Authorization": `Bearer ${userAccessToken}`
+                    }
+                })
+                if (profileRes?.data?.data?.address) {
+                    userAddress = profileRes.data.data.address
+                }
+            } catch (err: any) {
+                console.log(err.message)
+            }
+        }
+
+        const formattedItems = items.map((item) => {
+            const prodId = item.product || item.productId
+            return {
+                product: prodId,
+                productId: prodId,
+                quantity: Number(item.quantity) || 1
+            }
+        })
+
+        const payload = {
+            user: userId,
+            shippingAddress: userAddress,
+            paymetStatus: "pending",
+            items: formattedItems
+        }
+
+        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/order/add`, payload, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${userAccessToken}`
+            }
+        })
+        return add
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
 
 export const orderListUser = async () => {
     try {
