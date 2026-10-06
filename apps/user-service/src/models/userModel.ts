@@ -20,6 +20,14 @@ const userModel = new mongoose.Schema(
       default: "user",
       required: [true, 'role is require'],
     },
+    phone: {
+      type: String,
+      default: "",
+    },
+    address: {
+      type: String,
+      default: "",
+    },
 
     is_active: {
       default: 1,

@@ -3,12 +3,11 @@ import Footer from "apps/client/src/components/Footer"
 import Navbar from "apps/client/src/components/Navbar"
 import { FaSearch } from "react-icons/fa";
 import { useEffect, useMemo, useState } from "react"
-import { productList } from "../../../services/productService"
+import { productList, cartAdd } from "../../../services/productService"
 import Image from "next/image"
 import { Button } from "@mui/material"
 import { Loading } from "apps/client/src/components/Loading";
 import Link from "next/link";
-
 
 
 interface Product {
@@ -47,6 +46,17 @@ export default function Productlist() {
         products()
     }, [])
 
+    const addCarts = async (id: any) => {
+        try {
+            const orderAdds = await cartAdd(id, 1)
+            alert("Product added to cart successfully")
+            console.log(orderAdds)
+        } catch (error: any) {
+            alert(error.message || "Failed to add to cart")
+            console.log(error.message)
+        }
+    }
+
 
     const filterProduct = useMemo(()=>{
         return productLists.filter((items:Product)=>items.name.toLowerCase().includes(search.trim().toLowerCase()))
@@ -70,7 +80,7 @@ export default function Productlist() {
                 <div className="flex flex-wrap gap-7 mt-6 items-center justify-start">
                     {loading ? <Loading/> : filterProduct && filterProduct.length == 0 ? <div className="mx-auto"><h3 className="text-center ">No Product found </h3></div> : filterProduct.map((items: Product) => {
                         return (
-                            <div className="border boder-gray-500 h-[300px] w-[200px] p-3" key={items._id} >
+                            <div className="border boder-gray-500 h-[300px] w-[230px] p-3" key={items._id} >
                                 <Image src={items?.image?.[0]?.toString() || "/medicineicon.webp"} height={130} width={130} alt={items.name} />
                                 <div>{items.name}</div>
                                 <div className="flex gap-2">
@@ -78,7 +88,7 @@ export default function Productlist() {
                                     <p className="bg-orange-100 inline p-1 rounded-md text-[12px]">{items.variant}</p>
                                 </div>
                                 <p className="font-semibold">₹ {items.price}.00</p>
-                                <Button variant="contained">Order</Button> <Link href={`/buy-medicines/details/${items._id}`}><button className="text-blue-900 p-1.5 rounded-md border border-blue-900">View details</button></Link>
+                                <Button variant="contained" onClick={()=>addCarts(items._id)}>Add Cart</Button> <Link href={`/buy-medicines/details/${items._id}`}><button className="text-blue-900 p-1.5 rounded-md border border-blue-900">View details</button></Link>
                             </div>)
                     })
 
