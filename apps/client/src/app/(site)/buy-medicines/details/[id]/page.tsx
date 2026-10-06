@@ -11,7 +11,7 @@ import { GrSecure } from "react-icons/gr";
 import { BsCalendarDate } from "react-icons/bs";
 import { RiSecurePaymentLine } from "react-icons/ri";
 import { Loading } from "apps/client/src/components/Loading"
-
+import {orderAdd} from "apps/client/src/services/order"
 
 const productDetails = () => {
 
@@ -51,6 +51,17 @@ const productDetails = () => {
         }
     }
 
+    const orderProduct = async (id: any) => {
+        try {
+            const orderAdds = await orderAdd(id, increment)
+            alert("Order placed successfully")
+            console.log(orderAdds)
+        } catch (error: any) {
+            alert(error.message || "Failed to place order")
+            console.log(error.message)
+        }
+    }
+
     return (
         <>
             <Navbar />
@@ -67,7 +78,7 @@ const productDetails = () => {
                                 <Image src="/medicineicon.webp" alt="pics" height={50} width={50} className="border border-gray-400 rounded-md" />
                             )}
                         </div>
-                        <div className="flex items-center justify-center mx-4"> 
+                        <div className="flex items-center justify-center mx-4">
                             <Image src={detailsData?.image?.[0] || "/medicineicon.webp"} alt="pics" height={400} width={200} />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -181,7 +192,7 @@ const productDetails = () => {
                     </div>
                     <div className="flex items-center justify-between gap-3 pt-2">
                         <Button className="cartBtn" onClick={() => cartAdds(detailsData?._id, increment)}>Add to cart</Button>
-                        <Button >Buy now</Button>
+                        <Button onClick={() => orderProduct(detailsData?._id)}>Buy now</Button>
                     </div>
                 </Grid>
             </div>}

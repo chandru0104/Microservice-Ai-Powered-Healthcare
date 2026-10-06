@@ -157,13 +157,13 @@ const Navbar = () => {
     const handleViewOrders = () => {
         handleClose()
         setShowProfile(false)
-        router.push("/orders")
+        router.push("/user-orders")
     }
 
     const handleViewAppointments = () => {
         handleClose()
         setShowProfile(false)
-        router.push("/appointments")
+        router.push("/user-appointment")
     }
 
     const updateHandler = async (e: any) => {
@@ -185,7 +185,6 @@ const Navbar = () => {
                 await fetchUserProfile()
             }
             handleClose()
-            return update
         } catch (error: any) {
             console.error(error.message)
         }

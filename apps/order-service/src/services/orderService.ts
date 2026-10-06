@@ -17,18 +17,23 @@ export const addOrderService = async (data: OrderInterface) => {
 
         let totalPrice = 0
 
+        const orderItems = []
         for (const item of items) {
-            const product = await Product.findById(item.product)
+            const prodId = item.product || (item as any).productId
+            const product = await Product.findById(prodId)
 
             if (!product) {
                 throw new validationError("Product not found");
             }
 
             totalPrice += product.price * item.quantity
+            orderItems.push({
+                product: prodId,
+                quantity: item.quantity
+            })
         }
 
-        const addOrder = await Order.create({ user, shippingAddress, items, price: totalPrice as any })
-
+        const addOrder = await Order.create({ user, shippingAddress, items: orderItems, price: totalPrice as any })
 
         return addOrder
 
@@ -46,17 +51,10 @@ export const listOderService = async (page?: number, limit?: number) => {
         const l = Number(limit) > 0 ? Number(limit) : 50;
         const skip = (p - 1) * l;
         const listOder = await Order.find()
-            .populate("user")
+            .populate("user", "name email phone")
             .populate({
                 path: "items.product",
-                populate: [
-                    { path: "subcategoryId" },
-                    { path: "categoryId" },
-                    { path: "childCategoryId" },
-                    { path: "originId" },
-                    { path: "brandId" },
-                    { path: "ageGroupId" },
-                ]
+                select: "name price image variant"
             })
             .skip(skip)
             .limit(l);
@@ -68,23 +66,17 @@ export const listOderService = async (page?: number, limit?: number) => {
     }
 };
 
-export const listUserOderService = async (user: any, page?: number, limit?: number) => {
+export const listUserOderService = async (userId: any, page?: number, limit?: number) => {
     try {
         const p = Number(page) > 0 ? Number(page) : 1;
         const l = Number(limit) > 0 ? Number(limit) : 50;
         const skip = (p - 1) * l;
-        const listUserOder = await Order.find(user)
-            .populate("user")
+        const query = userId ? { user: userId } : {};
+        const listUserOder = await Order.find(query)
+            .populate("user", "name email phone")
             .populate({
                 path: "items.product",
-                populate: [
-                    { path: "subcategoryId" },
-                    { path: "categoryId" },
-                    { path: "childCategoryId" },
-                    { path: "originId" },
-                    { path: "brandId" },
-                    { path: "ageGroupId" },
-                ]
+                select: "name price image variant"
             })
             .skip(skip)
             .limit(l);

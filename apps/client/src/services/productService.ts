@@ -532,19 +532,19 @@ export const productDelete = async (id: string) => {
     }
 }
 
-export const cartAdd = async (productId: string | number, quantity: number | string) => {
+export const cartAdd = async (productId: string | number, quantity: number | string = 1) => {
     const userAccessToken = localStorage.getItem("userAccessToken")
     try {
-        const formData = new FormData()
-        formData.append("productId", String(productId))
-        formData.append("quantity", String(quantity))
-
-        const cartPost = await axios.post(`${API_GATEWAY_URL}/api/v1/product/cart`, formData, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${userAccessToken}`
+        const cartPost = await axios.post(
+            `${API_GATEWAY_URL}/api/v1/product/cart`,
+            { productId: String(productId), quantity: Number(quantity) || 1 },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${userAccessToken}`
+                }
             }
-        })
+        )
         return cartPost
     } catch (error: unknown) {
         throw new Error(getErrorMessage(error))
@@ -584,15 +584,16 @@ export const cartDelete = async (id: string) => {
 export const cartUpdate = async (id: string, quantity: number | string) => {
     const userAccessToken = localStorage.getItem("userAccessToken")
     try {
-        const formData = new FormData()
-        formData.append("quantity", String(quantity))
-
-        const cartUpdate = await axios.put(`${API_GATEWAY_URL}/api/v1/product/cart/${id}`, formData, {
-            headers: {
-                "Authorization": `Bearer ${userAccessToken}`,
-                "Content-Type": "application/json"
+        const cartUpdate = await axios.put(
+            `${API_GATEWAY_URL}/api/v1/product/cart/${id}`,
+            { quantity: Number(quantity) },
+            {
+                headers: {
+                    "Authorization": `Bearer ${userAccessToken}`,
+                    "Content-Type": "application/json"
+                }
             }
-        })
+        )
         return cartUpdate
     } catch (error: unknown) {
         throw new Error(getErrorMessage(error))

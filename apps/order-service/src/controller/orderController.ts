@@ -53,9 +53,9 @@ export const listUserOderController = async (req: any, res: Response) => {
         const page = Number(req.query.page)
         const limit = Number(req.query.limit)
 
-        const {user} = req.user.id || req.user._id
+        const userId = req.user?.id || req.user?._id || req.user?.userId
 
-        const userOrderList = await listUserOderService(user, page, limit)
+        const userOrderList = await listUserOderService(userId, page, limit)
 
         return res.status(200).json({
             success: true,
@@ -64,7 +64,7 @@ export const listUserOderController = async (req: any, res: Response) => {
         })
     } catch (error: any) {
         return res.status(400).json({
-            success: true,
+            success: false,
             message: error.message
         })
     }
