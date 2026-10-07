@@ -11,13 +11,26 @@ import { GrSecure } from "react-icons/gr";
 import { BsCalendarDate } from "react-icons/bs";
 import { RiSecurePaymentLine } from "react-icons/ri";
 import { Loading } from "apps/client/src/components/Loading"
-import {orderAdd} from "apps/client/src/services/order"
+import { orderAdd } from "apps/client/src/services/order"
+import {paymentAdd} from "apps/client/src/services/payment"
+import axios from "axios"
 
 const productDetails = () => {
-
+    const keyId = process.env.RAZORPAY_API_KEY || ""
     const [detailsData, setDetailsData] = useState<any>()
     const [loading, setLoading] = useState<boolean>(true)
     const [increment, setIncrement] = useState<number>(1)
+
+    const [orderId, setOrderId] = useState<string>()
+    const [paymentId, setPaymentId] = useState<string>()
+    const [amount, setAmount] = useState<string>()
+    const [currency, setCurrency] = useState<string>()
+    const [name, setName] = useState<string>()
+    const [description, setDescription] = useState<string>()
+    const [callbackUrl, setCallbackUrl] = useState<string>()
+    const [prefill, setPrefill] = useState<any>()
+    const [theme, setTheme] = useState<any>()
+
     if (increment === -1 || increment === 0) {
         setIncrement(1)
     }
@@ -55,6 +68,22 @@ const productDetails = () => {
         try {
             const orderAdds = await orderAdd(id, increment)
             alert("Order placed successfully")
+            setOrderId(orderAdds?.data?.data?._id)
+            setPaymentId(orderAdds?.data?.data?.paymentId)
+            setAmount(orderAdds?.data?.data?.price)
+            setCurrency(orderAdds?.data?.data?.currency)
+            setName(orderAdds?.data?.data?.name)
+            setDescription(orderAdds?.data?.data?.description)
+            setCallbackUrl(orderAdds?.data?.data?.callbackUrl)
+            setPrefill(orderAdds?.data?.data?.prefill)
+            setTheme(orderAdds?.data?.data?.theme)
+           
+            const createdOrder = orderAdds?.data?.data;
+            if (createdOrder?._id) {
+                const addpayment = await paymentAdd(createdOrder._id, createdOrder.price)
+                console.log(addpayment)
+            }
+
             console.log(orderAdds)
         } catch (error: any) {
             alert(error.message || "Failed to place order")
