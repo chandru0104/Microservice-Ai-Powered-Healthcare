@@ -1,5 +1,5 @@
 
-import { addTestService, listTestService, upadateTestService, deleteTestService, listTestOneService, bookTestService } from "../service/testAdd"
+import { addTestService, listTestService, upadateTestService, deleteTestService, listTestOneService, bookTestService, listUserBookingsService } from "../service/testAdd"
 import { Request, Response } from "express"
 
 export const testAddController = async (req: Request, res: Response) => {
@@ -122,5 +122,31 @@ export const testBookController = async (req: any, res: Response) => {
             success: false,
             message: error.message
         })
+    }
+}
+
+export const testUserBookingsController = async (req: any, res: Response) => {
+    try {
+        const userId = req.user?.id || req.user?.userId || req.user?._id || req.query?.userId;
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "User ID not found"
+            });
+        }
+
+        const bookings = await listUserBookingsService(userId);
+
+        return res.status(200).json({
+            success: true,
+            message: "User bookings fetched successfully",
+            data: bookings
+        });
+    } catch (error: any) {
+        return res.status(400).json({
+            success: false,
+            message: error.message
+        });
     }
 }

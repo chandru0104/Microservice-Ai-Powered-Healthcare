@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Button from '@mui/material/Button';
-import { User, Menu, BriefcaseMedical, Mail, Phone, ShoppingBag, Calendar, Trash2, AlertTriangle } from 'lucide-react';
+import { User, Menu, BriefcaseMedical, Mail, Phone, ShoppingBag, Calendar, Trash2, AlertTriangle, FlaskConical } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Image from "next/image";
 import NavMenu from "./NavMenu";
@@ -166,6 +166,12 @@ const Navbar = () => {
         router.push("/user-appointment")
     }
 
+    const handleViewBookTests = () => {
+        handleClose()
+        setShowProfile(false)
+        router.push("/user-book-test")
+    }
+
     const updateHandler = async (e: any) => {
         e.preventDefault()
         try {
@@ -327,7 +333,20 @@ const Navbar = () => {
                                         "&:hover": { backgroundColor: "#15803d !important" }
                                     }}
                                 >
-                                    View Orders
+                                    Order
+                                </Button>
+                                <Button
+                                    onClick={handleViewBookTests}
+                                    startIcon={<FlaskConical size={17} />}
+                                    sx={{
+                                        backgroundColor: "#0284c7 !important",
+                                        color: "#ffffff !important",
+                                        textTransform: "none",
+                                        fontWeight: 500,
+                                        "&:hover": { backgroundColor: "#0369a1 !important" }
+                                    }}
+                                >
+                                    Book Test
                                 </Button>
                                 <Button
                                     onClick={handleViewAppointments}
@@ -340,7 +359,7 @@ const Navbar = () => {
                                         "&:hover": { backgroundColor: "#6d28d9 !important" }
                                     }}
                                 >
-                                    View Appointments
+                                    Appointments
                                 </Button>
                                 <Button
                                     size="small"

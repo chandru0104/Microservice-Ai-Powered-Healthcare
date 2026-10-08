@@ -163,3 +163,21 @@ export const bookTest = async (testId: string) => {
         throw new Error(getErrorMessage(error))
     }
 }
+
+export const userBookingList = async () => {
+    try {
+        const userAccessToken = localStorage.getItem("userAccessToken")
+        if (!userAccessToken) {
+            throw new Error("Please login to view bookings")
+        }
+
+        const res = await axios.get(`${API_GATEWAY_URL}/api/v1/lab/book/user`, {
+            headers: {
+                "Authorization": `Bearer ${userAccessToken}`
+            }
+        })
+        return res
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
+    }
+}

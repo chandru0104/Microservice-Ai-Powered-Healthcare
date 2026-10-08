@@ -27,29 +27,29 @@ export const createPaymentController = async (req: Request, res: Response,) => {
 }
 
 
-export const verfiyPaymentController =async (req:Request,res:Response)=>{
-    try{
-        const {razorpay_order_id,razorpay_payment_id,razorpay_signature,receipt}=req.body
+export const verfiyPaymentController = async (req: Request, res: Response) => {
+    try {
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature, receipt } = req.body
 
-        if(!razorpay_order_id || !razorpay_payment_id || !razorpay_signature||!receipt){
-             return res.status(400).json({
-                success:false,
-                message:"not fount IDs for verify payment purpose"
-             })
+        if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !receipt) {
+            return res.status(400).json({
+                success: false,
+                message: "not fount IDs for verify payment purpose"
+            })
         }
 
-        const verfiyPayment = await verifyPaymentService(razorpay_order_id,razorpay_payment_id,razorpay_signature,receipt)
+        const verfiyPayment = await verifyPaymentService(razorpay_order_id, razorpay_payment_id, razorpay_signature, receipt)
 
         return res.status(200).json({
-            success:true,
-            message:"verfiy payment successfully",
-            data:verfiyPayment
+            success: true,
+            message: "verfiy payment successfully",
+            data: verfiyPayment
         })
-    }catch(error:any){
-        
+    } catch (error: any) {
+
         return res.status(400).json({
-            success:false,
-            message:"verfiy payment fail",
+            success: false,
+            message: "verfiy payment fail",
         })
     }
 }
