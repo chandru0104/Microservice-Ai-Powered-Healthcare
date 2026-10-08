@@ -49,7 +49,7 @@ export const paymentAdd = async (orderId: any, amount?: any) => {
             prefill: {
                 name: 'Chandru',
                 email: 'chandrus0104@gmail.com',
-                contact: '9999999999'
+                contact: '9900990090'
             },
             theme: {
                 color: '#F37254'
