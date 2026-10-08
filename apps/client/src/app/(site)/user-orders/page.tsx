@@ -36,7 +36,7 @@ const OrderHistorysPage = () => {
 
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 90 },
+        { field: 'id', headerName: 'ID', width: 90},
         {
             field: 'user',
             headerName: 'Name',
@@ -47,7 +47,7 @@ const OrderHistorysPage = () => {
         {
             field: 'phone',
             headerName: 'Phone',
-            width: 150,
+            width: 120,
             editable: true,
             valueGetter: (value: any, row: any) => row?.user ? row.user.phone : ""
         },
@@ -73,15 +73,27 @@ const OrderHistorysPage = () => {
             headerName: 'Image',
             width: 150,
             editable: true,
-            // valueGetter: (value, row) => row?.items[0]?.product?.image || ""
-            renderCell:(params:any)=>(<img src={params.row.items[0].product.image} alt="" />)
+            renderCell: (params: any) => (<img src={params.row.items[0].product.image[0]} alt="" className='flex items-center justify-center h-[60px] w-[90px]' />)
         },
         {
             field: 'price',
             headerName: 'Price',
+            width: 120,
+            editable: true,
+            valueGetter: (value, row) => row?.items[0]?.product?.price+".00 Rs" || ""
+        },
+        {
+            field: 'paymentStatus',
+            headerName: 'Payment Status',
             width: 150,
             editable: true,
-            valueGetter: (value, row) => row?.items[0]?.product?.price || ""
+            renderCell: (params: any) => (
+                params?.row?.paymetStatus === "success" ? <div className='bg-green-500 text-white mt-3 rounded-md h-[28px] flex items-center justify-center'>
+                    <p>{params.row.paymetStatus}</p>
+                </div> : <div className='bg-green-500 text-white mt-3 rounded-md h-[28px] flex items-center justify-center'>
+                    {params.row.paymetStatus}
+                </div>
+            )
         },
 
 

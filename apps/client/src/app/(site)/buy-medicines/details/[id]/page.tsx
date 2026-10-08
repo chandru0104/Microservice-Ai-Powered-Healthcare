@@ -13,7 +13,7 @@ import { RiSecurePaymentLine } from "react-icons/ri";
 import { Loading } from "apps/client/src/components/Loading"
 import { orderAdd } from "apps/client/src/services/order"
 import {paymentAdd} from "apps/client/src/services/payment"
-import axios from "axios"
+
 
 const productDetails = () => {
     const keyId = process.env.RAZORPAY_API_KEY || ""
