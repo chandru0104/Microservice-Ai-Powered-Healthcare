@@ -19,27 +19,30 @@ export const paymentAdd = async (orderId: any, amount?: any) => {
                 "Content-Type": "application/json"
             }
         })
-        const amountRec = add?.data?.data.amount
-        const currencyRec =add?.data?.data.currency
-        const receipt = add?.data?.data?.receipt 
+        const amountRec = add?.data?.data?.amount
+        const receipt = add?.data?.data?.receipt
+        const razorpayOrderId = add?.data?.data?.id
 
         const options = {
-            key: keyId, // Replace with your Razorpay key_id
-            amount: amountRec, // Amount is in currency subunits.
+            key: keyId, 
+            amount: amountRec, 
             currency: "INR",
-            name: 'Acme Corp',
-            description: 'Test Transaction',
-            order_id: orderId, // This is the order_id created in the backend
-            callback_url: 'http://localhost:3000/payment-success',
-            handler:async (response:any)=>{
-                try{
-                 await paymentVerfiy({
-                    razorpay_order_id: response.razorpay_order_id,
-                    razorpay_payment_id: response.razorpay_payment_id,
-                    razorpay_signature: response.razorpay_signature,
-                    receipt: receipt,
-                 })
-                }catch(error:any){
+            name: 'Care Hub',
+            description: 'Healthcare',
+            order_id: razorpayOrderId, 
+            callback_url: 'http://localhost:3000/user-appointment',
+            handler: async (response: any) => {
+                try {
+                    await paymentVerfiy({
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_signature: response.razorpay_signature,
+                        receipt: receipt,
+                    })
+                    if(typeof window === "object"){
+                        window.location.href="http://localhost:3000/user-orders"
+                    }
+                } catch (error: any) {
                     throw new Error(error.message)
                 }
             },

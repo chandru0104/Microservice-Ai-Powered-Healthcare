@@ -7,6 +7,7 @@ import { orderAdd, orderAddMultiple } from "apps/client/src/services/order"
 import { Loading } from "apps/client/src/components/Loading"
 import Image from "next/image"
 import { Button } from "@mui/material"
+import { paymentAdd } from "apps/client/src/services/payment"
 export default function Cart() {
 
     const [cartData, setCartData] = useState<any>([])
@@ -46,8 +47,14 @@ export default function Cart() {
         try {
             const prodId = item?.productId?._id || item?.productId
             const qty = item?.quantity || 1
-            await orderAdd(prodId, qty)
+            const add = await orderAdd(prodId, qty)
+            const orderId = add?.data?.data?._id
+            const amount = add?.data?.data.price
             alert("Order placed successfully")
+            if (add) {
+                await paymentAdd(orderId, amount)
+            }
+
             if (item?._id) {
                 await cartDelete(item._id)
             }
@@ -68,7 +75,12 @@ export default function Cart() {
                 product: item?.productId?._id || item?.productId,
                 quantity: item?.quantity || 1
             }))
-            await orderAddMultiple(items)
+            const add = await orderAddMultiple(items)
+            const orderId = add?.data?.data?._id
+            const amount = add?.data?.data.price
+            if (add) {
+                await paymentAdd(orderId, amount)
+            }
             alert("Order placed successfully for all items")
             for (const item of cartData) {
                 if (item?._id) {

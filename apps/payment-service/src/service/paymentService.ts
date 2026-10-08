@@ -27,7 +27,7 @@ export const createPaymentService = async (orderId: string) => {
         }
 
         const options: Option = {
-            amount: order.price * 100,
+            amount: Math.round(order.price * 100),
             receipt: order._id.toString(),
             currency: "INR"
         }
@@ -42,16 +42,18 @@ export const createPaymentService = async (orderId: string) => {
             receipt: createPayment.receipt
         })
 
+        const res = await Payment.findById(createPayment.id)
 
 
-        return createPayment
+
+        return res
 
     } catch (error: any) {
         throw new Error(error.message)
     }
 }
 
-export const verifyPaymentService = async (razorpay_order_id: any, razorpay_payment_id: any, razorpay_signature: any,receipt:any) => {
+export const verifyPaymentService = async (razorpay_order_id: any, razorpay_payment_id: any, razorpay_signature: any, receipt: any) => {
     try {
 
         const sha = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET_KEY as string)
@@ -64,13 +66,13 @@ export const verifyPaymentService = async (razorpay_order_id: any, razorpay_paym
             throw new Error("Invalid signature ID")
         }
 
-        
+
         await Order.findByIdAndUpdate(receipt, { paymetStatus: "success" }, { runValidators: true, new: true })
         return {
             razorpay_order_id, razorpay_payment_id
         }
 
-    }catch(error:any){
-      throw new Error(error.message)
+    } catch (error: any) {
+        throw new Error(error.message)
     }
 }
