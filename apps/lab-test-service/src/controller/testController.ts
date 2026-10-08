@@ -1,5 +1,5 @@
 
-import { addTestService, listTestService, upadateTestService, deleteTestService,listTestOneService } from "../service/testAdd"
+import { addTestService, listTestService, upadateTestService, deleteTestService, listTestOneService, bookTestService } from "../service/testAdd"
 import { Request, Response } from "express"
 
 export const testAddController = async (req: Request, res: Response) => {
@@ -94,6 +94,33 @@ export const testDeleteController = async (req:Request,res:Response)=>{
         res.status(400).json({
              success:false,
              message:error.message
+        })
+    }
+}
+
+export const testBookController = async (req: any, res: Response) => {
+    try {
+        const userId = req.user?.id || req.user?.userId || req.body?.user
+        const { testId } = req.body
+
+        if (!testId) {
+            return res.status(400).json({
+                success: false,
+                message: "testId is required"
+            })
+        }
+
+        const booked = await bookTestService(userId, testId)
+
+        return res.status(201).json({
+            success: true,
+            message: "Lab test booked successfully",
+            data: booked
+        })
+    } catch (error: any) {
+        return res.status(400).json({
+            success: false,
+            message: error.message
         })
     }
 }

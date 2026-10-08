@@ -2,12 +2,12 @@
 
 import Footer from "apps/client/src/components/Footer"
 import Navbar from "apps/client/src/components/Navbar"
-import { listLabTest } from "../../../../services/labtest"
+import { listLabTest, bookTest } from "../../../../services/labtest"
 import { useState } from "react"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { FaSearch } from "react-icons/fa";
-
+import { paymentAdd, bookTestPayment } from "apps/client/src/services/payment"
 export default function TestList() {
 
     const router = useRouter()
@@ -28,15 +28,27 @@ export default function TestList() {
         list()
     }, [])
 
-    const bookNow = (id: string) => {
-
+    const bookNow = async (id: string, price: string) => {
+        try {
+            const book = await bookTest(id)
+            const createdOrder = book?.data?.data
+            if (createdOrder?._id) {
+                const bookId = createdOrder._id
+                const testPrice = createdOrder.price || price
+                await bookTestPayment(bookId, testPrice)
+            }
+            return book
+        } catch (error: any) {
+            alert(error.message || "Failed to book lab test")
+            throw new Error(error.message)
+        }
     }
 
     const viewDetails = (id: string) => {
         router.push(`/lab-tests/lab-test-details/${id}`)
     }
 
-    const labTestFillter = testList.filter((items: any) => items.name.toLowerCase().included(search.toLowerCase()))
+    const labTestFillter = testList?.filter((items: any) => items?.name?.toLowerCase().includes(search.toLowerCase()))
 
     return (
         <>
@@ -55,7 +67,7 @@ export default function TestList() {
                             <div className="text-[12px]">Delivery : {items?.reportDelivery}</div>
                             <div className="font-semibold">Price : {items.price} Rs</div>
                             <div className="flex items-center justify-between pt-2">
-                                <button className="bg-green-500 p-1 rounded-md border border-gray-600 text-white" onClick={() => bookNow(items._id)}>Book now</button> <button className="border border-gray-400 rounded-md p-1" onClick={() => viewDetails(items._id)}>View Details</button>
+                                <button className="bg-green-500 p-1 rounded-md border border-gray-600 text-white" onClick={() => bookNow(items._id,items.price)}>Book now</button> <button className="border border-gray-400 rounded-md p-1" onClick={() => viewDetails(items._id)}>View Details</button>
                             </div>
                         </div>
                     ))

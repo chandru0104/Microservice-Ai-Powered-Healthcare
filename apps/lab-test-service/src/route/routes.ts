@@ -1,7 +1,7 @@
 import express from "express";
 
 import { addCategoryController, listCategoryController, updateCategoryController, deleteCategoryController } from "../controller/testCategoryController"
-import { testAddController, testListController, testUpdatController, testDeleteController, testListOneController } from "../controller/testController"
+import { testAddController, testListController, testUpdatController, testDeleteController, testListOneController, testBookController } from "../controller/testController"
 
 import { validationMiddleware } from "../utils/validationMiddleware"
 import { categoryValidation } from "../validation/categoryValidation"
@@ -227,3 +227,5 @@ router.put(
  *         description: Internal server error
  */
 router.put("/tests/delete/:id", authMiddlewares, authorize("admin"), testDeleteController);
+
+router.post("/book", authMiddlewares, testBookController);

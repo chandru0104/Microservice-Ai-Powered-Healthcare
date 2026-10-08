@@ -2,7 +2,8 @@
 
 import Footer from "apps/client/src/components/Footer"
 import Navbar from "apps/client/src/components/Navbar"
-import { viewlabTest } from "../../../../../services/labtest"
+import { viewlabTest, bookTest } from "../../../../../services/labtest"
+import { paymentAdd, bookTestPayment } from "apps/client/src/services/payment"
 import { useState } from "react"
 import { useEffect } from "react"
 import { BiMaleFemale } from "react-icons/bi";
@@ -35,8 +36,20 @@ export default function TestList() {
         details()
     }, [])
 
-    const bookNow = (id: string) => {
-
+    const bookNow = async (id: string, price?: any) => {
+        try {
+            const book = await bookTest(id)
+            const bookData = book?.data?.data
+            if (bookData?._id) {
+                const bookId = bookData._id
+                const testPrice = bookData.price || price || testList?.price
+                await bookTestPayment(bookId, testPrice)
+            }
+            return book
+        } catch (error: any) {
+            alert(error.message || "Failed to book lab test")
+            throw new Error(error.message)
+        }
     }
 
 
@@ -52,7 +65,7 @@ export default function TestList() {
                             <div className="flex gap-2 p-2">Description : {testList?.description}</div>
                             <div className="flex gap-2 p-2">Delivery Time : {testList?.reportDelivery}</div>
                             <div className="font-bold p-2 text-[20px]">Price : {testList?.price} /Rs</div>
-                            <button className="bg-green-500 p-2 mt-4 rounded-md border border-gray-600 text-white w-full flex items-center justify-center gap-2" onClick={() => bookNow(testList?._id)}><MdBookmarkAdded size={26} />Book now</button>
+                            <button className="bg-green-500 p-2 mt-4 rounded-md border border-gray-600 text-white w-full flex items-center justify-center gap-2" onClick={() => bookNow(testList?._id, testList?.price)}><MdBookmarkAdded size={26} />Book now</button>
                         </div>
                     </Grid>
                     <Grid size={8}>
