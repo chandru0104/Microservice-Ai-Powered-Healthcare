@@ -94,3 +94,20 @@ export const bookTestService = async (userId: string, testId: string) => {
         throw new Error(error.message)
     }
 }
+
+export const listUserBookingsService = async (userId: string) => {
+    try {
+        if (!userId) {
+            throw new ValidationError("User ID is required");
+        }
+
+        const bookings = await Book.find({ user: userId })
+            .populate("test")
+            .populate("user", "name email phone")
+            .sort({ createdAt: -1 });
+
+        return bookings;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+}
