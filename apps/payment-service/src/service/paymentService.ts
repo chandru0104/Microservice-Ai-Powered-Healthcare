@@ -36,7 +36,7 @@ export const createPaymentService = async (orderId: string) => {
 
         const createPayment = await payment.orders.create(options)
 
-        await Payment.create({
+        const savedPayment = await Payment.create({
             amount: Number(createPayment.amount),
             currency: createPayment.currency,
             key: process.env.RAZORPAY_API_KEY,
@@ -44,11 +44,14 @@ export const createPaymentService = async (orderId: string) => {
             receipt: createPayment.receipt
         })
 
-        const res = await Payment.findById(createPayment.id)
-
-
-
-        return res
+        return {
+            id: createPayment.id,
+            order_id: createPayment.id,
+            amount: createPayment.amount,
+            currency: createPayment.currency,
+            receipt: createPayment.receipt,
+            _id: savedPayment._id
+        }
 
     } catch (error: any) {
         throw new Error(error.message)

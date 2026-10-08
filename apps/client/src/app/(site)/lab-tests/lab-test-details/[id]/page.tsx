@@ -3,7 +3,7 @@
 import Footer from "apps/client/src/components/Footer"
 import Navbar from "apps/client/src/components/Navbar"
 import { viewlabTest, bookTest } from "../../../../../services/labtest"
-import { paymentAdd, bookTestPayment } from "apps/client/src/services/payment"
+import { bookTestPayment } from "apps/client/src/services/payment"
 import { useState } from "react"
 import { useEffect } from "react"
 import { BiMaleFemale } from "react-icons/bi";
