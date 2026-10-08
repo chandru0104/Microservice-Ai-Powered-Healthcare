@@ -144,3 +144,22 @@ export const viewlabTest = async (id: string) => {
         throw new Error(getErrorMessage(error))
     }
 }
+
+export const bookTest = async (testId: string) => {
+    try {
+        const userAccessToken = localStorage.getItem("userAccessToken")
+        if (!userAccessToken) {
+            throw new Error("Please login to book a lab test")
+        }
+
+        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/lab/book`, { testId }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${userAccessToken}`
+            }
+        })
+        return add
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
+    }
+}

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createPaymentController, verfiyPaymentController } from "../controller/controller"
+import { createPaymentController, verfiyPaymentController, bookTestPaymentController, verifyBookTestPaymentController } from "../controller/controller"
 import { authMiddleware } from "../middleware/authMiddlerware"
 
 export const router = Router()
@@ -25,6 +25,30 @@ export const router = Router()
  *         description: Payment created successfully
  */
 router.post('/add', authMiddleware, createPaymentController)
+
+/**
+ * @swagger
+ * /api/v1/payment/booktestpayment:
+ *   post:
+ *     summary: Create lab test booking payment
+ *     tags:
+ *       - Payment
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               bookId:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Lab test payment created successfully
+ */
+router.post('/book-test-payment', authMiddleware, bookTestPaymentController)
 
 /**
  * @swagger
@@ -58,3 +82,6 @@ router.post('/add', authMiddleware, createPaymentController)
  *         description: Payment verified successfully
  */
 router.post('/verify', authMiddleware, verfiyPaymentController)
+
+router.post('/verify-book-test-payment', authMiddleware, verifyBookTestPaymentController)
+
