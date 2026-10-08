@@ -7,7 +7,7 @@ import { useState } from "react"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { FaSearch } from "react-icons/fa";
-import { paymentAdd, bookTestPayment } from "apps/client/src/services/payment"
+import { bookTestPayment } from "apps/client/src/services/payment"
 export default function TestList() {
 
     const router = useRouter()

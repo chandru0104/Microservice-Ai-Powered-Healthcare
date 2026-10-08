@@ -1,5 +1,20 @@
 import mongoose from "mongoose";
 
+if (!mongoose.models.User) {
+  mongoose.model(
+    "User",
+    new mongoose.Schema(
+      {
+        name: { type: String },
+        email: { type: String },
+        phone: { type: String },
+        role: { type: String },
+      },
+      { timestamps: true, collection: "users" }
+    )
+  );
+}
+
 const bookSchema = new mongoose.Schema(
   {
     user: {

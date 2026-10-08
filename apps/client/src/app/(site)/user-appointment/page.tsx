@@ -66,22 +66,28 @@ const OrderHistorysPage = () => {
             headerName: 'Product',
             width: 150,
             editable: true,
-            valueGetter: (value, row) => row?.items[0]?.product?.name || ""
+            valueGetter: (value, row) => row?.items?.[0]?.product?.name || ""
         },
         {
             field: 'image',
             headerName: 'Image',
             width: 150,
             editable: true,
-            // valueGetter: (value, row) => row?.items[0]?.product?.image || ""
-            renderCell:(params:any)=>(<img src={params.row.items[0].product.image} alt="" />)
+            renderCell: (params: any) => {
+                const img = params?.row?.items?.[0]?.product?.image?.[0] || params?.row?.items?.[0]?.product?.image;
+                return img ? (
+                    <img src={img} alt="Product" className='h-[50px] w-[50px] object-contain' />
+                ) : (
+                    <span className="text-xs text-gray-400">No image</span>
+                );
+            }
         },
         {
             field: 'price',
             headerName: 'Price',
             width: 150,
             editable: true,
-            valueGetter: (value, row) => row?.items[0]?.product?.price || ""
+            valueGetter: (value, row) => row?.items?.[0]?.product?.price ? `${row.items[0].product.price} Rs` : ""
         },
 
 

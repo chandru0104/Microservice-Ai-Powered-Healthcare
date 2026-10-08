@@ -66,34 +66,51 @@ const OrderHistorysPage = () => {
             headerName: 'Product',
             width: 150,
             editable: true,
-            valueGetter: (value, row) => row?.items[0]?.product?.name || ""
+            valueGetter: (value, row) => row?.items?.[0]?.product?.name || "Product"
         },
         {
             field: 'image',
             headerName: 'Image',
             width: 150,
             editable: true,
-            renderCell: (params: any) => (<img src={params.row.items[0].product.image[0]} alt="" className='flex items-center justify-center h-[60px] w-[90px]' />)
+            renderCell: (params: any) => {
+                const img = params?.row?.items?.[0]?.product?.image?.[0] || params?.row?.items?.[0]?.product?.image;
+                return img ? (
+                    <img src={img} alt="Product" className='flex items-center justify-center h-[60px] w-[90px] object-contain' />
+                ) : (
+                    <div className='flex items-center justify-center h-[60px] w-[90px] text-xs text-gray-400 bg-gray-100 rounded'>
+                        No image
+                    </div>
+                );
+            }
         },
         {
             field: 'price',
             headerName: 'Price',
             width: 120,
             editable: true,
-            valueGetter: (value, row) => row?.items[0]?.product?.price+".00 Rs" || ""
+            valueGetter: (value, row) => {
+                const p = row?.items?.[0]?.product?.price ?? row?.price;
+                return p !== undefined && p !== null ? `${p}.00 Rs` : "-";
+            }
         },
         {
             field: 'paymentStatus',
             headerName: 'Payment Status',
             width: 150,
             editable: true,
-            renderCell: (params: any) => (
-                params?.row?.paymetStatus === "success" ? <div className='bg-green-500 text-white mt-3 rounded-md h-[28px] flex items-center justify-center'>
-                    <p>{params.row.paymetStatus}</p>
-                </div> : <div className='bg-green-500 text-white mt-3 rounded-md h-[28px] flex items-center justify-center'>
-                    {params.row.paymetStatus}
-                </div>
-            )
+            renderCell: (params: any) => {
+                const status = params?.row?.paymetStatus || params?.row?.paymentStatus || "pending";
+                return status === "success" ? (
+                    <div className='bg-green-500 text-white mt-3 rounded-md h-[28px] px-3 flex items-center justify-center font-medium capitalize'>
+                        <p>{status}</p>
+                    </div>
+                ) : (
+                    <div className='bg-amber-500 text-white mt-3 rounded-md h-[28px] px-3 flex items-center justify-center font-medium capitalize'>
+                        <p>{status}</p>
+                    </div>
+                );
+            }
         },
 
 
