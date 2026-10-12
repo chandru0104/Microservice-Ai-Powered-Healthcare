@@ -325,7 +325,7 @@ export default function DoctorProfile() {
                                 <p className="flex items-center" ><HiOutlineMailOpen size={18} color="gray" /> &nbsp; {details.email}</p>
                                 <p className="font-semibold">Base pay Amount : ₹ {details.price}.00</p>
                                 <button onClick={() => router.push("/doctor-appointment")} className="bg-orange-500 rounded-lg p-1 text-white m-1 shadow-md hover:bg-orange-600 transition cursor-pointer">View Appointment</button>
-                                <button className="bg-blue-500 rounded-lg p-1 text-white m-1 shadow-md">Payment History</button>
+                                <button onClick={() => router.push("/doctor-payment-history")} className="bg-blue-500 rounded-lg p-1 text-white m-1 shadow-md hover:bg-blue-600 transition cursor-pointer">Payment History</button>
 
                             </div>
 
