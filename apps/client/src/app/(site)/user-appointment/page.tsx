@@ -5,9 +5,10 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Loading } from "apps/client/src/components/Loading"
 import { useState } from 'react';
 import * as React from 'react';
-import { orderListUser } from "apps/client/src/services/order"
+import { getUserAppointmentList, getDoctorAppointmentList } from "apps/client/src/services/appointment"
 import Footer from "apps/client/src/components/Footer"
 import Navbar from "apps/client/src/components/Navbar"
+import dayjs from "dayjs"
 
 const OrderHistorysPage = () => {
 
@@ -17,9 +18,20 @@ const OrderHistorysPage = () => {
 
     const list = async () => {
         try {
+            const doctorId = typeof window !== "undefined" ? localStorage.getItem("doctorId") : null
+            const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null
+
+            if (!doctorId && !userId) return
+
             setLoading(true)
-            const res = await orderListUser()
-            const mapping = Array.isArray(res?.data.data) ? res?.data.data.map((items: any, index: any) => ({
+            let res: any;
+            if (doctorId) {
+                res = await getDoctorAppointmentList(doctorId)
+            } else {
+                res = await getUserAppointmentList(userId)
+            }
+
+            const mapping = Array.isArray(res?.data?.data) ? res?.data?.data.map((items: any, index: any) => ({
                 ...items,
                 id: index + 1
             })) : []
@@ -36,7 +48,7 @@ const OrderHistorysPage = () => {
 
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 90 },
+        { field: 'id', headerName: 'ID', width: 50 },
         {
             field: 'user',
             headerName: 'Name',
@@ -45,49 +57,93 @@ const OrderHistorysPage = () => {
             valueGetter: (value: any) => value ? value.name : ""
         },
         {
+            field: 'userEmail',
+            headerName: 'User Email',
+            width: 250,
+            editable: true,
+            valueGetter: (value: any, row: any) => row?.user?.email || ""
+        },
+        {
             field: 'phone',
             headerName: 'Phone',
-            width: 150,
-            editable: true,
-            valueGetter: (value: any, row: any) => row?.user ? row.user.phone : ""
-        },
-
-        {
-            field: 'address',
-            headerName: 'Shipping Address',
-            rowHeader: true,
-            description: 'This column has a value getter and is not sortable.',
-            sortable: false,
-            width: 400,
-            valueGetter: (value, row) => row?.shippingAddress || "",
+            width: 130,
+            valueGetter: (value, row) => row?.phone || "",
         },
         {
-            field: 'name',
-            headerName: 'Product',
+            field: 'doctorName',
+            headerName: 'Doctor Name',
             width: 150,
             editable: true,
-            valueGetter: (value, row) => row?.items?.[0]?.product?.name || ""
+            valueGetter: (value, row) => row?.doctor?.name || ""
         },
         {
-            field: 'image',
-            headerName: 'Image',
-            width: 150,
+            field: 'doctorEmail',
+            headerName: 'Doctor Email',
+            width: 200,
             editable: true,
-            renderCell: (params: any) => {
-                const img = params?.row?.items?.[0]?.product?.image?.[0] || params?.row?.items?.[0]?.product?.image;
-                return img ? (
-                    <img src={img} alt="Product" className='h-[50px] w-[50px] object-contain' />
-                ) : (
-                    <span className="text-xs text-gray-400">No image</span>
-                );
+            valueGetter: (value, row) => row?.doctor?.email || ""
+        },
+        {
+            field: 'date',
+            headerName: 'Date',
+            width: 130,
+            editable: true,
+            valueGetter: (value, row) => {
+                if (!row?.date) return "";
+                const parsed = dayjs(row.date);
+                return parsed.isValid() ? parsed.format("DD/MM/YYYY") : row.date;
             }
         },
         {
-            field: 'price',
-            headerName: 'Price',
+            field: 'time',
+            headerName: 'Time',
+            width: 120,
+            editable: true,
+            valueGetter: (value, row) => {
+                if (!row?.time) return "";
+                const parsed = dayjs(row.time);
+                return parsed.isValid() ? parsed.format("hh:mm A") : row.time;
+            }
+        },
+        {
+            field: 'fees',
+            headerName: 'Fees',
+            width: 120,
+            editable: true,
+            valueGetter: (value, row) => row?.fees ? `${row.fees} Rs` : ""
+        },
+        {
+            field: 'paymentStatus',
+            headerName: 'Payment Status',
             width: 150,
             editable: true,
-            valueGetter: (value, row) => row?.items?.[0]?.product?.price ? `${row.items[0].product.price} Rs` : ""
+            renderCell: (params: any) => {
+                const status = (params?.row?.payment || params?.row?.paymetStatus || params?.row?.paymentStatus || "pending").toLowerCase();
+                if (status === "paid" || status === "success") {
+                    return (
+                        <div className="flex items-center h-full">
+                            <span className="bg-green-600 text-white px-3 py-1 rounded-md text-xs font-semibold capitalize">
+                                Paid
+                            </span>
+                        </div>
+                    );
+                } else if (status === "failed") {
+                    return (
+                        <div className="flex items-center h-full">
+                            <span className="bg-red-600 text-white px-3 py-1 rounded-md text-xs font-semibold capitalize">
+                                Failed
+                            </span>
+                        </div>
+                    );
+                }
+                return (
+                    <div className="flex items-center h-full">
+                        <span className="bg-amber-500 text-white px-3 py-1 rounded-md text-xs font-semibold capitalize">
+                            Pending
+                        </span>
+                    </div>
+                );
+            }
         },
 
 
@@ -100,7 +156,7 @@ const OrderHistorysPage = () => {
             <Navbar />
             <div className='max-w-7xl mx-auto'>
                 <div className='flex items-center justify-between py-3'>
-                    <h3 className="text-xl font-bold">Order History</h3>
+                    <h3 className="text-xl font-bold">Appointment History</h3>
 
 
                 </div>

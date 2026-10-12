@@ -50,6 +50,21 @@ export const getUserAppointmentList = async (id: any) => {
     }
 }
 
+export const getDoctorAppointmentList = async (id: any) => {
+    try {
+        const doctorAccessToken = localStorage.getItem("doctorAccessToken")
+        const list = await axios.get(`${API_GATEWAY_URL}/api/v1/appointment/doctor/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${doctorAccessToken}`
+            }
+        })
+        return list
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
 export const appointmentPaymentAdd = async (id: any, payload: any) => {
     try {
         const userAccessToken = localStorage.getItem("userAccessToken")

@@ -50,3 +50,16 @@ export const userListAppointmentService = async (data: string) => {
         throw new Error(error.message)
     }
 }
+
+export const doctorListAppointmentService = async (doctorId: string) => {
+    try {
+        if (!doctorId) {
+            throw new Error("Please pass the doctor id")
+        }
+        const list = await Appointment.find({ doctor: doctorId }).populate(["doctor", "user"])
+
+        return list
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
