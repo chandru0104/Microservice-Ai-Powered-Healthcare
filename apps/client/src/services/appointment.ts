@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
-
+const keyId = process.env.NEXT_PUBLIC_RAZORPAY_API_KEY || process.env.RAZORPAY_API_KEY || "rzp_test_TF2ZuOVH6kAxq8"
 
 export const addOppointment = async (payload: any) => {
     try {
@@ -65,16 +65,58 @@ export const getDoctorAppointmentList = async (id: any) => {
     }
 }
 
-export const appointmentPaymentAdd = async (id: any, payload: any) => {
+export const appointmentPaymentAdd = async (id: any) => {
     try {
         const userAccessToken = localStorage.getItem("userAccessToken")
 
-        const payment = await axios.post(`${API_GATEWAY_URL}/api/v1/appointment/payment/${id}`, payload, {
+        const payment = await axios.post(`${API_GATEWAY_URL}/api/v1/appointment/payment/${id}`,{},{
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${userAccessToken}`
             }
         })
+        const amount = payment?.data?.data?.amount
+        const razorpayOrderId = payment?.data?.data?.id
+        const receipt = payment?.data?.data?.receipt
+        const options = {
+            key: keyId,
+            amount: amount*100,
+            currency: "INR",
+            name: 'Care Hub',
+            description: 'Healthcare',
+            order_id: razorpayOrderId,
+            callback_url: 'http://localhost:3000/user-appointment',
+            handler: async (response: any) => {
+                try {
+                    await verifyPayment({
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_signature: response.razorpay_signature,
+                        receipt: receipt,
+                    })
+                    if (typeof window === "object") {
+                        window.location.href = "http://localhost:3000/user-appointment"
+                    }
+                } catch (error: any) {
+                    throw new Error(error.message)
+                }
+            },
+            prefill: {
+                name: 'Chandru',
+                email: 'chandrus0104@gmail.com',
+                contact: '9900990090'
+            },
+            theme: {
+                color: '#004097'
+            }
+        };
+
+        if (typeof window !== "undefined" && window.Razorpay) {
+            const rzp = new window.Razorpay(options);
+            rzp.open();
+        } else {
+            console.error("Razorpay SDK is not loaded on window.");
+        }
         return payment
     } catch (error: any) {
         throw new Error(error.message)

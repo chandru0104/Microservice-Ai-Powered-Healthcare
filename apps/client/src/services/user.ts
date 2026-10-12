@@ -8,6 +8,9 @@ export const userProfile = async () => {
     try {
         const token = localStorage.getItem("userAccessToken")
         const id = localStorage.getItem("userId")
+        if (!id || id === "null" || id === "undefined") {
+            return null
+        }
         const profile = await axios.get(`${API_GATEWAY_URL}/api/v1/user/profile/${id}`, {
             headers: {
                 "Authorization": `Bearer ${token}`
