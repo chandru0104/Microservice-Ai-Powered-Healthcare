@@ -96,34 +96,6 @@ router.get("/doctor/:id", authMiddleware, doctorListAppointmentController);
 
 /**
  * @swagger
- * /api/v1/appointment/payment/{id}:
- *   post:
- *     summary: Create Appointment Payment
- *     tags: [Payment]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: Appointment ID
- *         schema:
- *           type: string
- *     responses:
- *       201:
- *         description: Payment created successfully
- *       404:
- *         description: Appointment not found
- *       500:
- *         description: Internal Server Error
- */
-router.post(
-    "/payment/:id",
-    authMiddleware,
-    appointmentPaymentController
-);
-
-
-/**
- * @swagger
  * /api/v1/appointment/payment/verify:
  *   post:
  *     summary: Verify Appointment Payment
@@ -155,6 +127,33 @@ router.post(
     "/payment/verify",
     authMiddleware,
     appointmentPaymentVerifyController
+);
+
+/**
+ * @swagger
+ * /api/v1/appointment/payment/{id}:
+ *   post:
+ *     summary: Create Appointment Payment
+ *     tags: [Payment]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Appointment ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       201:
+ *         description: Payment created successfully
+ *       404:
+ *         description: Appointment not found
+ *       500:
+ *         description: Internal Server Error
+ */
+router.post(
+    "/payment/:id",
+    authMiddleware,
+    appointmentPaymentController
 );
 
 /**

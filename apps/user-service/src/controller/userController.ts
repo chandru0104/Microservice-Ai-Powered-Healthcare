@@ -111,17 +111,23 @@ export const userDeleteController = async (req: Request, res: Response) => {
 export const userProfileController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    if (!id) {
-      throw new validationError('Invalid user');
+    if (!id || id === 'null' || id === 'undefined') {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid user id',
+      });
     }
     const user = await userProfileService(id);
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: 'user profile',
       data: user,
     });
   } catch (error: any) {
-    throw new validationError(error.message);
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -129,18 +135,26 @@ export const userProfileController = async (req: Request, res: Response) => {
 export const userUpdateController = async (req: any, res: Response) => {
   try {
     const { id } = req.params;
+    if (!id || id === 'null' || id === 'undefined') {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid user id',
+      });
+    }
     const data = req.body;
 
     const updatedData = await userUpdateService(id, data);
 
-
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: 'User data updated',
       data: updatedData,
     });
   } catch (error: any) {
-    throw new validationError(error.message);
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 

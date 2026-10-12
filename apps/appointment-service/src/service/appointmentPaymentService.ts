@@ -31,15 +31,27 @@ export const appointmentPaymentService = async (receipt: string) => {
         if (!appointmentData) {
             throw new Error("Appointment not found")
         }
-        await PaymentRazorpay.orders.create({
-            amount: appointmentData.fees,
+        const razorpayOrder = await PaymentRazorpay.orders.create({
+            amount: Math.round(appointmentData.fees * 100),
             currency: "INR",
             receipt: receipt
         })
 
-        const pay = await Payment.create({ amount: appointmentData.fees, doctor: appointmentData.doctor, receipt: receipt, user: appointmentData.user })
+        const pay = await Payment.create({ 
+            amount: appointmentData.fees, 
+            doctor: appointmentData.doctor, 
+            receipt: receipt, 
+            user: appointmentData.user 
+        })
 
-        return pay
+        return {
+            id: razorpayOrder.id,
+            order_id: razorpayOrder.id,
+            amount: appointmentData.fees,
+            currency: razorpayOrder.currency,
+            receipt: receipt,
+            _id: pay._id
+        }
 
     } catch (error: any) {
         throw new Error(error.message)

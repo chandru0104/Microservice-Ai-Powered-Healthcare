@@ -19,27 +19,32 @@ import dayjs, { Dayjs } from 'dayjs';
 import { Button } from "@mui/material"
 import { addOppointment } from "apps/client/src/services/appointment"
 import { userProfile } from "apps/client/src/services/user"
+import { appointmentPaymentAdd } from "apps/client/src/services/appointment"
 
 export default function DoctorDetails() {
 
     const params = useParams()
     const [loading, setLoading] = useState<boolean>(true)
     const [details, setDetails] = useState<any>({})
-    const [dates, setDates] = useState<any>([])
-    const [time, setTime] = useState<Dayjs | null>(dayjs('2022-04-17T15:30'));
+    const [dates, setDates] = useState<any>(dayjs())
+    const [time, setTime] = useState<Dayjs | null>(dayjs());
     const [userPhone, setUserPhone] = useState<any>()
-    const [userId , setUserId] = useState<any>()
+    const [userId, setUserId] = useState<any>()
 
-   
+
     const fetchUserProfile = async () => {
         try {
             const user = await userProfile()
             const userData = user?.data?.data
-            setUserPhone(Number(userData?.phone))
-            setUserId(userData._id)
+            if (userData) {
+                setUserPhone(Number(userData?.phone))
+                setUserId(userData._id)
+                return userData
+            }
         } catch (error: any) {
             console.error(error.message)
         }
+        return null
     }
 
 
@@ -56,25 +61,44 @@ export default function DoctorDetails() {
     }
     useEffect(() => {
         dooctorDetails()
+        fetchUserProfile()
     }, [])
     function handleDate(date: any) {
         setDates(date)
-        console.log(dates)
     }
 
     const appointmentSubmit = async () => {
         try {
-           await fetchUserProfile()
+            let currentUserId = userId
+            let currentUserPhone = userPhone
+
+            if (!currentUserId || !currentUserPhone) {
+                const userData = await fetchUserProfile()
+                if (userData) {
+                    currentUserId = userData._id
+                    currentUserPhone = Number(userData.phone)
+                }
+            }
+
+            if (!currentUserId && typeof window !== "undefined") {
+                currentUserId = localStorage.getItem("userId")
+            }
+
+            const formattedDate = dates ? dayjs(dates).format("YYYY-MM-DD") : dayjs().format("YYYY-MM-DD")
+            const formattedTime = time ? dayjs(time).format("hh:mm A") : dayjs().format("hh:mm A")
+
             const add = await addOppointment({
                 doctor: details._id,
-                date: dates,
-                time: time,
-                phone: userPhone,
-                user:userId,
-                fees: details.price
+                date: formattedDate,
+                time: formattedTime,
+                phone: Number(currentUserPhone) || 0,
+                user: currentUserId,
+                fees: Number(details.price) || 0
             })
-            
-          return add
+            if (add?.data?.data?._id) {
+                await appointmentPaymentAdd(add.data.data._id)
+            }
+            return add
         } catch (error: any) {
             throw new Error(error.message)
         }
