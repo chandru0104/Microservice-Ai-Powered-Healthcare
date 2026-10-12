@@ -12,10 +12,6 @@ const appointment = new mongoose.Schema({
         type: Date,
         required: true
     },
-    day: {
-        type: String,
-        required: true
-    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -23,14 +19,6 @@ const appointment = new mongoose.Schema({
     },
     phone: {
         type: Number,
-        required: true
-    },
-    gender: {
-        type: String,
-        enum: ["Male", "Female", "Not to say"]
-    },
-    termsCondition: {
-        type: Boolean,
         required: true
     },
     fees: {

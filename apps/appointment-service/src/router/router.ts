@@ -26,17 +26,10 @@ export const router = Router()
  *               date:
  *                 type: string
  *                 format: date
- *               day:
- *                 type: string
  *               user:
  *                 type: string
  *               phone:
  *                 type: number
- *               gender:
- *                 type: string
- *                 enum: [Male, Female, Not to say]
- *               termsCondition:
- *                 type: boolean
  *               fees:
  *                 type: number
  *               payment:

@@ -16,7 +16,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs, { Dayjs } from 'dayjs';
-import {Button} from "@mui/material"
+import { Button } from "@mui/material"
+import { addOppointment } from "apps/client/src/services/appointment"
+import { userProfile } from "apps/client/src/services/user"
+
 export default function DoctorDetails() {
 
     const params = useParams()
@@ -24,6 +27,21 @@ export default function DoctorDetails() {
     const [details, setDetails] = useState<any>({})
     const [dates, setDates] = useState<any>([])
     const [time, setTime] = useState<Dayjs | null>(dayjs('2022-04-17T15:30'));
+    const [userPhone, setUserPhone] = useState<any>()
+    const [userId , setUserId] = useState<any>()
+
+   
+    const fetchUserProfile = async () => {
+        try {
+            const user = await userProfile()
+            const userData = user?.data?.data
+            setUserPhone(Number(userData?.phone))
+            setUserId(userData._id)
+        } catch (error: any) {
+            console.error(error.message)
+        }
+    }
+
 
     const dooctorDetails = async () => {
         try {
@@ -42,6 +60,24 @@ export default function DoctorDetails() {
     function handleDate(date: any) {
         setDates(date)
         console.log(dates)
+    }
+
+    const appointmentSubmit = async () => {
+        try {
+           await fetchUserProfile()
+            const add = await addOppointment({
+                doctor: details._id,
+                date: dates,
+                time: time,
+                phone: userPhone,
+                user:userId,
+                fees: details.price
+            })
+            
+          return add
+        } catch (error: any) {
+            throw new Error(error.message)
+        }
     }
 
     return (
@@ -105,7 +141,7 @@ export default function DoctorDetails() {
                                     />
                                 </div>
                                 <div className="mt-3 flex items-center justify-center">
-                                    <Button variant="contained">Book Appointment</Button>
+                                    <Button variant="contained" onClick={appointmentSubmit}>Book Appointment</Button>
                                 </div>
                             </LocalizationProvider>
                         </div>
