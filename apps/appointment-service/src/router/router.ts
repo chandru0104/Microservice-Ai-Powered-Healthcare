@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middleware/auth"
-import { addAppointmentController, listAppointmentController, userListAppointmentController } from "../controller/appointmentController"
+import { addAppointmentController, listAppointmentController, userListAppointmentController, doctorListAppointmentController } from "../controller/appointmentController"
 import { appointmentPaymentController, appointmentPaymentVerifyController, appointmentPaymentListController, userListAppointmentPaymentController } from "../controller/appointmentPaymentController"
 import { createFcmTokenController } from "../controller/createFcmTokenController"
 import {appointmentValidationMiddleware} from "../middleware/validationMiddlerware"
@@ -26,17 +26,10 @@ export const router = Router()
  *               date:
  *                 type: string
  *                 format: date
- *               day:
- *                 type: string
  *               user:
  *                 type: string
  *               phone:
  *                 type: number
- *               gender:
- *                 type: string
- *                 enum: [Male, Female, Not to say]
- *               termsCondition:
- *                 type: boolean
  *               fees:
  *                 type: number
  *               payment:
@@ -82,6 +75,24 @@ router.get("/list", authMiddleware, listAppointmentController);
  *         description: Success
  */
 router.get("/user/:id", authMiddleware, userListAppointmentController);
+
+/**
+ * @swagger
+ * /api/v1/appointment/doctor/{id}:
+ *   get:
+ *     summary: Get Doctor Appointments
+ *     tags: [Appointment]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Success
+ */
+router.get("/doctor/:id", authMiddleware, doctorListAppointmentController);
 
 /**
  * @swagger

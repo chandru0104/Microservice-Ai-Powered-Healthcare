@@ -12,7 +12,8 @@ import {
   LuGlobe,
   LuPackage,
   LuShoppingBag,
-  LuReceipt
+  LuReceipt,
+  LuCalendarCheck
 } from "react-icons/lu";
 
 const sideBar = [
@@ -93,6 +94,12 @@ const sideBar = [
     icon: <LuShoppingBag />,
     name: "Order History",
     path: "/admin/order-history",
+  },
+  {
+    id: 15,
+    icon: <LuCalendarCheck />,
+    name: "Appointment History",
+    path: "/admin/appointment-history",
   },
 ];
 

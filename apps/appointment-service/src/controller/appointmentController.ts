@@ -1,4 +1,4 @@
-import { addAppointmentService, listAppointmentService, userListAppointmentService } from "../service/appointmentService"
+import { addAppointmentService, listAppointmentService, userListAppointmentService, doctorListAppointmentService } from "../service/appointmentService"
 import { Request, Response } from "express"
 
 export const addAppointmentController = async (req: Request, res: Response) => {
@@ -45,6 +45,23 @@ export const userListAppointmentController = async (req: any, res: Response) => 
         return res.status(200).json({
             success: true,
             message: "Appointemnt listed successfully",
+            data: list
+        })
+    } catch (error: any) {
+        return res.status(400).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+export const doctorListAppointmentController = async (req: any, res: Response) => {
+    try {
+        const id = req.params.id
+        const list = await doctorListAppointmentService(id)
+        return res.status(200).json({
+            success: true,
+            message: "Doctor appointments listed successfully",
             data: list
         })
     } catch (error: any) {
