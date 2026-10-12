@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authMiddleware } from "../middleware/auth"
 import { addAppointmentController, listAppointmentController, userListAppointmentController, doctorListAppointmentController } from "../controller/appointmentController"
-import { appointmentPaymentController, appointmentPaymentVerifyController, appointmentPaymentListController, userListAppointmentPaymentController } from "../controller/appointmentPaymentController"
+import { appointmentPaymentController, appointmentPaymentVerifyController, appointmentPaymentListController, userListAppointmentPaymentController, doctorListAppointmentPaymentController } from "../controller/appointmentPaymentController"
 import { createFcmTokenController } from "../controller/createFcmTokenController"
 import {appointmentValidationMiddleware} from "../middleware/validationMiddlerware"
 import {appointmentValidation} from "../utils/validation"
@@ -175,6 +175,33 @@ router.get(
     appointmentPaymentListController
 );
 
+
+/**
+ * @swagger
+ * /api/v1/appointment/payment/history/doctor/{id}:
+ *   get:
+ *     summary: Get Doctor Appointment Payment History
+ *     tags: [Payment]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Doctor ID
+ *     responses:
+ *       200:
+ *         description: Doctor payment history fetched successfully
+ *       404:
+ *         description: Doctor not found
+ *       500:
+ *         description: Internal Server Error
+ */
+router.get(
+    "/payment/history/doctor/:id",
+    authMiddleware,
+    doctorListAppointmentPaymentController
+);
 
 /**
  * @swagger

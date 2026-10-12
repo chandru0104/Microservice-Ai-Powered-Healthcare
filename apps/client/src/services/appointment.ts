@@ -128,6 +128,21 @@ export const paymentUserList = async (id: any) => {
     }
 }
 
+export const paymentDoctorList = async (id: any) => {
+    try {
+        const doctorAccessToken = localStorage.getItem("doctorAccessToken")
+        const list = await axios.get(`${API_GATEWAY_URL}/api/v1/appointment/payment/history/doctor/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${doctorAccessToken}`
+            }
+        })
+        return list
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
 export const fcmTokens = async (details: any) => {
     try {
         const userAccessToken = localStorage.getItem("userAccessToken")

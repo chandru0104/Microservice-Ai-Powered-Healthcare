@@ -124,3 +124,17 @@ export const appointmentPaymentUserListService = async (id: any) => {
         throw new Error(error.message)
     }
 }
+
+export const appointmentPaymentDoctorListService = async (id: any) => {
+    try {
+        if (!id) {
+            throw new Error("Please provide your Id")
+        }
+
+        const listDoctor = await Payment.find({ doctor: id }).populate(["doctor", "user"])
+
+        return listDoctor
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}

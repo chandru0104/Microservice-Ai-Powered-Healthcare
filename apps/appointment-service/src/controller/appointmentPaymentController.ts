@@ -1,4 +1,4 @@
-import { appointmentPaymentService, appointmentPaymentVerifyService, appointmentPaymentListService, appointmentPaymentUserListService } from "../service/appointmentPaymentService"
+import { appointmentPaymentService, appointmentPaymentVerifyService, appointmentPaymentListService, appointmentPaymentUserListService, appointmentPaymentDoctorListService } from "../service/appointmentPaymentService"
 import { Request, Response } from "express"
 
 export const appointmentPaymentController = async (req: Request, res: Response) => {
@@ -74,6 +74,24 @@ export const userListAppointmentPaymentController = async (req: Request, res: Re
         return res.status(400).json({
             success:false,
             message:error.message
+        })
+    }
+}
+
+export const doctorListAppointmentPaymentController = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params
+        const doctorListPayment = await appointmentPaymentDoctorListService(id)
+
+        return res.status(200).json({
+            success: true,
+            message: "Doctor appointment payment list",
+            data: doctorListPayment
+        })
+    } catch (error: any) {
+        return res.status(400).json({
+            success: false,
+            message: error.message
         })
     }
 }
