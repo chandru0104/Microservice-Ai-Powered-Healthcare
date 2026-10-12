@@ -10,6 +10,6 @@ export const messageSend = async (token: string, title: string, body: string) =>
             }
         })
     } catch (error: any) {
-        throw new Error(error.message)
+        console.error("FCM messageSend error:", error.message)
     }
 }

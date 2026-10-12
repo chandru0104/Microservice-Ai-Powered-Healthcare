@@ -99,10 +99,13 @@ export const appointmentPaymentVerifyService = async (data: verfiyPayment) => {
         const body = `Patient name ${findUser.name}, Date - ${emailData.date}, Time - ${emailData.time}`
         const fcmToken = findDoctor.fcmtoken
 
-        if (!fcmToken) {
-            throw new Error("Please generate fcm token")
+        if (fcmToken) {
+            try {
+                await messageSend(fcmToken, title, body)
+            } catch (fcmError: any) {
+                console.error("FCM Notification failed:", fcmError.message)
+            }
         }
-        await messageSend(fcmToken, title, body)
 
         return { razorpay_order_id, razorpay_payment_id }
 

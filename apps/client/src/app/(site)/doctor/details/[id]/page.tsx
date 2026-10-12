@@ -20,6 +20,8 @@ import { Button } from "@mui/material"
 import { addOppointment } from "apps/client/src/services/appointment"
 import { userProfile } from "apps/client/src/services/user"
 import { appointmentPaymentAdd } from "apps/client/src/services/appointment"
+import { generateFcmToken } from "apps/client/src/utils/generateFcmToken"
+import { fcmTokens } from "apps/client/src/services/appointment"
 
 export default function DoctorDetails() {
 
@@ -97,6 +99,17 @@ export default function DoctorDetails() {
             })
             if (add?.data?.data?._id) {
                 await appointmentPaymentAdd(add.data.data._id)
+            }
+            try {
+                const token = await generateFcmToken()
+                if (token) {
+                    await fcmTokens({
+                        user: details._id,
+                        token: token
+                    })
+                }
+            } catch (fcmErr) {
+                console.warn("FCM token registration skipped:", fcmErr)
             }
             return add
         } catch (error: any) {
