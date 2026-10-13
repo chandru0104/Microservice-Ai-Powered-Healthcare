@@ -98,15 +98,20 @@ export const appointmentPaymentAdd = async (id: any, doctorId?: any) => {
                     })
 
                     try {
-                        const token = await generateFcmToken()
+                        console.log("Starting FCM token generation for doctorId:", doctorId);
+                        const token = await generateFcmToken();
+                        console.log("FCM token generated result:", token);
                         if (token && doctorId) {
-                            await fcmTokens({
+                            const fcmRes = await fcmTokens({
                                 user: doctorId,
                                 token: token
-                            })
+                            });
+                            console.log("FCM token saved to doctor record successfully:", fcmRes?.data);
+                        } else {
+                            console.warn("FCM token was not saved: token or doctorId is missing.", { token, doctorId });
                         }
                     } catch (fcmErr: any) {
-                        console.warn("FCM registration error after payment verification:", fcmErr?.message)
+                        console.warn("FCM registration error after payment verification:", fcmErr?.message);
                     }
 
                     if (typeof window === "object") {
