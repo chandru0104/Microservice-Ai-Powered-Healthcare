@@ -1,4 +1,5 @@
 import axios from "axios"
+import { generateFcmToken } from "../utils/generateFcmToken"
 
 const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
 const keyId = process.env.NEXT_PUBLIC_RAZORPAY_API_KEY || process.env.RAZORPAY_API_KEY || "rzp_test_TF2ZuOVH6kAxq8"
@@ -65,7 +66,7 @@ export const getDoctorAppointmentList = async (id: any) => {
     }
 }
 
-export const appointmentPaymentAdd = async (id: any) => {
+export const appointmentPaymentAdd = async (id: any, doctorId?: any) => {
     try {
         const userAccessToken = localStorage.getItem("userAccessToken")
 
@@ -78,6 +79,7 @@ export const appointmentPaymentAdd = async (id: any) => {
         const amount = payment?.data?.data?.amount
         const razorpayOrderId = payment?.data?.data?.id
         const receipt = payment?.data?.data?.receipt
+
         const options = {
             key: keyId,
             amount: amount*100,
@@ -94,6 +96,19 @@ export const appointmentPaymentAdd = async (id: any) => {
                         razorpay_signature: response.razorpay_signature,
                         receipt: receipt,
                     })
+
+                    try {
+                        const token = await generateFcmToken()
+                        if (token && doctorId) {
+                            await fcmTokens({
+                                user: doctorId,
+                                token: token
+                            })
+                        }
+                    } catch (fcmErr: any) {
+                        console.warn("FCM registration error after payment verification:", fcmErr?.message)
+                    }
+
                     if (typeof window === "object") {
                         window.location.href = "http://localhost:3000/user-appointment"
                     }
@@ -200,12 +215,13 @@ export const fcmTokens = async (details: any) => {
     }
 }
 
-export const videoCall = async (payload: any) => {
+export const videoCall = async (id: any) => {
     try {
-        const userAccessToken = localStorage.getItem("userAccessToken")
-        const call = await axios.post(`${API_GATEWAY_URL}/api/v1/appointment/video-call`, payload, {
+       const appointmentId={appointmentId:id}
+        const token = (typeof window !== "undefined" ? (localStorage.getItem("doctorAccessToken") || localStorage.getItem("userAccessToken")) : null)
+        const call = await axios.post(`${API_GATEWAY_URL}/api/v1/appointment/video-call`, appointmentId, {
             headers: {
-                "Authorization": `Bearer ${userAccessToken}`,
+                "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             }
         })
