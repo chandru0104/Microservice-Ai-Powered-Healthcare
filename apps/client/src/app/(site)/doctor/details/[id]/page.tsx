@@ -20,18 +20,17 @@ import { Button } from "@mui/material"
 import { addOppointment } from "apps/client/src/services/appointment"
 import { userProfile } from "apps/client/src/services/user"
 import { appointmentPaymentAdd } from "apps/client/src/services/appointment"
-import { generateFcmToken } from "apps/client/src/utils/generateFcmToken"
-import { fcmTokens } from "apps/client/src/services/appointment"
 
 export default function DoctorDetails() {
 
     const params = useParams()
     const [loading, setLoading] = useState<boolean>(true)
     const [details, setDetails] = useState<any>({})
-    const [dates, setDates] = useState<any>(dayjs())
-    const [time, setTime] = useState<Dayjs | null>(dayjs());
+    const [dates, setDates] = useState<any>(null)
+    const [time, setTime] = useState<Dayjs | null>(null);
     const [userPhone, setUserPhone] = useState<any>()
     const [userId, setUserId] = useState<any>()
+    const [mounted, setMounted] = useState<boolean>(false)
 
 
     const fetchUserProfile = async () => {
@@ -62,8 +61,14 @@ export default function DoctorDetails() {
         }
     }
     useEffect(() => {
+        setMounted(true)
+        setDates(dayjs())
+        setTime(dayjs())
         dooctorDetails()
         fetchUserProfile()
+        if (typeof window !== "undefined" && "Notification" in window && Notification.permission !== "granted") {
+            Notification.requestPermission()
+        }
     }, [])
     function handleDate(date: any) {
         setDates(date)
@@ -98,18 +103,7 @@ export default function DoctorDetails() {
                 fees: Number(details.price) || 0
             })
             if (add?.data?.data?._id) {
-                await appointmentPaymentAdd(add.data.data._id)
-            }
-            try {
-                const token = await generateFcmToken()
-                if (token) {
-                    await fcmTokens({
-                        user: details._id,
-                        token: token
-                    })
-                }
-            } catch (fcmErr) {
-                console.warn("FCM token registration skipped:", fcmErr)
+                await appointmentPaymentAdd(add.data.data._id, details._id)
             }
             return add
         } catch (error: any) {
@@ -165,22 +159,28 @@ export default function DoctorDetails() {
                                 <p>Online Consult </p><p className="font-semibold">₹{details?.price}.00</p>
                             </div>
                             <h2 className="text-lg font-semibold mt-2 flex items-center justify-center">Book Date and Time</h2>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <div>
-                                    <DateCalendar onChange={handleDate} />
+                            {mounted ? (
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <div>
+                                        <DateCalendar value={dates} onChange={handleDate} />
+                                    </div>
+                                    <div className="mt-3">
+                                        <TimePicker
+                                            className="w-full"
+                                            label="Select Time"
+                                            value={time}
+                                            onChange={(newValue) => setTime(newValue)}
+                                        />
+                                    </div>
+                                    <div className="mt-3 flex items-center justify-center">
+                                        <Button variant="contained" onClick={appointmentSubmit}>Book Appointment</Button>
+                                    </div>
+                                </LocalizationProvider>
+                            ) : (
+                                <div className="min-h-[380px] flex items-center justify-center text-gray-400">
+                                    <p className="text-sm">Loading calendar...</p>
                                 </div>
-                                <div className="mt-3">
-                                    <TimePicker
-                                        className="w-full"
-                                        label="Select Time"
-                                        value={time}
-                                        onChange={(newValue) => setTime(newValue)}
-                                    />
-                                </div>
-                                <div className="mt-3 flex items-center justify-center">
-                                    <Button variant="contained" onClick={appointmentSubmit}>Book Appointment</Button>
-                                </div>
-                            </LocalizationProvider>
+                            )}
                         </div>
 
                     </Grid>
