@@ -8,7 +8,7 @@ export * from "../models/productModel"
 
 import { getErrorMessage } from "../models/errorHandler"
 
-const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
+const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
 
 export const OriginList = async () => {
     try {

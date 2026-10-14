@@ -1,8 +1,9 @@
 import axios from "axios"
+import apiClient from "./apiClient"
 import { addLabTestCategory, addLabTest } from "../models/lab"
 import { getErrorMessage } from "../models/errorHandler"
 
-const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
+const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
 
 export const addLabTestlabCategory = async (data: addLabTestCategory) => {
     try {
@@ -152,7 +153,7 @@ export const bookTest = async (testId: string) => {
             throw new Error("Please login to book a lab test")
         }
 
-        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/lab/book`, { testId }, {
+        const add = await apiClient.post(`/api/v1/lab/book`, { testId }, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${userAccessToken}`
@@ -171,7 +172,7 @@ export const userBookingList = async () => {
             throw new Error("Please login to view bookings")
         }
 
-        const res = await axios.get(`${API_GATEWAY_URL}/api/v1/lab/book/user`, {
+        const res = await apiClient.get(`/api/v1/lab/book/user`, {
             headers: {
                 "Authorization": `Bearer ${userAccessToken}`
             }

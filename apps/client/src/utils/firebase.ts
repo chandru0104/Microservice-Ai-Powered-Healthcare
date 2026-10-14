@@ -2,13 +2,13 @@ import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCHYaIY-QyjcpljeUXKWZduHpzBIuhXmcI",
-  authDomain: "ai-healthcare-mircro.firebaseapp.com",
-  projectId: "ai-healthcare-mircro",
-  storageBucket: "ai-healthcare-mircro.firebasestorage.app",
-  messagingSenderId: "813735754785",
-  appId: "1:813735754785:web:295324d9eef57763593760",
-  measurementId: "G-SF5SP2HM5M"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 export const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);

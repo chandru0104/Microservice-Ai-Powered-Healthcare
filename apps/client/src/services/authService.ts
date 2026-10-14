@@ -13,7 +13,7 @@ import axios from "axios"
 
 export * from "../models/authModel"
 
-const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
+const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
 
 export const AuthUserLogin = async (data: Login) => {
     try {

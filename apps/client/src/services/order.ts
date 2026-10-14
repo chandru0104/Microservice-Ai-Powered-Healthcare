@@ -1,30 +1,31 @@
-import axios from "axios"
+import apiClient, { getErrorMessage } from "./apiClient";
+import { IOrderItem, IOrderPayload } from "../models/orderModel";
 
-const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "http://localhost:5000"
+export * from "../models/orderModel";
 
-export const orderAdd = async (id: any, qunt: any) => {
+export const orderAdd = async (id: string | number, qunt: number | string) => {
 
     try {
-        const userAccessToken = localStorage.getItem("userAccessToken")
-        const userId = localStorage.getItem("userId")
+        const userAccessToken = localStorage.getItem("userAccessToken");
+        const userId = localStorage.getItem("userId");
 
-        let userAddress = "No address provided"
+        let userAddress = "No address provided";
         if (userId) {
             try {
-                const profileRes = await axios.get(`${API_GATEWAY_URL}/api/v1/user/profile/${userId}`, {
+                const profileRes = await apiClient.get(`/api/v1/user/profile/${userId}`, {
                     headers: {
                         "Authorization": `Bearer ${userAccessToken}`
                     }
-                })
+                });
                 if (profileRes?.data?.data?.address) {
-                    userAddress = profileRes.data.data.address
+                    userAddress = profileRes.data.data.address;
                 }
             } catch (err: any) {
-                console.log(err.message)
+                console.log(err.message);
             }
         }
 
-        const payload = {
+        const payload: IOrderPayload = {
             user: userId,
             shippingAddress: userAddress,
             paymetStatus: "pending",
@@ -35,98 +36,97 @@ export const orderAdd = async (id: any, qunt: any) => {
                     quantity: Number(qunt) || 1
                 }
             ]
-        }
+        };
 
-        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/order/add`, payload, {
+        const add = await apiClient.post(`/api/v1/order/add`, payload, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${userAccessToken}`
             }
-        })
-        return add
+        });
+        return add;
 
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error));
     }
-}
+};
 
-export const orderAddMultiple = async (items: Array<{ product?: string; productId?: string; quantity: number }>) => {
+export const orderAddMultiple = async (items: IOrderItem[]) => {
     try {
-        const userAccessToken = localStorage.getItem("userAccessToken")
-        const userId = localStorage.getItem("userId")
+        const userAccessToken = localStorage.getItem("userAccessToken");
+        const userId = localStorage.getItem("userId");
 
-        let userAddress = "No address provided"
+        let userAddress = "No address provided";
         if (userId) {
             try {
-                const profileRes = await axios.get(`${API_GATEWAY_URL}/api/v1/user/profile/${userId}`, {
+                const profileRes = await apiClient.get(`/api/v1/user/profile/${userId}`, {
                     headers: {
                         "Authorization": `Bearer ${userAccessToken}`
                     }
-                })
+                });
                 if (profileRes?.data?.data?.address) {
-                    userAddress = profileRes.data.data.address
+                    userAddress = profileRes.data.data.address;
                 }
             } catch (err: any) {
-                console.log(err.message)
+                console.log(err.message);
             }
         }
 
         const formattedItems = items.map((item) => {
-            const prodId = item.product || item.productId
+            const prodId = item.product || item.productId;
             return {
                 product: prodId,
                 productId: prodId,
                 quantity: Number(item.quantity) || 1
-            }
-        })
+            };
+        });
 
-        const payload = {
+        const payload: IOrderPayload = {
             user: userId,
             shippingAddress: userAddress,
             paymetStatus: "pending",
             items: formattedItems
-        }
+        };
 
-        const add = await axios.post(`${API_GATEWAY_URL}/api/v1/order/add`, payload, {
+        const add = await apiClient.post(`/api/v1/order/add`, payload, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${userAccessToken}`
             }
-        })
-        return add
-    } catch (error: any) {
-        throw new Error(error.message)
+        });
+        return add;
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error));
     }
-}
-
+};
 
 export const orderListUser = async () => {
     try {
-        const userAccessToken = localStorage.getItem("userAccessToken")
-        const list = await axios.get(`${API_GATEWAY_URL}/api/v1/order/user`, {
+        const userAccessToken = localStorage.getItem("userAccessToken");
+        const list = await apiClient.get(`/api/v1/order/user`, {
             headers: {
                 "Authorization": `Bearer ${userAccessToken}`,
                 "Content-Type": "application/json"
             }
-        })
-        return list
+        });
+        return list;
 
-    } catch (error: any) {
-        throw new Error(error.message)
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error));
     }
-}
+};
 
 export const orderListAdmin = async () => {
     try {
-        const adminAccessToken = localStorage.getItem("adminAccessToken")
-        const list = await axios.get(`${API_GATEWAY_URL}/api/v1/order/list`, {
+        const adminAccessToken = localStorage.getItem("adminAccessToken");
+        const list = await apiClient.get(`/api/v1/order/list`, {
             headers: {
                 "Authorization": `Bearer ${adminAccessToken}`,
                 "Content-Type": "application/json"
             }
-        })
-        return list
-    } catch (error: any) {
-        throw new Error(error.message)
+        });
+        return list;
+    } catch (error: unknown) {
+        throw new Error(getErrorMessage(error));
     }
-}
+};
