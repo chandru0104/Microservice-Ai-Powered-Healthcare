@@ -1,80 +1,53 @@
-import { app } from "./firebase"
-import { getMessaging, getToken } from "firebase/messaging"
-import { getInstallations, deleteInstallations } from "firebase/installations"
+import { app } from "./firebase";
+import { getMessaging, getToken, Messaging } from "firebase/messaging";
 
-const VAPID_KEY = process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY || "BCbr5haA1ejLtUp5F8SWfLrq2RKj81VTX9A7kFRK0BbUcH8diAX18hlhJgdn8tbDssQ7BLV2bepcozNgtLEWXVQ"
+const VAPID_KEY = process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY;
 
-export const generateFcmToken = async () => {
-    try {
-        if (typeof window === "undefined" || !("Notification" in window)) {
-            console.warn("Notifications are not supported in this browser environment.");
-            return null;
-        }
-
-        if (!VAPID_KEY || VAPID_KEY === "YOUR_FIREBASE_WEB_PUSH_VAPID_KEY") {
-            console.warn("FCM VAPID key is not set. Please set NEXT_PUBLIC_FIREBASE_VAPID_KEY in .env");
-            return null;
-        }
-
-        let permission = Notification.permission;
-        if (permission !== "granted") {
-            permission = await Notification.requestPermission();
-        }
-        console.log("Notification permission:", permission);
-        if (permission !== "granted") {
-            console.warn("Notification permission was not granted. Status:", permission);
-            return null;
-        }
-
-        let registration: ServiceWorkerRegistration | undefined;
-        if ('serviceWorker' in navigator) {
-            try {
-                await navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: '/' });
-                registration = await navigator.serviceWorker.ready;
-            } catch (swErr: any) {
-                console.warn("Service worker registration error:", swErr?.message);
-            }
-        }
-
-        const messaging = getMessaging(app);
-
-        // Attempt 1: Fetch FCM token
-        try {
-            const token = await getToken(messaging, {
-                vapidKey: VAPID_KEY,
-                serviceWorkerRegistration: registration
-            });
-            if (token) {
-                console.log("FCM Token successfully generated:", token);
-                return token;
-            }
-        } catch (initialErr: any) {
-            console.warn("FCM initial getToken failed (attempting installation cache recovery):", initialErr?.message);
-
-            // Self-healing recovery: If 401 Unauthorized or credential error occurred,
-            // clear the stale/corrupted Firebase Installations cache from IndexedDB
-            try {
-                const installations = getInstallations(app);
-                await deleteInstallations(installations);
-                console.log("Stale Firebase installations cache cleared successfully.");
-            } catch (delErr: any) {
-                console.warn("Could not delete installation entry:", delErr?.message);
-            }
-
-            // Retry after clearing stale installation
-            const tokenOnRetry = await getToken(messaging, {
-                vapidKey: VAPID_KEY,
-                serviceWorkerRegistration: registration
-            });
-            if (tokenOnRetry) {
-                console.log("FCM Token successfully generated after recovery:", tokenOnRetry);
-                return tokenOnRetry;
-            }
-        }
-
-        return null;
-    } catch (error: any) {
-        console.error("FCM Token generation error:", error?.message || error);
-        return null;
+/**
+ * Generates an FCM Web Push token for push notifications.
+ * @returns {Promise<string | null>} The FCM token or null if permission denied / failed.
+ */
+export const generateFcmToken = async (): Promise<string | null> => {
+  try {
+    // 1. Verify browser environment and push notification support
+    if (
+      typeof window === "undefined" ||
+      !("Notification" in window) ||
+      !("serviceWorker" in navigator)
+    ) {
+      return null;
     }
-}
+
+    if (!VAPID_KEY) {
+      return null;
+    }
+
+    // 2. Request notification permission if not already granted
+    let permission: NotificationPermission = Notification.permission;
+    if (permission !== "granted") {
+      permission = await Notification.requestPermission();
+    }
+
+    if (permission !== "granted") {
+      return null;
+    }
+
+    // 3. Register service worker for Firebase Messaging
+    await navigator.serviceWorker.register("/firebase-messaging-sw.js", {
+      scope: "/",
+    });
+    const registration = await navigator.serviceWorker.ready;
+
+    // 4. Fetch the FCM token
+    const messaging: Messaging = getMessaging(app);
+    const token = await getToken(messaging, {
+      vapidKey: VAPID_KEY,
+      serviceWorkerRegistration: registration,
+    });
+
+    return token || null;
+  } catch {
+    return null;
+  }
+};
+
