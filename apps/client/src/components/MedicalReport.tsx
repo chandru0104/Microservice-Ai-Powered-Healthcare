@@ -25,11 +25,11 @@ const MedicalReport: React.FC = () => {
   const [openDailog, setOpenDailog] = useState<boolean>(false)
   const [userAccessToken, setUserAccessToken] = useState<string | null>(null);
   const [medicineName, setMedicineName] = useState<string>("");
-  const [precautions, setPrecautions] = useState<any>([])
+  const [precautions, setPrecautions] = useState<string[]>([])
   const [summary, setSummary] = useState<string>("")
-  const [uses, setUses] = useState<any>([])
-  const [disclaimer, setDisclaimer] = useState<any>("");
-  const [sideEffects, setSideEffects] = useState<any>([]);
+  const [uses, setUses] = useState<string[]>([])
+  const [disclaimer, setDisclaimer] = useState<string>("");
+  const [sideEffects, setSideEffects] = useState<string[]>([]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -107,18 +107,18 @@ const MedicalReport: React.FC = () => {
         <div className="w-[500px] h-[900px] px-4">
           <p className="my-2 font-semibold bg-yellow-100 border border-gray-400 p-2">Medicine Name:{medicineName}</p>
           <p className="p-2 bg-green-200 border border-gray-400 font-semibold my-2">Precautions : </p>
-          {precautions && precautions.map((items: any, index: any) => (
+          {precautions && precautions.map((items: string, index: number) => (
             <div className="p-2 bg-green-200 border border-gray-400" key={index}>{items}</div>
           ))
           }
           <p className="p-2 bg-blue-200 border border-gray-400 font-semibold my-2">Uses : </p>
-          {uses && uses.map((items: any, index: any) => (
+          {uses && uses.map((items: string, index: number) => (
             <div className="p-2 bg-blue-200 border border-gray-400" key={index}>{items}</div>
           ))
 
           }
           <p className="p-2 bg-red-200 border border-gray-400 font-semibold my-2">SideEffects : </p>
-          {sideEffects && sideEffects.map((items: any, index: any) => (
+          {sideEffects && sideEffects.map((items: string, index: number) => (
             <div className="p-2 bg-red-200 border border-gray-400" key={index}>{items}</div>
           ))
 

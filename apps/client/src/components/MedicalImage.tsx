@@ -25,10 +25,10 @@ const MedicalImage: React.FC = () => {
     const [userAccessToken, setUserAccessToken] = useState<string | null>(null);
     const [openDailog, setOpenDailog] = useState<boolean>(false)
     const [documentType, setDocumentType] = useState<string>("")
-    const [keyFindings, setkeyFindings] = useState<any>([])
+    const [keyFindings, setkeyFindings] = useState<string[]>([])
     const [summary, setSummary] = useState<string>("")
-    const [action, setAction] = useState<any>([])
-    const [disclaimer, setDisclaimer] = useState("")
+    const [action, setAction] = useState<string[]>([])
+    const [disclaimer, setDisclaimer] = useState<string>("")
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -104,12 +104,12 @@ const MedicalImage: React.FC = () => {
                     <p className='my-2 font-semibold bg-yellow-100 border border-gray-400 p-2'> Document Type : {documentType}</p>
 
                     <p className='p-2 bg-green-200 border border-gray-400 font-semibold my-2'>Key Findings : </p>
-                    {keyFindings && keyFindings.map((items: any, index: any) => (
+                    {keyFindings && keyFindings.map((items: string, index: number) => (
                         <div className='p-2 bg-green-200 border border-gray-400' key={index}>{items}</div>
                     ))}
 
                     <p className='my-2 font-semibold bg-blue-200 border border-gray-400 p-2'> Actions : </p>
-                    {action && action.map((items: any, index: any) => (
+                    {action && action.map((items: string, index: number) => (
                         <div className='p-2 bg-blue-200 border border-gray-400' key={index}>{items}</div>
                     ))}
 

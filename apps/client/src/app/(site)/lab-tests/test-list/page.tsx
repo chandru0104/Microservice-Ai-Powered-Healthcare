@@ -8,6 +8,7 @@ import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { FaSearch } from "react-icons/fa";
 import { bookTestPayment } from "apps/client/src/services/payment"
+import { getErrorMessage } from "apps/client/src/models/errorHandler"
 export default function TestList() {
 
     const router = useRouter()
@@ -19,8 +20,8 @@ export default function TestList() {
             const data = await listLabTest()
             const listData = data?.data?.data
             setTestList(listData)
-        } catch (error: any) {
-            console.log(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         }
     }
 
@@ -38,9 +39,9 @@ export default function TestList() {
                 await bookTestPayment(bookId, testPrice)
             }
             return book
-        } catch (error: any) {
-            alert(error.message || "Failed to book lab test")
-            throw new Error(error.message)
+        } catch (error: unknown) {
+            alert(getErrorMessage(error) || "Failed to book lab test")
+            throw new Error(getErrorMessage(error))
         }
     }
 

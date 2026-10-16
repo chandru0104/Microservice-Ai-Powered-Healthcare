@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Button, Form, Input } from 'antd';
 import Image from 'next/image';
 import { OtpUser, OtpDoctor } from 'apps/client/src/services/authService';
+import { getErrorMessage } from 'apps/client/src/models/errorHandler';
 import { useRouter } from "next/navigation"
 import { useParams } from 'next/navigation';
 
@@ -17,21 +18,21 @@ const OtpSend: React.FC = () => {
     const onFinish = async (values: { otp: string }) => {
         try {
             setLoading(true)
-            if (params.role === "user") {
+            if (params?.role === "user") {
                 const getOtp = await OtpUser(Number(values.otp))
                 if (getOtp) {
                     router.push("/user-login")
                 }
                 localStorage.setItem("tempEmailUser", values.toString())
-            } else if (params.role === "doctor") {
+            } else if (params?.role === "doctor") {
                 const getOtpdoc = await OtpDoctor(Number(values.otp))
                 if (getOtpdoc) {
                     router.push("/doctor-login")
                 }
                 localStorage.set("tempEmailDoctor", values.toString())
             }
-        } catch (error: any) {
-            console.error(error.message);
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         } finally {
             setLoading(false)
         }

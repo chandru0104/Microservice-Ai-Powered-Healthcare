@@ -15,11 +15,11 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 
 const LabTestPage = () => {
-    const [open, setOpen] = React.useState(false);
-    const [rows, setRow] = useState<[]>([])
-    const [loading, setLoading] = useState(false)
+    const [open, setOpen] = React.useState<boolean>(false);
+    const [rows, setRow] = useState<any[]>([])
+    const [loading, setLoading] = useState<boolean>(false)
     const [editId, setEditId] = useState<string | null>(null)
-    const [labCategory, setLabCategory] = useState([])
+    const [labCategory, setLabCategory] = useState<any[]>([])
     const [categoryId, setCategoryId] = useState("")
     const [name, setName] = useState("")
     const [price, setPrice] = useState("")

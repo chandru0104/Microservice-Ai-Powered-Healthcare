@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { AuthUserLogin, googleLoginUser } from 'apps/client/src/services/authService';
 import { Login } from "apps/client/src/models/authModel"
+import { getErrorMessage } from "apps/client/src/models/errorHandler"
 import { useRouter } from "next/navigation"
 import { useGoogleLogin } from "@react-oauth/google"
 
@@ -33,8 +34,8 @@ const UserLogin: React.FC = () => {
 
       router.push("/")
 
-    } catch (error: any) {
-      console.error(error.message);
+    } catch (error: unknown) {
+      throw new Error(getErrorMessage(error));
     } finally {
       setLoading(false)
     }
@@ -55,8 +56,8 @@ const UserLogin: React.FC = () => {
         localStorage.setItem("userRole", role)
         localStorage.setItem("userAccessToken", accessToken)
         router.push("/")
-      } catch (error: any) {
-        console.log(error.message)
+      } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
       }
     }
   })

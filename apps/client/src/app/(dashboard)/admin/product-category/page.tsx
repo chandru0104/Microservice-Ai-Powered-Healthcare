@@ -14,11 +14,11 @@ import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 
 
 const ProductCategoryPage = () => {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState<boolean>(false);
     const [rows, setRow] = useState<any[]>([])
-    const [loading, setLoading] = useState(false)
-    const [editId, setEditId] = useState("")
-    const [name, setName] = useState("")
+    const [loading, setLoading] = useState<boolean>(false)
+    const [editId, setEditId] = useState<string>("")
+    const [name, setName] = useState<string>("")
 
 
     const toggleDrawer = (newOpen: boolean) => () => {

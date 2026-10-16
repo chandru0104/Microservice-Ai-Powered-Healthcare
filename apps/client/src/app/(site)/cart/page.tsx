@@ -8,10 +8,11 @@ import { Loading } from "apps/client/src/components/Loading"
 import Image from "next/image"
 import { Button } from "@mui/material"
 import { paymentAdd } from "apps/client/src/services/payment"
+import { getErrorMessage } from "apps/client/src/models/errorHandler"
 export default function Cart() {
 
-    const [cartData, setCartData] = useState<any>([])
-    const [loading, setLoading] = useState<Boolean>(false)
+    const [cartData, setCartData] = useState<any[]>([])
+    const [loading, setLoading] = useState<boolean>(false)
     const [dirData, setDirData] = useState<any>()
 
 
@@ -21,8 +22,8 @@ export default function Cart() {
             const view = await cartList()
             setCartData(view?.data?.data)
             setDirData(view?.data)
-        } catch (error: any) {
-            console.log(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         } finally {
             setLoading(false)
         }
@@ -38,8 +39,8 @@ export default function Cart() {
 
             await cartDelete(id)
             list()
-        } catch (error: any) {
-            console.log(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         }
     }
 
@@ -59,9 +60,9 @@ export default function Cart() {
                 await cartDelete(item._id)
             }
             list()
-        } catch (error: any) {
-            alert(error.message || "Failed to place order")
-            console.log(error.message)
+        } catch (error: unknown) {
+            alert(getErrorMessage(error) || "Failed to place order")
+            throw new Error(getErrorMessage(error))
         }
     }
 
@@ -88,9 +89,9 @@ export default function Cart() {
                 }
             }
             list()
-        } catch (error: any) {
-            alert(error.message || "Failed to place order")
-            console.log(error.message)
+        } catch (error: unknown) {
+            alert(getErrorMessage(error) || "Failed to place order")
+            throw new Error(getErrorMessage(error))
         }
     }
 

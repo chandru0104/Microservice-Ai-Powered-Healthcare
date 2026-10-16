@@ -6,6 +6,7 @@ import { Loading } from "apps/client/src/components/Loading"
 import { useState } from 'react';
 import * as React from 'react';
 import { getUserAppointmentList, getDoctorAppointmentList } from "apps/client/src/services/appointment"
+import { getErrorMessage } from "apps/client/src/models/errorHandler"
 import Footer from "apps/client/src/components/Footer"
 import Navbar from "apps/client/src/components/Navbar"
 import dayjs from "dayjs"
@@ -27,12 +28,11 @@ const Transition = React.forwardRef(function Transition(
 ) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
-
 const OrderHistorysPage = () => {
 
     const [loading, setLoading] = useState(false)
-    const [row, setRow] = useState<any[]>([])
 
+    const [row, setRow] = useState<any[]>([])
     const [roomName, setroomName] = useState("")
     const [meetUrl, setMeetUrl] = useState("")
     const [date, setDate] = useState("")
@@ -56,8 +56,8 @@ const OrderHistorysPage = () => {
             setFees(data?.fees || data?.doctor?.fees || "")
             setPaymentStatus(data?.payment || "")
             setOpen(true)
-        } catch (error: any) {
-            console.error("Video call error:", error?.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         }
     }
 
@@ -76,7 +76,7 @@ const OrderHistorysPage = () => {
             let res: any;
             if (doctorId) {
                 res = await getDoctorAppointmentList(doctorId)
-            } else {
+            } else if (userId) {
                 res = await getUserAppointmentList(userId)
             }
 
@@ -87,8 +87,8 @@ const OrderHistorysPage = () => {
             setRow(mapping)
 
 
-        } catch (error: any) {
-            console.error(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         } finally {
             setLoading(false)
         }

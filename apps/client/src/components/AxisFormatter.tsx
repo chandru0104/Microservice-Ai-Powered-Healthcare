@@ -106,7 +106,7 @@ export default function Formatter() {
                     {
                         scaleType: 'band',
                         dataKey: 'month',
-                        valueFormatter: (month, context) =>
+                        valueFormatter: (month: string, context: { location: 'tick' | 'tooltip' | string }) =>
                             context.location === 'tick'
                                 ? `${month.slice(0, 3)} \n2023`
                                 : `${month} 2023`,

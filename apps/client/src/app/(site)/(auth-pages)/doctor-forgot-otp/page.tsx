@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Button, Form, Input } from 'antd';
 import Image from 'next/image';
 import { DoctorForgotOtp } from 'apps/client/src/services/authService';
+import { getErrorMessage } from 'apps/client/src/models/errorHandler';
 import { useRouter } from "next/navigation"
 
 
@@ -28,8 +29,8 @@ const DoctorForgot: React.FC = () => {
                 router.push("/doctor-reset-password")
             }
 
-        } catch (error: any) {
-            console.log(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         } finally {
             setLoading(false)
         }

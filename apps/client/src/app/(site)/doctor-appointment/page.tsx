@@ -6,6 +6,7 @@ import { Loading } from "apps/client/src/components/Loading";
 import { useState, useEffect } from 'react';
 import * as React from 'react';
 import { getDoctorAppointmentList } from "apps/client/src/services/appointment";
+import { getErrorMessage } from "apps/client/src/models/errorHandler";
 import Footer from "apps/client/src/components/Footer";
 import Navbar from "apps/client/src/components/Navbar";
 import dayjs from "dayjs";
@@ -57,8 +58,8 @@ const DoctorAppointmentPage = () => {
             setFees(data?.fees || data?.doctor?.fees || "")
             setPaymentStatus(data?.payment || "")
             setOpen(true)
-        } catch (error: any) {
-            console.error("Video call error:", error?.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         }
     }
 
@@ -82,8 +83,8 @@ const DoctorAppointmentPage = () => {
                 id: index + 1
             })) : [];
             setRow(mapping);
-        } catch (error: any) {
-            console.error("Error fetching doctor appointments:", error.message);
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error));
         } finally {
             setLoading(false);
         }

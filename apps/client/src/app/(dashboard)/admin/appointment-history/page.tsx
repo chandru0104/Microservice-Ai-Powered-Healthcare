@@ -11,7 +11,7 @@ import dayjs from "dayjs";
 
 const AppointmentHistoryPage = () => {
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [row, setRow] = useState<any[]>([]);
 

@@ -4,6 +4,7 @@ import Footer from "apps/client/src/components/Footer"
 import Navbar from "apps/client/src/components/Navbar"
 import { viewlabTest, bookTest } from "../../../../../services/labtest"
 import { bookTestPayment } from "apps/client/src/services/payment"
+import { getErrorMessage } from "apps/client/src/models/errorHandler"
 import { useState } from "react"
 import { useEffect } from "react"
 import { BiMaleFemale } from "react-icons/bi";
@@ -27,8 +28,8 @@ export default function TestList() {
             const data = await viewlabTest(params?.id)
             const listData = data?.data?.data
             setTestList(listData)
-        } catch (error: any) {
-            console.log(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         }
     }
 
@@ -46,9 +47,9 @@ export default function TestList() {
                 await bookTestPayment(bookId, testPrice)
             }
             return book
-        } catch (error: any) {
-            alert(error.message || "Failed to book lab test")
-            throw new Error(error.message)
+        } catch (error: unknown) {
+            alert(getErrorMessage(error) || "Failed to book lab test")
+            throw new Error(getErrorMessage(error))
         }
     }
 

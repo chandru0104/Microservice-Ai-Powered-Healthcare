@@ -6,6 +6,7 @@ import { Loading } from "apps/client/src/components/Loading";
 import { useState, useEffect } from 'react';
 import * as React from 'react';
 import { paymentDoctorList } from "apps/client/src/services/appointment";
+import { getErrorMessage } from "apps/client/src/models/errorHandler";
 import Footer from "apps/client/src/components/Footer";
 import Navbar from "apps/client/src/components/Navbar";
 import dayjs from "dayjs";
@@ -32,8 +33,8 @@ const DoctorPaymentHistoryPage = () => {
                 id: index + 1
             }));
             setRow(mappedRows);
-        } catch (error: any) {
-            console.error("Error fetching doctor payment history:", error.message);
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error));
         } finally {
             setLoading(false);
         }

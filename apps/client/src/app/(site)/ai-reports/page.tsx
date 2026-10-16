@@ -10,6 +10,7 @@ import MedicalImage from "apps/client/src/components/MedicalImage";
 import { useState } from "react";
 import { Box } from '@mui/material';
 import { aiSymptomsCheck } from "../../../services/aiService"
+import { getErrorMessage } from "apps/client/src/models/errorHandler"
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -37,7 +38,6 @@ const AiStudio = () => {
   const [homeCare, setHomeCare] = useState<any[]>([])
   const [disclaimer, setDisclaimer] = useState("")
   const [possibleConditions, setPossibleConditions] = useState<any[]>([])
-  console.log(homeCare)
   const [options, setOption] = useState({ option1: "", option2: "", option3: "", option4: "" })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -61,9 +61,8 @@ const AiStudio = () => {
       setPossibleConditions(possibles)
       return post
 
-    } catch (error: any) {
-      console.log(error.message)
-      return null
+    } catch (error: unknown) {
+      throw new Error(getErrorMessage(error))
     }
 
   }
