@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Login } from "../../../../models/authModel"
 import { DoctorLogin, googleLoginDoctor } from "../../../../services/authService"
+import { getErrorMessage } from "../../../../models/errorHandler"
 import { useRouter } from 'next/navigation';
 import { useGoogleLogin } from "@react-oauth/google"
 
@@ -22,7 +23,6 @@ const DoctorLogins: React.FC = () => {
       setLoading(true)
 
       const doctorData = await DoctorLogin(values)
-      console.log(doctorData)
       const { id, name, accessToken } = doctorData.data
 
       localStorage.setItem("doctorId", id)
@@ -33,8 +33,8 @@ const DoctorLogins: React.FC = () => {
         router.push("/doctor/profile")
       }
 
-    } catch (error: any) {
-      throw new Error(error.message)
+    } catch (error: unknown) {
+      throw new Error(getErrorMessage(error))
     } finally {
       setLoading(false)
     }
@@ -60,8 +60,8 @@ const DoctorLogins: React.FC = () => {
           router.push("/")
         }
 
-      } catch (error: any) {
-        console.log(error.message)
+      } catch (error: unknown) {
+        throw new Error(getErrorMessage(error))
       }
     }
   })

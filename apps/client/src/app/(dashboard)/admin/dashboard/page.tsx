@@ -12,7 +12,6 @@ const DashboardPage = () => {
             <h3 className="text-xl font-bold py-4">Dashboard</h3>
             <div className="bg-white p-4">
                 <DashboardCard />
-
             </div>
             <div className="py-4" >
                 <Grid container spacing={2} >
@@ -34,7 +33,6 @@ const DashboardPage = () => {
                         <SeriesFormatter />
                     </Grid>
                 </Grid>
-
             </div>
         </>
     )

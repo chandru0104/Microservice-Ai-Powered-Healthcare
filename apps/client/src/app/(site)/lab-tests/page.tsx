@@ -12,6 +12,7 @@ import { GrTestDesktop } from "react-icons/gr";
 import Link from "next/link"
 import { Button } from "@mui/material"
 import { useRouter } from "next/navigation"
+import { getErrorMessage } from "apps/client/src/models/errorHandler"
 
 
 const recentTest = [
@@ -63,8 +64,8 @@ function LabTestsPage() {
             const listData = await listLabTest()
             const data = listData?.data?.data
             setLabCategoryList(data)
-        } catch (error: any) {
-            console.log(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         }
     }
 

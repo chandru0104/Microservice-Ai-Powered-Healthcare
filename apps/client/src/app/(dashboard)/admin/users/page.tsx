@@ -27,11 +27,17 @@ const columns: GridColDef[] = [
 ];
 
 
+interface UserRow {
+    _id?: string;
+    id: number;
+    name?: string;
+    email?: string;
+    [key: string]: unknown;
+}
+
 const UserPage = () => {
-
-    const [rows, setrow] = useState([])
-
-    const [loading, setLoading] = useState(false)
+    const [rows, setrow] = useState<UserRow[]>([])
+    const [loading, setLoading] = useState<boolean>(false)
 
     const getData = async () => {
         try {
@@ -43,7 +49,7 @@ const UserPage = () => {
 
             const rowsData = Array.isArray(data?.data) ? data.data : []
 
-            const mappingData = rowsData.map((row: any, index: any) => ({
+            const mappingData: UserRow[] = rowsData.map((row: Record<string, unknown>, index: number) => ({
                 ...row,
                 id: index + 1
             }))

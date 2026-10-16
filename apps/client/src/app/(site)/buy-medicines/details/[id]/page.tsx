@@ -12,7 +12,8 @@ import { BsCalendarDate } from "react-icons/bs";
 import { RiSecurePaymentLine } from "react-icons/ri";
 import { Loading } from "apps/client/src/components/Loading"
 import { orderAdd } from "apps/client/src/services/order"
-import {paymentAdd} from "apps/client/src/services/payment"
+import { paymentAdd } from "apps/client/src/services/payment"
+import { getErrorMessage } from "apps/client/src/models/errorHandler"
 
 
 const productDetails = () => {
@@ -32,8 +33,8 @@ const productDetails = () => {
             setLoading(true)
             const view = await productView(id)
             setDetailsData(view?.data?.data)
-        } catch (error: any) {
-            console.log(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         } finally {
             setLoading(false)
         }
@@ -48,8 +49,8 @@ const productDetails = () => {
         try {
             await cartAdd(id, quantity)
             alert("Cart Added successfully...")
-        } catch (error: any) {
-            console.log(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         }
     }
 
@@ -60,14 +61,12 @@ const productDetails = () => {
            
             const createdOrder = orderAdds?.data?.data;
             if (createdOrder?._id) {
-                const addpayment = await paymentAdd(createdOrder._id, createdOrder.price)
-                console.log(addpayment)
+                await paymentAdd(createdOrder._id, createdOrder.price)
             }
 
-            console.log(orderAdds)
-        } catch (error: any) {
-            alert(error.message || "Failed to place order")
-            console.log(error.message)
+        } catch (error: unknown) {
+            alert(getErrorMessage(error) || "Failed to place order")
+            throw new Error(getErrorMessage(error))
         }
     }
 

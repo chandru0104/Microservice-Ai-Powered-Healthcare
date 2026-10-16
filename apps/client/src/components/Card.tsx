@@ -14,9 +14,9 @@ import { productList } from "../services/productService"
 
 export function DashboardCard() {
     const [userCount, setUserCount] = useState<number | string>("Loading...")
-    const [productCount, setProductCount] = useState<any>("Loading...")
-    const [doctorCount, setDoctorCount] = useState<any>("Loading...")
-    const [orderCount, setOrderCount] = useState<any>("Loading...")
+    const [productCount, setProductCount] = useState<number | string>("Loading...")
+    const [doctorCount, setDoctorCount] = useState<number | string>("Loading...")
+    const [orderCount, setOrderCount] = useState<number | string>("Loading...")
 
     const user = async () => {
         try {

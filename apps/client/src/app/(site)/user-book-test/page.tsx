@@ -6,6 +6,7 @@ import { Loading } from "apps/client/src/components/Loading"
 import { useState } from 'react';
 import * as React from 'react';
 import { userBookingList } from "apps/client/src/services/labtest"
+import { getErrorMessage } from "apps/client/src/models/errorHandler"
 import Footer from "apps/client/src/components/Footer"
 import Navbar from "apps/client/src/components/Navbar"
 
@@ -24,8 +25,8 @@ const OrderHistorysPage = () => {
                 id: index + 1
             })) : []
             setRow(mapping)
-        } catch (error: any) {
-            console.error(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         } finally {
             setLoading(false)
         }

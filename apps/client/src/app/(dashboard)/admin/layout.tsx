@@ -10,6 +10,13 @@ import DashboardNav from "../../../components/DashboardNav"
 import { LuLogOut } from "react-icons/lu";
 import { useEffect } from "react";
 
+interface SideBarItem {
+    id: number;
+    icon: React.ReactNode;
+    name: string;
+    path: string;
+}
+
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter()
 
@@ -37,7 +44,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                         <div className="text-2xl ">Care Hub</div>
                     </div>
                     <div className="overflow-x-hidden">
-                        {sideBar && sideBar.map((menu) => {
+                        {sideBar && sideBar.map((menu: SideBarItem) => {
                             return (
                                 <div key={menu.id} className="mt-2">
                                     <div className="">

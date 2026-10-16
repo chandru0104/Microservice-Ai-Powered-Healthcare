@@ -4,6 +4,7 @@ import Navbar from "apps/client/src/components/Navbar"
 import { FaSearch } from "react-icons/fa";
 import { useEffect, useMemo, useState } from "react"
 import { productList, cartAdd } from "../../../services/productService"
+import { getErrorMessage } from "apps/client/src/models/errorHandler"
 import Image from "next/image"
 import { Button } from "@mui/material"
 import { Loading } from "apps/client/src/components/Loading";
@@ -33,10 +34,9 @@ export default function Productlist() {
             const lists = await productList()
             const listData: Product[] = lists?.data?.data || []
             setProductList(listData)
-            console.log(listData)
 
-        } catch (error: any) {
-            console.log(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         }finally{
             setLoading(false)
         }
@@ -48,12 +48,10 @@ export default function Productlist() {
 
     const addCarts = async (id: any) => {
         try {
-            const orderAdds = await cartAdd(id, 1)
+            await cartAdd(id, 1)
             alert("Product added to cart successfully")
-            console.log(orderAdds)
-        } catch (error: any) {
-            alert(error.message || "Failed to add to cart")
-            console.log(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         }
     }
 

@@ -2,6 +2,7 @@
 import Footer from "apps/client/src/components/Footer"
 import Navbar from "apps/client/src/components/Navbar"
 import { doctorProfile, doctorUpdate, doctorDelete } from "apps/client/src/services/doctors"
+import { getErrorMessage } from "apps/client/src/models/errorHandler"
 import { useEffect, useState } from "react"
 import { Loading } from "apps/client/src/components/Loading"
 import { Box, Grid } from "@mui/material"
@@ -46,7 +47,7 @@ export default function DoctorProfile() {
     const [open, setOpen] = React.useState(false);
     const [id, setId] = useState<string>("")
 
-    const [name, setName] = useState<any>("")
+    const [name, setName] = useState<string>("")
     const [email, setEmail] = useState<string>("")
     const [profile, setProfile] = useState<File | null>(null)
     const [place, setPlace] = useState<string>("")
@@ -105,14 +106,14 @@ export default function DoctorProfile() {
     };
 
 
-    const updateDoctor = async (e: any) => {
+    const updateDoctor = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
             setBtnloading(true)
             const update = await doctorUpdate(id, {
                 name,
                 email,
-                profile,
+                profile: profile ?? undefined,
                 place,
                 price,
                 experience,
@@ -123,8 +124,8 @@ export default function DoctorProfile() {
             await dooctorDetails()
             return update
 
-        } catch (error: any) {
-            return console.error(error)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         } finally {
             setBtnloading(false)
         }
@@ -142,7 +143,7 @@ export default function DoctorProfile() {
     const handleDeleteProfile = async (email: any) => {
         try {
             if (email.trim()?.toLowerCase() != details?.email?.trim()?.toLowerCase()) {
-                console.log("Email is incorrect")
+                alert("Email is incorrect")
                 return
             }
             const del = await doctorDelete(id as string)
@@ -152,8 +153,8 @@ export default function DoctorProfile() {
             localStorage.removeItem("doctorName")
             router.push("/doctor-login")
             return del
-        } catch (error: any) {
-            console.error(error)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         }
     }
 

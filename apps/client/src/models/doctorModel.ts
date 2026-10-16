@@ -5,7 +5,7 @@ export interface IDoctorUpdatePayload {
     experience: string;
     price: string | number;
     place: string;
-    profile?: File | string | Blob;
+    profile?: File | string | Blob | null;
     [key: string]: any;
 }
 

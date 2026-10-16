@@ -14,9 +14,9 @@ import { FiEdit3, FiTrash2 as RiDeleteBin5Line } from "react-icons/fi";
 
 
 const ProductChildCategoryPage = () => {
-    const [open, setOpen] = React.useState(false);
-    const [rows, setRow] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [open, setOpen] = React.useState<boolean>(false);
+    const [rows, setRow] = useState<any[]>([])
+    const [loading, setLoading] = useState<boolean>(false)
     const [name, setName] = useState("")
     const [editId, setEditId] = useState<string | null>(null)
 

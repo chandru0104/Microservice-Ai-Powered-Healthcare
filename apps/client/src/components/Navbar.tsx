@@ -30,13 +30,21 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
+interface UserProfileData {
+    _id?: string;
+    name?: string;
+    email?: string;
+    phone?: string;
+    address?: string;
+    [key: string]: any;
+}
 
 const Navbar = () => {
     const [openMenu, setOpenMenu] = useState(false);
     const [userName, setUserName] = useState<string | null>(null)
     const [doctorName, setDoctorName] = useState<string | null>(null)
     const [showProfile, setShowProfile] = useState<boolean>(false)
-    const [userInfo, setUserInfo] = useState<any>("")
+    const [userInfo, setUserInfo] = useState<UserProfileData | null>(null)
     const [open, setOpen] = React.useState(false);
 
     // Delete Account Dialog states
@@ -82,7 +90,7 @@ const Navbar = () => {
         }
     }
 
-    function doctorNavigation(data: String) {
+    function doctorNavigation(data: "user" | "doctor" | string) {
         if (data === "user") {
             const token = localStorage.getItem("userAccessToken")
             if (token || userName) {
@@ -172,9 +180,10 @@ const Navbar = () => {
         router.push("/user-book-test")
     }
 
-    const updateHandler = async (e: any) => {
-        e.preventDefault()
+    const updateHandler = async (e?: React.SyntheticEvent) => {
+        e?.preventDefault()
         try {
+            if (!userInfo?._id) return
             const payload = {
                 name: name !== "" ? name : userInfo?.name,
                 email: email !== "" ? email : userInfo?.email,

@@ -20,6 +20,7 @@ import { Button } from "@mui/material"
 import { addOppointment } from "apps/client/src/services/appointment"
 import { userProfile } from "apps/client/src/services/user"
 import { appointmentPaymentAdd } from "apps/client/src/services/appointment"
+import { getErrorMessage } from "apps/client/src/models/errorHandler"
 
 export default function DoctorDetails() {
 
@@ -42,8 +43,8 @@ export default function DoctorDetails() {
                 setUserId(userData._id)
                 return userData
             }
-        } catch (error: any) {
-            console.error(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         }
         return null
     }
@@ -54,8 +55,8 @@ export default function DoctorDetails() {
             setLoading(true)
             const list = await doctorProfile(params?.id as string)
             setDetails(list?.data?.data)
-        } catch (error: any) {
-            throw new Error(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         } finally {
             setLoading(false)
         }
@@ -106,8 +107,8 @@ export default function DoctorDetails() {
                 await appointmentPaymentAdd(add.data.data._id, details._id)
             }
             return add
-        } catch (error: any) {
-            throw new Error(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         }
     }
 

@@ -29,7 +29,7 @@ export default function SeriesFormatter() {
                 series={[
                     {
                         data: data.map((d) => ({ label: d.team, id: d.team, value: d.points })),
-                        valueFormatter: (v, { dataIndex }) => {
+                        valueFormatter: (v: { value: number }, { dataIndex }: { dataIndex: number }) => {
                             const { rank } = data[dataIndex];
                             return `has ${v.value} points and is ranked ${rank}.`;
                         },

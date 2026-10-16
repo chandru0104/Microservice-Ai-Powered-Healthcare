@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Button, Form, Input } from 'antd';
 import Image from 'next/image';
 import { DoctorForgotEmail } from "../../../../services/authService"
+import { getErrorMessage } from "../../../../models/errorHandler"
 import { useRouter } from 'next/navigation';
 
 const sendEmailDoctor: React.FC = () => {
@@ -22,8 +23,8 @@ const sendEmailDoctor: React.FC = () => {
                 router.push("/doctor-forgot-otp")
             }
 
-        } catch (error: any) {
-            console.log(error.message)
+        } catch (error: unknown) {
+            throw new Error(getErrorMessage(error))
         } finally {
             setLoading(false)
         }

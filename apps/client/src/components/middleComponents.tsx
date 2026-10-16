@@ -4,12 +4,19 @@ import Image from "next/image"
 import Link from "next/link"
 import newsJson from "../app/(site)/jsons/news.json"
 
+interface NewsItem {
+    id: number;
+    image: string;
+    news: string;
+    date: string;
+}
+
 export default function MiddleComponents() {
-    const [showAll, setShowAll] = useState(false)
-    const news = newsJson
+    const [showAll, setShowAll] = useState<boolean>(false)
+    const news: NewsItem[] = newsJson as NewsItem[]
 
     // Show 6 items initially, or all items if showAll is true
-    const visibleNews = showAll ? news : news.slice(0, 6)
+    const visibleNews: NewsItem[] = showAll ? news : news.slice(0, 6)
 
     return (
         <>
@@ -102,7 +109,7 @@ export default function MiddleComponents() {
             {/* Articles Grid (Responsive layout for 6 items) */}
             <div className="max-w-[1320px] mx-auto px-4 py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {
-                    visibleNews.map((data: any) => (
+                    visibleNews.map((data: NewsItem) => (
                         <div key={data.id} className="p-4 flex flex-col justify-between border-2 rounded-lg border-gray-100">
                             <div className="flex gap-4 items-start">
                                 <Image src={data.image} width={120} height={90} alt="image news" className="rounded-lg object-cover w-[120px] h-[90px] shrink-0" />
