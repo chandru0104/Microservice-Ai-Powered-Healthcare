@@ -1,6 +1,13 @@
 import Image from "next/image"
 import Navbar from "apps/client/src/components/Navbar"
 import Footer from "apps/client/src/components/Footer"
+import type { Metadata } from "next"
+
+export const metadata : Metadata ={
+    title:"About Care Hub",
+    description:"Learn more about Care Hub, our vision, mission, and how we deliver world-class healthcare services.",
+}
+
 const About = () => {
     return (
         <div>

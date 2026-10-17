@@ -18,6 +18,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
                         localStorage.setItem("userAccessToken", token)
                     }
 
+                                        
                 } else if (doctorRole === "doctor") {
                     const res = await doctorRefreshToken()
                     const token = res?.data?.accessToken
